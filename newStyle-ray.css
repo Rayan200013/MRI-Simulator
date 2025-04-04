@@ -553,7 +553,7 @@
   }
   .mp-image-container{
     max-width: 350px;
-    height: 435px;
+    height: 355px;
     background-color: #000;
     text-align: center;
     border: 2px solid #6773a7;
@@ -566,11 +566,13 @@
   .mp-image-container img{
     width: 100%;
     margin: auto;
+    height: 355px;
     }
 
   /* Tab Result */
   .mp-result-container{
     text-align: center;
+    height: 411.359px;
     /* width: 150px; */
     /* height: 150px; */
     /* background-color: red; */
@@ -919,7 +921,7 @@
       
       #imageLights {
           display: block;
-          opacity: 0.4; /* dimmed by default */
+          opacity: 0.4;
       }
       
       .overlay-light {
@@ -949,7 +951,19 @@
         background-color: #fff;
         color: #6888c8;
       }
-      #btnReset{
+      /* #btnReset{
         display: none;
         transition: 0.4s ease-in all;
-      }
+      } */
+
+      #btnReset {
+        opacity: 0;
+        transition: opacity 0.5s ease-in-out;
+        display: inline-block; /* make sure it's not hidden */
+    }
+    #btnReset.show {
+        opacity: 1;
+    }
+    #btnReset.hide {
+        opacity: 0;
+    }

@@ -469,21 +469,42 @@
 		document.getElementById("comppic18").setAttribute("tableValues", +clefsbnormal+" "+clefsbnormal);
 	}
 		
-		function ResetRSB(){
-			btnRestclicked="true";
-			Calculation();
-			CheckCases();
-			document.getElementById("btnReset").style.display="none";
+	function ResetRSB() {
+    btnRestclicked = "true";
+    Calculation();
+    CheckCases(cname);
 
-			const glow = document.getElementById("glowLight");
-			glow.style.opacity = "0";
-			glow.src=""
+    // Fade out reset button
+    const resetBtn = document.getElementById("btnReset");
+    resetBtn.classList.remove("show");
+    resetBtn.classList.add("hide");
 
-			console.log("Reset")
-		}
+    // Clear light overlays, etc.
+    const glow = document.getElementById("glowLight");
+    if (glow) {
+        glow.style.opacity = "0";
+        glow.src = "";
+    }
+
+    const lblResults = document.getElementById("lblDisplayResults");
+    if (lblResults) {
+        lblResults.innerText = "";
+    }
+
+    const imageLights = document.getElementById("imageLights");
+    if (imageLights) {
+        imageLights.src = "images/main-images/Full-3-lights.png";
+    }
+
+    console.log("RSB Reset completed.");
+}
+
 		
 		function ResultFeedback(){
-			document.getElementById("btnReset").style.display="inline";
+			// document.getElementById("btnReset").style.display="inline";
+			const resetBtn = document.getElementById("btnReset");
+            resetBtn.classList.remove("hide");
+            resetBtn.classList.add("show");
 			if(cname=="case1"){
 				if((ETL==14 && TR>=3700 && TR<=4000 &&  TE>=85 && TE<=95 && nbcoupes>19 && freq==320&& phase==320&& epaisseur==4&& gap==0.4 && coupes==20 && fov==24 ) || (ETL==15 && TR>=3801 && TR<=4000 && TE>=96 && TE<=106 && nbcoupes>19 && freq==320&& phase==320&& epaisseur==4&& gap==0.4 && coupes==20 && fov==24)){
 					res=1;
@@ -1669,7 +1690,7 @@
 			
 				<div class="btn-flex">
 					<button id="btnresult" class="Btn-validate" onclick="ResultFeedback()">Valider</button>
-					<button id="btnReset" class="Btn-validate" onclick="ResetRSB()">Reset</button>
+					<button id="btnReset" class="hide Btn-validate" onclick="ResetRSB()">Réinitialiser</button>
 				</div>
 			</div>
 			 
