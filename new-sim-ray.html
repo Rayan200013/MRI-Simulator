@@ -42,8 +42,10 @@
 				document.getElementById("lblDisplayResults").style.display="inline";
 				document.getElementById("lblQuestion").innerText="Pour cette séquence Spin Echo Rapide, vous avez besoin de 20 coupes seulement, la machine en autorise 24. Comment optimiser les réglages afin de profiter de la marge de manoeuvre pour gagner du temps sans changer la pondération, la couverture anatomique ni la résolution spatiale?";
 				document.getElementById("popup").className="popcase1";
-				document.getElementById("popup").innerText="Le paramètre TF/ETL est le nombre d'échos recueillis dans le même cycle de répétition (  temps TR). Il s'agit d'une mesure d'accélération du temps d’acquisition, par exemple, pour un facteur turbo 3, le temps d’acquisition est divisé par 3 par rapport à une séquence SE avec des paramètres comparables.\n Ainsi, en augmentant votre facteur TF/ETL, vous pouvez réduire le temps d'acquisition.\n Attention : vous devrez peut-être ajuster d'autres paramètres pour garantir une bonne optimisation.";
+				// document.getElementById("popupContent").innertext="Le paramètre TF/ETL est le nombre d'échos recueillis dans le même cycle de répétition (  temps TR). Il s'agit d'une mesure d'accélération du temps d’acquisition, par exemple, pour un facteur turbo 3, le temps d’acquisition est divisé par 3 par rapport à une séquence SE avec des paramètres comparables.\n Ainsi, en augmentant votre facteur TF/ETL, vous pouvez réduire le temps d'acquisition.\n Attention : vous devrez peut-être ajuster d'autres paramètres pour garantir une bonne optimisation.";
+				document.getElementById("popupContent").innerHTML="Le paramètre TF/ETL est le nombre d'échos recueillis dans le même cycle de répétition (  temps TR). Il s'agit d'une mesure d'accélération du temps d’acquisition, par exemple, pour un facteur turbo 3, le temps d’acquisition est divisé par 3 par rapport à une séquence SE avec des paramètres comparables.\n Ainsi, en augmentant votre facteur TF/ETL, vous pouvez réduire le temps d'acquisition.\n Attention : vous devrez peut-être ajuster d'autres paramètres pour garantir une bonne optimisation.";
 				CheckRadio();DsiplaySpinEcho();cname="case1";
+				document.getElementById('btnClosetip')
 				// Adding images intersection
 				document.getElementById("sagImage").src = "data:image/svg+xml;charset=UTF-8," +
 				encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="350" height="430">' +
@@ -86,7 +88,7 @@
 				document.getElementById("lblDisplayResults").style.display="inline";
 				document.getElementById("lblQuestion").innerText="Pour cette séquence  Spin Echo Rapide, vous avez besoin de 20 coupes seulement, la machine en autorise 24. Comment optimiser les réglages afin de profiter de la marge de manoeuvre pour améliorer la résolution spatiale sans modifier la pondération, la couverture  anatomique ni le temps d'acquisition?";
 				document.getElementById("popup").className="popcase2";
-				document.getElementById("popup").innerText="L'augmentation du nombre de codage en fréquence ou du nombre de codage de phase permet d'améliorer la résolution. Le codage de fréquence dépend de la rapidité avec laquelle le signal FID est échantillonné. L'augmentation de la fréquence d'échantillonnage n'entraîne aucune pénalité de temps. L'augmentation du nombre de pas de codage de phase augmente proportionnellement le temps d'acquisition avec le nombre de ligne en phase.\n Ainsi, en augmentant seulement le nombre de codage de fréquence, vous pouvez améliorer votre résolution spatiale sans affecter le temps d'acquisition.\n Attention: vous devrez peut-être ajuster d'autres paramètres pour garantir une bonne optimisation.";
+				document.getElementById("popupContent").innerHTML="L'augmentation du nombre de codage en fréquence ou du nombre de <br>" + " codage de phase permet d'améliorer la résolution. Le codage de fréquence dépend de la rapidité avec laquelle le signal FID est échantillonné. L'augmentation de la fréquence d'échantillonnage n'entraîne aucune pénalité de temps. L'augmentation du nombre de pas de codage de phase augmente proportionnellement le temps d'acquisition avec le nombre de ligne en phase.\n Ainsi, en augmentant seulement le nombre de codage de fréquence, vous pouvez améliorer votre résolution spatiale sans affecter le temps d'acquisition.\n Attention: vous devrez peut-être ajuster d'autres paramètres pour garantir une bonne optimisation.";
 				CheckRadio();DsiplaySpinEcho();cname="case2";
 			}
 			else if(casename=="case3"){
@@ -119,7 +121,7 @@
 				document.getElementById("lblDisplayResults").style.display="inline";
 				document.getElementById("lblQuestion").innerText="Pour cette séquence  Spin Echo Rapide, vous avez besoin de 20 coupes seulement, la machine en autorise 24. Comment optimiser les réglages afin de profiter de la marge de manoeuvre pour ameliorer le rapport signal sur bruit sans changer la résolution spatiale ni le temps d'acquisition?";
 				document.getElementById("popup").className="popcase3";
-				document.getElementById("popup").innerText="La variation de la bande passante du récepteur a un effet direct sur le rapport signal sur bruit (RSB). Ainsi, en diminuant la bande passante du récepteur à une valeur critique, vous pouvez améliorer le RSB.\n Attention: vous devrez peut-être ajuster d'autres paramètres pour garantir une bonne optimisation.";
+				document.getElementById("popupContent").innerHTML="La variation de la bande passante du récepteur a un effet direct sur le rapport signal sur bruit (RSB). Ainsi, en diminuant la bande passante du récepteur à une valeur critique, vous pouvez améliorer le RSB.\n Attention: vous devrez peut-être ajuster d'autres paramètres pour garantir une bonne optimisation.";
 				DsiplaySpinEcho();Calculation();cname="case3";
 			}
 			else if(casename=="case4"){
@@ -152,7 +154,7 @@
 				document.getElementById("lblDisplayResults").style.display="inline";
 				document.getElementById("lblQuestion").innerText="Pour cette séquence Spin Echo Rapide pondérée T2, nous obtenons une image de mauvaise qualité: présence d'un bluring trop important. Comment optimiser les réglages afin de réduire cet effet flou sans modifier la pondération ni la couverture anatomique (perte de rapport signal sur bruit tolérée jusqu'à 20%)?";
 				document.getElementById("popup").className="popcase4";
-				document.getElementById("popup").innerText="En diminuant le paramètre TF/ETL, vous pouvez réduire l'artéfact de blurring.\n Attention : vous devrez peut-être ajuster d'autres paramètres pour garantir une bonne optimisation.";
+				document.getElementById("popupContent").innerHTML="En diminuant le paramètre TF/ETL, vous pouvez réduire l'artéfact de blurring.\n Attention : vous devrez peut-être ajuster d'autres paramètres pour garantir une bonne optimisation.";
 				Calculation();DsiplaySpinEcho();cname="case4";
 			}
 			else if(casename=="case5"){
@@ -185,7 +187,7 @@
 				document.getElementById("lblDisplayResults").style.display="inline";
 				document.getElementById("lblQuestion").innerText="Pour cette séquence Spin Echo Rapide pondérée T1, je souhaite réaliser 24 coupes. Comment optimiser les paramètres pour obtenir ces 24 coupes sans modifier la zone de couverture ni la résolution spatiale et également sans que le temps d'acquisition ne soit supérieur à 1 minute et 10 secondes (perte de SNR tolérée à 30%)?";
 				document.getElementById("popup").className="popcase5";
-				document.getElementById("popup").innerText="En diminuant le paramètre TF/ETL, vous pouvez augmenter le temps d'acquisition.\n En augmentant la bande passante du récepteur, le RSB sera réduit.\n Attention: vous devrez peut-être ajuster d'autres paramètres pour garantir une bonne optimisation.";
+				document.getElementById("popupContent").innerHTML="En diminuant le paramètre TF/ETL, vous pouvez augmenter le temps <br>" + " d'acquisition. En augmentant la bande passante du récepteur, le RSB sera réduit.\n Attention: vous devrez peut-être ajuster d'autres paramètres pour garantir une bonne optimisation.";
 				CheckRadio();DsiplaySpinEcho();cname="case5";
 			}
 			else if(casename=="case6"){
@@ -218,7 +220,7 @@
 				document.getElementById("lblDisplayResults").style.display="inline";
 				document.getElementById("lblQuestion").innerHTML ="Nous avons la chance d'utiliser une nouvelle antenne tête. Le gain de rapport signal sur bruit est colossal. Je souhaite en profiter pour améliorer la résolution spatiale, en utilisant une taille de pixel inférieur à 0.5mm<sup style=font-size:11px>2</sup>, sans changer la couverture anatomique ni augmenter le temps d'acquisition. Il faut alors optimiser les paramètres.";
 				document.getElementById("popup").className="popcase6";
-				document.getElementById("popup").innerText="En diminuant le paramètre TF/ETL, vous pouvez réduire l'effet de blurring.\n En diminuant le NEX, vous pouvez réduire le temps d'acquisition.\n En augmentant la taille de la matrice, vous pouvez améliorer la résolution de l'image.\n En augmentant la bande passante du récepteur, le SNR sera réduit.";
+				document.getElementById("popupContent").innerHTML="En diminuant le paramètre TF/ETL, vous pouvez réduire l'effet de blurring.\n En diminuant le NEX, vous pouvez réduire le temps d'acquisition.\n En augmentant la taille de la matrice, vous pouvez améliorer la résolution de l'image.\n En augmentant la bande passante du récepteur, le SNR sera réduit.";
 				CheckRadio();DsiplaySpinEcho();cname="case6";
 			}
 			else if(casename=="case7"){
@@ -254,6 +256,7 @@
 			}
 			return casename;
 		}
+		
 		function CheckRadio(){
 			var nameBDW = document.getElementsByName('rd');
 			for (i=0;i<nameBDW.length; i++){
@@ -523,65 +526,79 @@
 				console.log("testing")
 			}
 			else if(cname=="case2"){
-				if(TR>=4000 && tps==165 && phase>=288 && epaisseur==4 && gap==0.4 && coupes==20 && ((freq==336 && TE>=86 && TE<=96) || (freq==352 && TE>=90 && TE<=100) || (freq=368 && TE>=93 && TE<=103))){
+				if(TR>=4000 && tps==165 && phase>=288 && epaisseur==4 && gap==0.4 && coupes==20 && ((freq==336 && TE>=86 && TE<=96) || (freq==352 && TE>=90 && TE<=100) || (freq=368 && TE>=93 && TE<=103))){	
 					res=1;
-					document.getElementById("lblDisplayResults").innerText="Bonne Optimisation";
+					// document.getElementById("lblDisplayResults").innerText="Bonne Optimisation";
+					showLight("green");
 				}	
 				else if (((TR>=4000 && echoeff>=bas && echoeff<=haut && echoeff!=bon)||(TR<4000 && TR>3500 && echoeff==bon)) && freq>320&& phase>=320&& epaisseur==4&& gap==0.4&& coupes==20&& fov==32&& NEX ==2&& tps==197){
 					res=1;
-					document.getElementById("lblDisplayResults").innerText="Optimisation Imparfaite";
+					// document.getElementById("lblDisplayResults").innerText="Optimisation Imparfaite";
+					showLight("yellow");
 				}	
 				else if (res==0){
-					document.getElementById("lblDisplayResults").innerText="Mauvaise Optimisation";
+					// document.getElementById("lblDisplayResults").innerText="Mauvaise Optimisation";
+					showLight("red");
 				}	  
 			}
 			else if(cname=="case3"){
 				if(TR==540 && TE>0 && TE<=19 && ETL==2 && freq==320 && phase==320 && epaisseur==4 && gap==0.4 && coupes==20 && fov==24 && bdw>=27.9 && bdw<=34.8 && NEX==2){
 					res=1;
-					document.getElementById("lblDisplayResults").innerText="Bonne Optimisation";
+					// document.getElementById("lblDisplayResults").innerText="Bonne Optimisation";
+					showLight("green");
 				}	
 				else if(res==0){
-					document.getElementById("lblDisplayResults").innerText="Mauvaise Optimisation";
+					// document.getElementById("lblDisplayResults").innerText="Mauvaise Optimisation";
+					showLight("red");
 				} 
 			}
 			else if(cname=="case4"){
 				 if(TR>=5000 && TR<=10000 && TE>75 && TE<130 && echoeff==(+ETL+1)/2 && freq==384 && phase==256 && epaisseur==5 && gap==1.5 && coupes==24 && fov==24 && TEm<13 && NEX==1 && snrreel>= 0.22435926169700025){
 					res=1;
-					document.getElementById("lblDisplayResults").innerText="Bonne Optimisation";
+					// document.getElementById("lblDisplayResults").innerText="Bonne Optimisation";
+					showLight("green");
 				}	
 				else if(((TR>=4000 &&  echoeff>=bas && echoeff<=haut && echoeff!=bon)||(TR<4000 && TR>3500 && echoeff==bon))&&TE>75 && TE<130 && freq==384 && phase==256 && epaisseur==5 && gap==1.5 && coupes==24 && fov==24 && NEX==1 && snrreel>= 0.299145682262667*0.75 ){
 					res=1;
-					document.getElementById("lblDisplayResults").innerText="Optimisation Imparfaite";
+					// document.getElementById("lblDisplayResults").innerText="Optimisation Imparfaite";
+					showLight("yellow");
 				}	
 				else if(res==0){
-					document.getElementById("lblDisplayResults").innerText="Mauvaise Optimisation";
+					// document.getElementById("lblDisplayResults").innerText="Mauvaise Optimisation";
+					showLight("red");
 				}
 			}
 			else if(cname=="case5"){
 				 if(TR>=400 && TR<=500 && TE<25 && freq==320 && phase==256 && epaisseur==5 && gap==1.5 && coupes==24 && fov==24 && TEm<40 && NEX==1 && tps<=70 && snrreel>= 0.0642498612333608 && Math.round((snrreel/snrref)*100)>=70){
 					res=1;
-					document.getElementById("lblDisplayResults").innerText="Bonne Optimisation";
+					// document.getElementById("lblDisplayResults").innerText="Bonne Optimisation";
+					showLight("green");
 				}	
 				else if((TR>500 && TR<=650 && TE<25 && freq==320 && phase==256 && epaisseur==5 && gap==1.5 && coupes==24 && fov==24 && snrreel>= 0.080312326541701*0.80 && TEm<40 && NEX ==1 && tps<=70)||(TR>=400 && TR<=650 && ETL>2 && echoeff!=bon && TE<25 && freq==320 && phase==256 && epaisseur==5 && gap==1.5 && coupes==24 && fov==24 && snrreel>=0.080312326541701*0.80 && NEX==1 && tps<=70 && TEm<40)){
 					res=1;
-					document.getElementById("lblDisplayResults").innerText="Optimisation Imparfaite";
+					// document.getElementById("lblDisplayResults").innerText="Optimisation Imparfaite";
+					showLight("yellow");
 				}	
 				else if (res==0) {
-					document.getElementById("lblDisplayResults").innerText="Mauvaise Optimisation";
+					// document.getElementById("lblDisplayResults").innerText="Mauvaise Optimisation";
+					showLight("red");
 				}
 			}
 			else if(cname=="case6"){
 				if(TR>=4000 && TE>=65 && echoeff==((+ETL+1)/2) && freq>=480 && phase>=480 && epaisseur==5 && gap==1.5 && coupes==24 && fov==24 && TEm<12.5 && tps<=171){
 					res=1;
-					document.getElementById("lblDisplayResults").innerText="Bonne Optimisation";
+					// document.getElementById("lblDisplayResults").innerText="Bonne Optimisation";
+					showLight("green");
 				}	
 				else if(((TR>=4000 &&  echoeff>=bas && echoeff<=haut && echoeff!=bon)||(TR<4000 && TR>3500 && echoeff==bon))
 				&& freq>=480 && phase>=480 && epaisseur==5 && gap==1.5&& coupes==24 && fov==24 && TEm>12.5 && TEm<13.5 && NEX ==2 && tps<171){
 					res=1;
-					document.getElementById("lblDisplayResults").innerText="Optimisation Imparfaite";
+					// document.getElementById("lblDisplayResults").innerText="Optimisation Imparfaite";
+					showLight("yellow");
 				}	
 				else if (res==0) {
-					document.getElementById("lblDisplayResults").innerText="Mauvaise Optimisation";
+					// document.getElementById("lblDisplayResults").innerText="Mauvaise Optimisation";
+					showLight("red");
 				}
 			}				
 		}
@@ -1317,7 +1334,7 @@
 				lblMatricePhase: "Matrice en phase",
 				lblSat: "SAT",
 				lblPat: "Acc",
-				GRAPPA: "GRAPPA"
+				AccLabel: "GRAPPA"
 			},
 			GE: {
 				lbTR: "TR",
@@ -1338,7 +1355,8 @@
 				lblMatriceFreq: "Matrice en fréquence",
 				lblMatricePhase: "Matrice en phase",
 				lblSat: "SAT",
-				lblPat: "PAT"
+				lblPat: "Acc",
+				AccLabel: "ARC",
 			},
 			Philips: {
 				lbTR: "TR",
@@ -1359,7 +1377,8 @@
 				lblMatriceFreq: "Matrice en fréquence",
 				lblMatricePhase: "Matrice en phase",
 				lblSat: "SAT",
-				lblPat: "PAT"
+				lblPat: "PAT",
+				AccLabel: "Sense"
 			},
 			Canon: {
 				lbTR: "TR",
@@ -1380,7 +1399,8 @@
 				lblMatriceFreq: "Matrice en fréquence",
 				lblMatricePhase: "Matrice en phase",
 				lblSat: "SAT",
-				lblPat: "PAT"
+				lblPat: "PAT",
+				AccLabel: "Sense"
 			}
 		};
 
@@ -1434,25 +1454,14 @@
 			<p id="lblQuestion" class="case-question">Pour cette séquence  Spin Echo Rapide, vous avez besoin de 20 coupes seulement, la machine en autorise 24. Comment optimiser les réglages afin de profiter de la marge de manoeuvre pour gagner du temps sans changer la pondération, la couverture anatomique ni la résolution spatiale?</p>
 		  </div>
 		  <div class="hint-icon">
-			<img src="tips.png" alt="" id="btnTip" onclick="showTip()">
+			<img src="tips.png" alt="" id="btnTip" onclick="showTip();">
 		  </div>
 		  <div id="popup">
-			  <div>
-				  Le paramètre TF/ETL est le nombre d'échos recueillis dans le même cycle de répétition (temps TR). 
-				  Il s'agit d'une mesure d'accélération du temps d’acquisition, par exemple, pour un facteur turbo 3, 
-				  le temps d’acquisition est divisé par 3 par rapport à une séquence SE avec des paramètres comparables.<br>
-				  Ainsi, en augmentant votre facteur TF/ETL, vous pouvez réduire le temps d'acquisition.<br>
-				  Attention : vous devrez peut-être ajuster d'autres paramètres pour garantir une bonne optimisation.
-				</div>
-				<button id="btnClosetip" class="btn-close" onclick="closeTip()">X</button>
+			<div id="popupContent">
+				<!-- Message will go here -->
+			  </div>
+				<button id="btnClosetip" class="btn-close" onclick="closeTip()" style="display: none;">X</button>
 		</div>
-		  <!-- <div id="popup" style="display: none;">
-			   <div style="vertical-align: baseline;">Le paramètre TF/ETL est le nombre d'échos recueillis dans le même cycle de répétition (temps TR). Il s'agit d'une mesure d'accélération du temps d’acquisition, par exemple, pour un facteur turbo 3, le temps d’acquisition est divisé par 3 par rapport à une séquence SE avec des paramètres comparables.<br>
-				  Ainsi, en augmentant votre facteur TF/ETL, vous pouvez réduire le temps d'acquisition. <br>
-				  Attention : vous devrez peut-être ajuster d'autres paramètres pour garantir une bonne optimisation.
-			   </div>
-			</div>
-			<button id="btnClosetip" class="btn-close" style="display: none;">X</button> -->
 		  <div class="mp-items-measure">
 			 <!-- <label>Machine</label> -->
 			 <div class="mp-input-button mp-input-button-select">
@@ -1826,7 +1835,7 @@
 				</div>
 				
 				<div class="mp-items-measure">
-					<label id="lbTF">TF/ETL</label>
+					<label id="lbTF">ETL</label>
 					<div class="mp-input-button">
 						<input type="number" id="nbrETL" value="13" />
 						<div class="mp-buttons">
@@ -1838,13 +1847,12 @@
 				
 				   <div class="mp-items-measure">
 					  <label id="lbTI">TI</label>
-					  <div class="mp-input-button">
-						 <input id="nbrTI" type="number"/>
-						 <div class="mp-buttons">
-							<button><i class="fa-solid fa-angle-up"></i></button>
-							<button><i class="fa-solid fa-angle-down"></i></button>
-						 </div>
-					  </div>
+					  <div class="mp-input-button mp-input-button-select">
+						<select id="nbrTI" onchange="updateETLLabel()">
+							<option selected>Off</option>
+							<option >On</option>
+						</select>
+					</div>
 				   </div>
 				</div>
 				<!-- End First column -->
@@ -2021,12 +2029,11 @@
 					  </div>
 				   </div>
 				   <div class="mp-items-measure-custom">
-					  <label id="lblPat" style="width: 40px !important;">PAT</label>
+					  <label id="lblPat" style="width: 40px !important;">Acc</label>
 					  <div class="mp-input-button mp-input-button-select">
 						 <select >
-							<option id="GRAPPA" value="grappa" selected>GRAPPA</option>
-							<option value="sense" >Sense</option>
-							<option value="sms" >SMS</option>
+							<option id="AccLabel" value="grappa" selected>ARC</option>
+							<option value="N/A" >N/A</option>
 						 </select>
 					  </div>
 				   </div>
@@ -2062,6 +2069,7 @@
 			</div> -->
 		  </div>
 	   </div>
+	   <!-- <div style="display: none;">
 	<button style="display: none;" id="btnTip" onclick="showTip();">
 	   <table id="popup" style="display: none;">
 		  <tr>
@@ -2073,7 +2081,7 @@
 		  </tr>
 	   </table>
 	<button id="btnClosetip" class="btn-close" style="display: none;">X</button>
-
+</div> -->
 
 	<div class="mp-hiding-env" style="display: none;">
 		<table id="BigTab">
@@ -2596,13 +2604,13 @@
 		<img id="logo" src="logo.png"/>
 		<img id="tips" src="tips.png" style="position:absolute;width:55px;top:60px;left:835px;"/>
 		<img id="tipsdashes" class="blink_me" src="dashes.png" style="position:absolute;width:55px;top:60px;left:835px;"/>
-		<button id="btnTip" onclick="showTip();">
+		<!-- <button id="btnTip" onclick="showTip();">
 		<table id="popup">
 		<tr><td style="vertical-align: baseline;">Le paramètre TF/ETL est le nombre d'échos recueillis dans le même cycle de répétition (temps TR). Il s'agit d'une mesure d'accélération du temps d’acquisition, par exemple, pour un facteur turbo 3, le temps d’acquisition est divisé par 3 par rapport à une séquence SE avec des paramètres comparables.<br>
 		Ainsi, en augmentant votre facteur TF/ETL, vous pouvez réduire le temps d'acquisition. <br>
 		Attention : vous devrez peut-être ajuster d'autres paramètres pour garantir une bonne optimisation.</td></tr>
 		</table>
-		<button id="btnClosetip" class="btn-close">X</button>
+		<button id="btnClosetip" class="btn-close">X</button> -->
 	</div>
 
  </body>
