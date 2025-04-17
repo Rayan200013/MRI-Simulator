@@ -12,6 +12,7 @@
 	var T1eau=3000,T2eau=200,rhoeau=1,T1sb=500,T2sb=75,rhosb=0.72;
 	var btnRestclicked="false";
 		function CheckCases(casename){
+			ResetLightsAndButtonOnly();
 			if(casename=="case1"){
 				TRref=4000;NEXref=2;bdwref=30;fovref=24;
 				TEref=90;phaseref=320;freqref=320;epaisseurref=4;
@@ -255,6 +256,7 @@
 				CheckRadio();DsiplaySpinEcho();cname="case7";
 			}
 			return casename;
+
 		}
 		
 		function CheckRadio(){
@@ -477,12 +479,10 @@
     Calculation();
     CheckCases(cname);
 
-    // Fade out reset button
     const resetBtn = document.getElementById("btnReset");
     resetBtn.classList.remove("show");
     resetBtn.classList.add("hide");
 
-    // Clear light overlays, etc.
     const glow = document.getElementById("glowLight");
     if (glow) {
         glow.style.opacity = "0";
@@ -499,7 +499,31 @@
         imageLights.src = "images/main-images/Full-3-lights.png";
     }
 
-    console.log("RSB Reset completed.");
+    // console.log("RSB Reset completed.");
+}
+function ResetLightsAndButtonOnly() {
+    // Reset lights
+    const glow = document.getElementById("glowLight");
+    if (glow) {
+        glow.style.opacity = "0";
+        glow.src = "";
+    }
+
+    const imageLights = document.getElementById("imageLights");
+    if (imageLights) {
+        imageLights.src = "images/main-images/Full-3-lights.png";
+    }
+
+    const lblResults = document.getElementById("lblDisplayResults");
+    if (lblResults) {
+        lblResults.innerText = "";
+    }
+
+    const resetBtn = document.getElementById("btnReset");
+    if (resetBtn) {
+        resetBtn.classList.remove("show");
+        resetBtn.classList.add("hide");
+    }
 }
 
 		
@@ -523,7 +547,7 @@
 					// document.getElementById("imageLights").innerHTML="<img src='green-light.png' alt='Mauvaise Optimisation'";
 					showLight("red");
 				}
-				console.log("testing")
+				// console.log("testing")
 			}
 			else if(cname=="case2"){
 				if(TR>=4000 && tps==165 && phase>=288 && epaisseur==4 && gap==0.4 && coupes==20 && ((freq==336 && TE>=86 && TE<=96) || (freq==352 && TE>=90 && TE<=100) || (freq=368 && TE>=93 && TE<=103))){	
@@ -1185,19 +1209,23 @@
 			return true;
 		}
 		function showTip(){
+			document.getElementById("overlay").style.display = "inline";
 			document.getElementById("popup").style.display="inline";
 			document.getElementById("btnClosetip").style.display="inline";
 		}
 		function closeTip(){
+			document.getElementById("overlay").style.display = "none";
 			document.getElementById("popup").style.display="none";
 			document.getElementById("btnClosetip").style.display="none";
 		}
 		document.addEventListener('mouseup', function(e) {
+		var overlay = document.getElementById('overlay');
 		var closepopup = document.getElementById('popup');
 		var btclosetip = document.getElementById('btnClosetip');
 		if (!closepopup.contains(e.target)) {
 			closepopup.style.display = 'none';
 			btclosetip.style.display = 'none';
+			overlay.style.display = 'none';
 		}
 		});
 		function preload(){
@@ -1234,62 +1262,62 @@
 		let menuBarColor, topContainerColor, bottomContainerColor, manufactorDrpColor, 
 			paramContainerColor, inputColor, sliceBorderColor, sliceBackgroundColor, borderColor;
 
-		switch (selectedValue) {
-			case "Siemens":
-			menuBarColor = "#161824";
-				topContainerColor = "#1d1f2e";
-				bottomContainerColor = "#161824";
-				manufactorDrpColor = "#222538";
-				paramContainerColor = "#222538";
-				inputColor = "#3b4163";
-				sliceBorderColor = "1px solid #0ac154";
-				sliceBackgroundColor = "#276d47";
-				borderColor = "2px solid #6773a7";
-				break;
-			case "Philips":
-			menuBarColor = "#161824";
-				topContainerColor = "#1d1f2e";
-				bottomContainerColor = "#161824";
-				manufactorDrpColor = "#222538";
-				paramContainerColor = "#222538";
-				inputColor = "#3b4163";
-				sliceBorderColor = "1px solid #0ac154";
-				sliceBackgroundColor = "#276d47";
-				borderColor = "2px solid #6773a7";
-				break;
-			case "Canon":
-			menuBarColor = "#161824";
-				topContainerColor = "#1d1f2e";
-				bottomContainerColor = "#161824";
-				manufactorDrpColor = "#222538";
-				paramContainerColor = "#222538";
-				inputColor = "#3b4163";
-				sliceBorderColor = "1px solid #0ac154";
-				sliceBackgroundColor = "#276d47";
-				borderColor = "2px solid #6773a7";
-				break;
-			case "GE":
-				menuBarColor = "#161824";
-				topContainerColor = "#1d1f2e";
-				bottomContainerColor = "#161824";
-				manufactorDrpColor = "#222538";
-				paramContainerColor = "#222538";
-				inputColor = "#3b4163";
-				sliceBorderColor = "1px solid #0ac154";
-				sliceBackgroundColor = "#276d47";
-				borderColor = "2px solid #6773a7";
-				break;
-			default:
-			menuBarColor = "#161824";
-				topContainerColor = "#1d1f2e";
-				bottomContainerColor = "#161824";
-				manufactorDrpColor = "#222538";
-				paramContainerColor = "#222538";
-				inputColor = "#3b4163";
-				sliceBorderColor = "1px solid #0ac154";
-				sliceBackgroundColor = "#276d47";
-				borderColor = "2px solid #6773a7";
-		}
+		// switch (selectedValue) {
+		// 	case "Siemens":
+		// 	menuBarColor = "#161824";
+		// 		topContainerColor = "#1d1f2e";
+		// 		bottomContainerColor = "#161824";
+		// 		manufactorDrpColor = "#222538";
+		// 		paramContainerColor = "#222538";
+		// 		inputColor = "#3b4163";
+		// 		sliceBorderColor = "1px solid #0ac154";
+		// 		sliceBackgroundColor = "#276d47";
+		// 		borderColor = "2px solid #6773a7";
+		// 		break;
+		// 	case "Philips":
+		// 	menuBarColor = "#161824";
+		// 		topContainerColor = "#1d1f2e";
+		// 		bottomContainerColor = "#161824";
+		// 		manufactorDrpColor = "#222538";
+		// 		paramContainerColor = "#222538";
+		// 		inputColor = "#3b4163";
+		// 		sliceBorderColor = "1px solid #0ac154";
+		// 		sliceBackgroundColor = "#276d47";
+		// 		borderColor = "2px solid #6773a7";
+		// 		break;
+		// 	case "Canon":
+		// 	menuBarColor = "#161824";
+		// 		topContainerColor = "#1d1f2e";
+		// 		bottomContainerColor = "#161824";
+		// 		manufactorDrpColor = "#222538";
+		// 		paramContainerColor = "#222538";
+		// 		inputColor = "#3b4163";
+		// 		sliceBorderColor = "1px solid #0ac154";
+		// 		sliceBackgroundColor = "#276d47";
+		// 		borderColor = "2px solid #6773a7";
+		// 		break;
+		// 	case "GE":
+		// 		menuBarColor = "#161824";
+		// 		topContainerColor = "#1d1f2e";
+		// 		bottomContainerColor = "#161824";
+		// 		manufactorDrpColor = "#222538";
+		// 		paramContainerColor = "#222538";
+		// 		inputColor = "#3b4163";
+		// 		sliceBorderColor = "1px solid #0ac154";
+		// 		sliceBackgroundColor = "#276d47";
+		// 		borderColor = "2px solid #6773a7";
+		// 		break;
+		// 	default:
+		// 	menuBarColor = "#161824";
+		// 		topContainerColor = "#1d1f2e";
+		// 		bottomContainerColor = "#161824";
+		// 		manufactorDrpColor = "#222538";
+		// 		paramContainerColor = "#222538";
+		// 		inputColor = "#3b4163";
+		// 		sliceBorderColor = "1px solid #0ac154";
+		// 		sliceBackgroundColor = "#276d47";
+		// 		borderColor = "2px solid #6773a7";
+		// }
 
 		if (menuBarContainer) menuBarContainer.style.backgroundColor = menuBarColor;
 		if (topContainer) topContainer.style.backgroundColor = topContainerColor;
@@ -1429,6 +1457,55 @@
     }
 }
 
+// Function need to update the UI structure and calculate the value of new parameters
+// function updateETLLabel() {
+//     const selectElement = document.getElementById("selectFSEEG");
+//     const labelTF = document.getElementById("lbTF");
+//     const etlInput = document.getElementById("nbrETL");
+
+//     if (!selectElement || !labelTF || !etlInput) return;
+
+//     const selectedValue = selectElement.value;
+
+//     if (selectedValue === "FSE") {
+//         labelTF.innerText = "ETL"; 
+//         etlInput.value = 13; 
+//         etlInput.disabled = false; 
+//     } else if (selectedValue === "EG") {
+//         labelTF.innerText = "Angle de bascule"; 
+//         etlInput.value = 90; 
+//         etlInput.disabled = false;
+//     }
+
+//     calculateValue();
+// }
+
+// // Function to calculate but still not done
+// function calculateValue() {
+//     const selectElement = document.getElementById("selectFSEEG");
+//     const etlInput = document.getElementById("nbrETL");
+//     const resultDisplay = document.getElementById("calculationResult");
+
+//     if (!selectElement || !etlInput || !resultDisplay) return;
+
+//     const selectedValue = selectElement.value;
+//     let result;
+
+//     if (selectedValue === "FSE") {
+//         let ETL = parseFloat(etlInput.value);
+//         result = ETL * 2; 
+//         resultDisplay.innerText = `ETL Calculation Result: ${result}`;
+//     } else if (selectedValue === "EG") {
+      
+//         let angle = parseFloat(etlInput.value);
+//         result = Math.sin(angle * (Math.PI / 180)); 
+//         resultDisplay.innerText = `Angle de Bascule Result: ${result.toFixed(2)}`;
+//     }
+// }
+
+// document.getElementById("selectFSEEG")?.addEventListener("change", updateETLLabel);
+// document.getElementById("nbrETL")?.addEventListener("input", calculateValue);
+
 
 	</script>
 </head>
@@ -1438,7 +1515,7 @@
 		  <img id="logo" src="logo.png"/>
 		  <div class="mp-items-measure">
 			 <!-- <label>Cases</label> -->
-			 <div class="mp-input-button mp-input-button-select custom-label">
+			 <div class="mp-input-button mp-input-button-select custom-label mp-custom-select">
 				<select class="tabs-menu" id="caseDrp" onchange="CheckCases(this.value);Calculation();DisplayValues(this.value);">
 				   <option id="btnCase1" value="case1" onclick="CheckCases(this.value);Calculation();DisplayValues(this.value);" class="current" style="-moz-user-select: none;user-select:none;width:105px">Cas N&deg; 1</option>
 				   <option id="btnCase2" value="case2" onclick="CheckCases(this.value);Calculation();DisplayValues(this.value);" class="" style="-moz-user-select: none;user-select:none;width:105px">Cas N&deg; 2</option>
@@ -1454,17 +1531,19 @@
 			<p id="lblQuestion" class="case-question">Pour cette séquence  Spin Echo Rapide, vous avez besoin de 20 coupes seulement, la machine en autorise 24. Comment optimiser les réglages afin de profiter de la marge de manoeuvre pour gagner du temps sans changer la pondération, la couverture anatomique ni la résolution spatiale?</p>
 		  </div>
 		  <div class="hint-icon">
-			<img src="tips.png" alt="" id="btnTip" onclick="showTip();">
+			<img src="hint.png" alt="" id="btnTip" onclick="showTip();">
 		  </div>
+		  <div id="overlay" style="display: none;">
 		  <div id="popup">
 			<div id="popupContent">
-				<!-- Message will go here -->
+				<!-- Message will go here, from js code will be generated -->
 			  </div>
 				<button id="btnClosetip" class="btn-close" onclick="closeTip()" style="display: none;">X</button>
 		</div>
+	</div>
 		  <div class="mp-items-measure">
 			 <!-- <label>Machine</label> -->
-			 <div class="mp-input-button mp-input-button-select">
+			 <div class="mp-input-button mp-input-button-select mp-custom-select">
 				<select id="manufactorDrp" onchange="changeAppearance()">
 					<option value="GE" selected>GE</option>
 				   <option value="Siemens">Siemens</option>
@@ -1762,9 +1841,9 @@
 				   </div>
 				   <div class="mp-items-measure">
 					  <label id="lblFovPhase">FoV Phase % (mm)</label>
-					  <div class="mp-input-button">
-						 <input id="nbrFovPhase" type="number" value="100" onkeydown="search(event)"  onkeypress="return isNumber(event)"/>
-						 <div class="mp-buttons">
+					  <div class="mp-input-button" style="cursor: no-drop; background-color: #3b41632d;">
+						 <input id="nbrFovPhase" type="number" value="100" onkeydown="search(event)" onkeypress="return isNumber(event)" style="pointer-events: none; background-color: #3b416300;"/>
+						 <div class="mp-buttons" style="pointer-events: none;">
 							<button><i class="fa-solid fa-angle-up"></i></button>
 							<button><i class="fa-solid fa-angle-down"></i></button>
 						 </div>
@@ -1826,8 +1905,8 @@
 				   </div> -->
 				   <div class="mp-items-measure">
 					<label id="lbTSE">FSE / EG</label>
-					<div class="mp-input-button mp-input-button-select">
-						<select id="selectFSEEG" onchange="updateETLLabel()">
+					<div class="mp-input-button mp-input-button-select mp-custom-select" style="cursor: no-drop; background-color: #3b416318;">
+						<select id="selectFSEEG" style="pointer-events: none; background-color: #3b41632d;">
 							<option value="FSE" selected>FSE</option>
 							<option value="EG">EG</option>
 						</select>
@@ -1847,8 +1926,8 @@
 				
 				   <div class="mp-items-measure">
 					  <label id="lbTI">TI</label>
-					  <div class="mp-input-button mp-input-button-select">
-						<select id="nbrTI" onchange="updateETLLabel()">
+					  <div class="mp-input-button mp-input-button-select mp-custom-select" style="cursor: no-drop; background-color: #3b416318;">
+						<select id="nbrTI" style="pointer-events: none; background-color: #3b41632d;">
 							<option selected>Off</option>
 							<option >On</option> 
 						</select>
@@ -1883,9 +1962,9 @@
 				   <div class="mp-items-measure custom-margin-left">
 					  
 					  <label id="lbConcat">Concat</label>
-					  <div class="mp-input-button">
-						 <input id="nbrConcat" type="number" value="1"/>
-						 <div class="mp-buttons">
+					  <div class="mp-input-button" style="cursor: no-drop; background-color: #3b41632d;">
+						 <input id="nbrConcat" type="number" value="1" style="pointer-events: none; background-color: #3b416300;"/>
+						 <div class="mp-buttons" style="pointer-events: none;">
 							<button><i class="fa-solid fa-angle-up"></i></button>
 							<button><i class="fa-solid fa-angle-down"></i></button>
 						 </div>
@@ -1948,8 +2027,8 @@
 				   <div class="mp-items-measure">
 					  
 					  <label id="lblDirPhase">Dir encodage de phase</label>
-					  <div class="mp-input-button mp-input-button-select">
-						 <select id="">
+					  <div class="mp-input-button mp-input-button-select mp-custom-select" style="cursor: no-drop; background-color: #3b416318;">
+						 <select id="" style="pointer-events: none; background-color: #3b41632d;">
 							<option value="dg" selected>D/G</option>
 							<option value="ap" >A/P</option>
 							<option value="si" >S/I</option>
@@ -1958,9 +2037,9 @@
 				   </div>
 				   <div class="mp-items-measure">
 					  <label id="lblSurech">Suréchantillonnage %</label>
-					  <div class="mp-input-button">
-						 <input id="nbrSurech" type="number"/>
-						 <div class="mp-buttons">
+					  <div class="mp-input-button" style="cursor: no-drop; background-color: #3b41632d;">
+						 <input id="nbrSurech" type="number" style="pointer-events: none; background-color: #3b416300;"/>
+						 <div class="mp-buttons" style="pointer-events: none;">
 							<button><i class="fa-solid fa-angle-up"></i></button>
 							<button><i class="fa-solid fa-angle-down"></i></button>
 						 </div>
@@ -2020,8 +2099,8 @@
 				<div class="mp-column-con">
 				   <div class="mp-items-measure-custom">
 					  <label id="lblSat" style="width: 40px !important;">SAT</label>
-					  <div class="mp-input-button mp-input-button-select">
-						 <select >
+					  <div class="mp-input-button mp-input-button-select mp-custom-select" style="cursor: no-drop; background-color: #3b416318;">
+						 <select style="pointer-events: none; background-color: #3b41632d;">
 							<option value="fat" selected>FAT-Sat</option>
 							<option value="spair" >pré-Sat</option>
 							<option value="exct" >SPAIR</option>
@@ -2030,8 +2109,8 @@
 				   </div>
 				   <div class="mp-items-measure-custom">
 					  <label id="lblPat" style="width: 40px !important;">Acc</label>
-					  <div class="mp-input-button mp-input-button-select">
-						 <select >
+					  <div class="mp-input-button mp-input-button-select mp-custom-select" style="cursor: no-drop; background-color: #3b416318;">
+						 <select style="pointer-events: none; background-color: #3b41632d;">
 							<option id="AccLabel" value="grappa" selected>ARC</option>
 							<option value="N/A" >N/A</option>
 						 </select>

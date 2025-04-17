@@ -29,6 +29,18 @@
   box-shadow: 0 10px 20px black;
   border: 4px solid rgb(22, 24, 36);
   } */
+  #overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #00000061;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999; 
+  }
   #popup {
     display: none;
     position: absolute;
@@ -41,10 +53,10 @@
     padding: 15px;
     text-align: left;
     color: #fff;
-    background: rgb(103, 115, 167);
+    background: #000;
     border-radius: 20px;
     box-shadow: 0 10px 20px black;
-    border: 4px solid rgb(22, 24, 36);
+    border: 4px solid rgb(34 37 56);
     z-index: 9999;
 }
   .popcase1{
@@ -545,13 +557,14 @@
   .mp-One-container-flex{
     display: flex;
     flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    padding: 10px 20px;
+    justify-content: space-between;
     color: #fff;
-    gap: 100px;
+    align-items: center;
+    width: 100%;
+    max-width: 1440px;
   }
   .mp-image-container{
+    width: 100%;
     max-width: 350px;
     height: 355px;
     background-color: #000;
@@ -762,7 +775,6 @@
             background-color: unset;
             border-radius: 10px;
             overflow: hidden;
-            /* box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); */
             margin-left: 5px;
             background-color: #3b4163;
             margin-bottom: 8px;
@@ -771,7 +783,7 @@
           .mp-input-button input {
             width: 43px;
             height: 35px;
-            padding-right: 40px; /* Space for the buttons */
+            padding-right: 40px;
             text-align: center;
             border: none;
             outline: none;
@@ -787,28 +799,28 @@
          appearance: none;
           }
           
-          .mp-buttons {
-            position: absolute;
-            top: 0;
-            right: 5px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            height: 100%;
-          }
-          
-          .mp-buttons button {
-            all: unset;
-            width: 30px;
-            height: 16px;
-            color: white;
-            font-size: 13px;
-            text-align: center;
-            cursor: pointer;
-            transition: background 0.2s ease;
-          }
-          
-          .mp-buttons button:hover {
+            .mp-buttons {
+              position: absolute;
+              top: 0;
+              right: 5px;
+              display: flex;
+              flex-direction: column;
+              justify-content: center;
+              height: 100%;
+            }
+            
+            .mp-buttons button {
+              all: unset;
+              width: 30px;
+              height: 16px;
+              color: white;
+              font-size: 13px;
+              text-align: center;
+              cursor: pointer;
+              transition: background 0.2s ease;
+            }
+            
+            .mp-buttons button:hover {
             background-color: #333;
             border-radius: 5px;
           }
@@ -825,7 +837,7 @@
           .mp-input-button select {
             width: 100%;
             height: 40px;
-            /* padding-right: 40px; */
+
             text-align: center;
             border: none;
             outline: none;
@@ -905,6 +917,9 @@
         .popup-postition{
           position: relative;
         }
+        .custom-label{
+          width: 200px !important;
+        }
 
         #lblDisplayEch{
           max-width: 1250px;
@@ -941,15 +956,15 @@
         display: inline;
         padding: 5px 25px;
         border-radius: 15px;
-        border: 1px solid #6888c8;
+        border: 1px solid #6773a7;
         cursor: pointer;
-        background-color: #6888c8;
+        background-color: #6773a7;
         color: #fff;
         transition: 0.3s ;
       }
       .Btn-validate:hover{
         background-color: #fff;
-        color: #6888c8;
+        color: #6773a7;
       }
       /* #btnReset{
         display: none;
@@ -967,3 +982,50 @@
     #btnReset.hide {
         opacity: 0;
     }
+
+    .mp-custom-select {
+      position: relative;
+      width: 105px;
+      height: 40px;
+      background-color: #3b4163;
+      border-radius: 10px;
+      overflow: hidden;
+      margin-left: 5px;
+      margin-bottom: 8px;
+    }
+    
+    .mp-custom-select select {
+      width: 100%;
+      height: 100%;
+      padding: 0 30px 0 10px;
+      border: none;
+      outline: none;
+      background-color: #3b4163;
+      color: white;
+      font-size: 14px;
+      border-radius: 10px;
+      font-family: 'Poppins';
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      cursor: pointer;
+      text-align: center;
+    }
+    
+    .mp-custom-select::after {
+      content: "\f107"; 
+      font-family: "Font Awesome 6 Free";
+      font-weight: 900;
+      position: absolute;
+      top: 0;
+      right: 2px;
+      width: 35px;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+      color: white;
+      font-size: 14px;
+    }
+    
