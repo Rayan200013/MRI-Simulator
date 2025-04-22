@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE, IE=11, IE=10" />
 <link rel="stylesheet" type="text/css" href="newStyle-ray.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+<link href="fontawesome/css/all.min.css" rel="stylesheet">
 <script>
 	var TR,TE,ETL,NEX,fov,freq,phase,epaisseur,gap,coupes,vBDW,bdw,pBDW,NBDW,nbcoupes,tac,voxel,TEm,TEM,tps,pixelsize,natomicvolume,dFov,checkname="BDW",echoeff,TEeffreel,snr,Temideal,snrref,snrreel,echoeffred,divleft,newposition,newechoeffred,oldechoeffred,snrsg,snrsb,snreau,snrfat,snrsup,snrinf,srnampl,clefsgnormal,clefsbnormal,clefeaunormal,cleffatnormal,casename,cname,fovref,phaseref,freqref,epaisseurref,bdwref,TRref,TEref,NEXref,res;
 	var rho=1,T1= 3000,T2=200,T1sg =750,T2sg=90,rhosg=0.84,T1fat=200,T2fat=90,rhofat=1,currentposition=201;
@@ -535,7 +535,7 @@ function ResetLightsAndButtonOnly() {
 			if(cname=="case1"){
 				if((ETL==14 && TR>=3700 && TR<=4000 &&  TE>=85 && TE<=95 && nbcoupes>19 && freq==320&& phase==320&& epaisseur==4&& gap==0.4 && coupes==20 && fov==24 ) || (ETL==15 && TR>=3801 && TR<=4000 && TE>=96 && TE<=106 && nbcoupes>19 && freq==320&& phase==320&& epaisseur==4&& gap==0.4 && coupes==20 && fov==24)){
 					res=1;
-					// document.getElementById("imageLights").innerHTML="<img src='green-light.png' alt='Bonne Optimisation'";
+					// document.getElementById("imwordageLights").innerHTML="<img src='green-light.png' alt='Bonne Optimisation'";
 					showLight("green");
 				}	
 				else if(((TR>=4000 &&  echoeff>=bas && echoeff<=haut && echoeff!=bon)||(TR<4000 && TR>3500 && echoeff==bon)) && freq==320&& phase==320&& epaisseur==4&& gap==0.4&& coupes==20&& fov==32&& TEm<13&& NEX==2&& tps<197){

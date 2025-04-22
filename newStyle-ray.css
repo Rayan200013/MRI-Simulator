@@ -1028,4 +1028,7 @@
       color: white;
       font-size: 14px;
     }
-    
+    #lbConcat, #lblFovPhase, #lbTI, #lblDirPhase, #lblSurech, #lblSat, #lblPat{
+      cursor:no-drop;
+      color: #b8b8b8 !important;
+    }
