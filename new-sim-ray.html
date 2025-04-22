@@ -37,6 +37,7 @@
 				document.getElementById("btnCase5").className="";
 				document.getElementById("btnCase6").className="";
 				document.getElementById("btnCase7").className="";
+				document.getElementById("btnCase8").className="";
 				document.getElementById("imgCase7").style.display="none";
 				document.getElementById("lblDisplayResults").innerText="";			
 				document.getElementById("btnresult").style.display="inline";
@@ -83,6 +84,7 @@
 				document.getElementById("btnCase5").className="";
 				document.getElementById("btnCase6").className="";
 				document.getElementById("btnCase7").className="";
+				document.getElementById("btnCase8").className="";
 				document.getElementById("imgCase7").style.display="none";
 				document.getElementById("lblDisplayResults").innerText="";			
 				document.getElementById("btnresult").style.display="inline";
@@ -116,6 +118,7 @@
 				document.getElementById("btnCase5").className="";
 				document.getElementById("btnCase6").className="";
 				document.getElementById("btnCase7").className="";
+				document.getElementById("btnCase8").className="";
 				document.getElementById("imgCase7").style.display="none";
 				document.getElementById("lblDisplayResults").innerText="";
 				document.getElementById("btnresult").style.display="inline";
@@ -149,6 +152,7 @@
 				document.getElementById("btnCase5").className="";
 				document.getElementById("btnCase6").className="";
 				document.getElementById("btnCase7").className="";
+				document.getElementById("btnCase8").className="";
 				document.getElementById("imgCase7").style.display="none";
 				document.getElementById("lblDisplayResults").innerText="";
 				document.getElementById("btnresult").style.display="inline";
@@ -182,6 +186,7 @@
 				document.getElementById("btnCase5").className="current";
 				document.getElementById("btnCase6").className="";
 				document.getElementById("btnCase7").className="";
+				document.getElementById("btnCase8").className="";
 				document.getElementById("imgCase7").style.display="none";
 				document.getElementById("lblDisplayResults").innerText="";
 				document.getElementById("btnresult").style.display="inline";
@@ -215,6 +220,7 @@
 				document.getElementById("btnCase5").className="";
 				document.getElementById("btnCase6").className="current";
 				document.getElementById("btnCase7").className="";
+				document.getElementById("btnCase8").className="";
 				document.getElementById("imgCase7").style.display="none";
 				document.getElementById("lblDisplayResults").innerText="";
 				document.getElementById("btnresult").style.display="inline";
@@ -224,6 +230,40 @@
 				document.getElementById("popupContent").innerHTML="En diminuant le paramètre TF/ETL, vous pouvez réduire l'effet de blurring.\n En diminuant le NEX, vous pouvez réduire le temps d'acquisition.\n En augmentant la taille de la matrice, vous pouvez améliorer la résolution de l'image.\n En augmentant la bande passante du récepteur, le SNR sera réduit.";
 				CheckRadio();DsiplaySpinEcho();cname="case6";
 			}
+			else if(casename=="case8"){
+			TRref=250;NEXref=2;bdwref=30;fovref=24;
+			TEref=90;phaseref=320;freqref=320;epaisseurref=4;
+			document.getElementById("nbrTR").value=250;
+			document.getElementById("nbrTE").value=11;
+			document.getElementById("nbrETL").value=13;
+			document.getElementById("nbrNEX").value=2;
+			document.getElementById("nbrFOV").value=24;
+			document.getElementById("nbrFreq").value=384;
+			document.getElementById("nbrPhase").value=320;
+			document.getElementById("nbrSthks").value=3;
+			document.getElementById("nbrSintr").value=0.4;
+			document.getElementById("nbrNofSlc").value=1;
+			document.getElementById("nbrletBdw").value=15;
+			document.getElementById("nbrTotalBdw").value=30;
+			document.getElementById("nbrBdwppxl").value=93.8;
+			document.getElementById("nbrNofPixel").value=2.2;
+			document.getElementById("btnCase1").className="";
+			document.getElementById("btnCase2").className="";
+			document.getElementById("btnCase3").className="";
+			document.getElementById("btnCase4").className="";
+			document.getElementById("btnCase5").className="";
+			document.getElementById("btnCase6").className="";
+			document.getElementById("btnCase7").className="";
+			document.getElementById("btnCase8").className="current";
+			document.getElementById("imgCase7").style.display="none";
+			document.getElementById("lblDisplayResults").innerText="";			
+			document.getElementById("btnresult").style.display="inline";
+			document.getElementById("lblDisplayResults").style.display="inline";
+			document.getElementById("lblQuestion").innerText="Pour cette séquence Spin Echo Rapide, vous avez besoin de 20 coupes seulement, la machine en autorise 24. Comment optimiser les réglages afin de profiter de la marge de manoeuvre pour gagner du temps sans changer la pondération, la couverture anatomique ni la résolution spatiale?";
+			document.getElementById("popup").className="popcase8";
+			document.getElementById("popup").innerText="Le paramètre TF/ETL est le nombre d'échos recueillis dans le même cycle de répétition (  temps TR). Il s'agit d'une mesure d'accélération du temps d’acquisition, par exemple, pour un facteur turbo 3, le temps d’acquisition est divisé par 3 par rapport à une séquence SE avec des paramètres comparables.\n Ainsi, en augmentant votre facteur TF/ETL, vous pouvez réduire le temps d'acquisition.\n Attention : vous devrez peut-être ajuster d'autres paramètres pour garantir une bonne optimisation.";
+			DsiplaySpinEcho();cname="case8";
+		}
 			else if(casename=="case7"){
 				TRref=4000;NEXref=2;bdwref=30;fovref=24;TEref=90;
 				phaseref=320;freqref=320;epaisseurref=4;
@@ -248,6 +288,7 @@
 				document.getElementById("btnCase5").className="";
 				document.getElementById("btnCase6").className="";
 				document.getElementById("btnCase7").className="current";
+				document.getElementById("btnCase8").className="";
 				document.getElementById("imgCase7").style.display="inline";
 				document.getElementById("lblDisplayResults").innerText="";
 				document.getElementById("btnresult").style.display="none";
@@ -624,7 +665,20 @@ function ResetLightsAndButtonOnly() {
 					// document.getElementById("lblDisplayResults").innerText="Mauvaise Optimisation";
 					showLight("red");
 				}
-			}				
+			}
+			else if(cname=="case8"){
+			if((ETL==14 && TR>=3700 && TR<=4000 &&  TE>=85 && TE<=95 && nbcoupes>19 && freq==320&& phase==320&& epaisseur==4&& gap==0.4 && coupes==20 && fov==24 ) || (ETL==15 && TR>=3801 && TR<=4000 && TE>=96 && TE<=106 && nbcoupes>19 && freq==320&& phase==320&& epaisseur==4&& gap==0.4 && coupes==20 && fov==24)){
+				res=1;
+				showLight("green");
+			}	
+			else if(((TR>=4000 &&  echoeff>=bas && echoeff<=haut && echoeff!=bon)||(TR<4000 && TR>3500 && echoeff==bon)) && freq==320&& phase==320&& epaisseur==4&& gap==0.4&& coupes==20&& fov==32&& TEm<13&& NEX==2&& tps<197){
+				res=2;
+				showLight("yellow");
+				}	
+			else if(res==0){
+				showLight("red");
+			}
+		}		
 		}
 
 		function DisplayValues(casename){
@@ -1523,6 +1577,7 @@ function ResetLightsAndButtonOnly() {
 				   <option id="btnCase4" value="case4" onclick="CheckCases(this.value);Calculation();DisplayValues(this.value);" class="" style="-moz-user-select: none;user-select:none;width:105px">Cas N&deg; 4</option>
 				   <option id="btnCase5" value="case5" onclick="CheckCases(this.value);Calculation();DisplayValues(this.value);" class="" style="-moz-user-select: none;user-select:none;width:105px">Cas N&deg; 5</option>
 				   <option id="btnCase6" value="case6" onclick="CheckCases(this.value);Calculation();DisplayValues(this.value);" class="" style="-moz-user-select: none;user-select:none;width:105px">Cas N&deg; 6</option>
+				   <option id="btnCase8" value="case8" onclick="CheckCases(this.value);Calculation();DisplayValues(this.value);" class="" style="-moz-user-select: none;user-select:none;width:105px">Cas N&deg; 7</option>
 				   <option id="btnCase7" value="case7" onclick="CheckCases(this.value);Calculation();DisplayValues(this.value);" class="" style="-moz-user-select: none;user-select:none;width:198px">Paramétrages libres</option>
 				</select>
 			 </div>
