@@ -1,0 +1,7 @@
+Replace PAT By Imagerie Parallèle –
+in case of Siemens is should be called GRAPPA
+For GE it is called ARC
+SENSE for other manufacturers
+ET NA the last option
+
+NOtes for SImulator

@@ -1,0 +1,2696 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Simulator</title>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE, IE=11, IE=10" />
+<link rel="stylesheet" type="text/css" href="newStyle-ray.css">
+<link href="fontawesome/css/all.min.css" rel="stylesheet">
+<script>
+	var TR,TE,ETL,NEX,fov,freq,phase,epaisseur,gap,coupes,vBDW,bdw,pBDW,NBDW,nbcoupes,tac,voxel,TEm,TEM,tps,pixelsize,natomicvolume,dFov,checkname="BDW",echoeff,TEeffreel,snr,Temideal,snrref,snrreel,echoeffred,divleft,newposition,newechoeffred,oldechoeffred,snrsg,snrsb,snreau,snrfat,snrsup,snrinf,srnampl,clefsgnormal,clefsbnormal,clefeaunormal,cleffatnormal,casename,cname,fovref,phaseref,freqref,epaisseurref,bdwref,TRref,TEref,NEXref,res;
+	var rho=1,T1= 3000,T2=200,T1sg =750,T2sg=90,rhosg=0.84,T1fat=200,T2fat=90,rhofat=1,currentposition=201;
+	var T1eau=3000,T2eau=200,rhoeau=1,T1sb=500,T2sb=75,rhosb=0.72;
+	var btnRestclicked="false";
+		function CheckCases(casename){
+			ResetLightsAndButtonOnly();
+			if(casename=="case1"){
+				TRref=4000;NEXref=2;bdwref=30;fovref=24;
+				TEref=90;phaseref=320;freqref=320;epaisseurref=4;
+				document.getElementById("nbrTR").value=4000;
+				document.getElementById("nbrTE").value=90;
+				document.getElementById("nbrETL").value=13;
+				document.getElementById("nbrNEX").value=2;
+				document.getElementById("nbrFOV").value=24;
+				document.getElementById("nbrFreq").value=320;
+				document.getElementById("nbrPhase").value=320;
+				document.getElementById("nbrSthks").value=4;
+				document.getElementById("nbrSintr").value=0.4;
+				document.getElementById("nbrNofSlc").value=20;
+				document.getElementById("nbrVarBdw").value=15;
+				document.getElementById("nbrTotalBdw").value=30;
+				document.getElementById("nbrBdwppxl").value=93.8;
+				document.getElementById("nbrNofPixel").value=2.2;
+				document.getElementById("btnCase1").className="current";
+				document.getElementById("btnCase2").className="";
+				document.getElementById("btnCase3").className="";
+				document.getElementById("btnCase4").className="";
+				document.getElementById("btnCase5").className="";
+				document.getElementById("btnCase6").className="";
+				document.getElementById("btnCase7").className="";
+				document.getElementById("imgCase7").style.display="none";
+				document.getElementById("lblDisplayResults").innerText="";			
+				document.getElementById("btnresult").style.display="inline";
+				document.getElementById("lblDisplayResults").style.display="inline";
+				document.getElementById("lblQuestion").innerText="Pour cette séquence Spin Echo Rapide, vous avez besoin de 20 coupes seulement, la machine en autorise 24. Comment optimiser les réglages afin de profiter de la marge de manoeuvre pour gagner du temps sans changer la pondération, la couverture anatomique ni la résolution spatiale?";
+				document.getElementById("popup").className="popcase1";
+				// document.getElementById("popupContent").innertext="Le paramètre TF/ETL est le nombre d'échos recueillis dans le même cycle de répétition (  temps TR). Il s'agit d'une mesure d'accélération du temps d’acquisition, par exemple, pour un facteur turbo 3, le temps d’acquisition est divisé par 3 par rapport à une séquence SE avec des paramètres comparables.\n Ainsi, en augmentant votre facteur TF/ETL, vous pouvez réduire le temps d'acquisition.\n Attention : vous devrez peut-être ajuster d'autres paramètres pour garantir une bonne optimisation.";
+				document.getElementById("popupContent").innerHTML="Le paramètre TF/ETL est le nombre d'échos recueillis dans le même cycle de répétition (  temps TR). Il s'agit d'une mesure d'accélération du temps d’acquisition, par exemple, pour un facteur turbo 3, le temps d’acquisition est divisé par 3 par rapport à une séquence SE avec des paramètres comparables.\n Ainsi, en augmentant votre facteur TF/ETL, vous pouvez réduire le temps d'acquisition.\n Attention : vous devrez peut-être ajuster d'autres paramètres pour garantir une bonne optimisation.";
+				CheckRadio();DsiplaySpinEcho();cname="case1";
+				document.getElementById('btnClosetip')
+				// Adding images intersection
+				document.getElementById("sagImage").src = "data:image/svg+xml;charset=UTF-8," +
+				encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="350" height="430">' +
+				'<rect width="100%" height="100%" fill="black"/>' +
+				'<text x="50%" y="50%" font-size="30" fill="white" text-anchor="middle" dominant-baseline="middle">Sagittal</text>' +
+				'</svg>');
+				document.getElementById("corImage").src = "data:image/svg+xml;charset=UTF-8," +
+				encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="350" height="430">' +
+				'<rect width="100%" height="100%" fill="black"/>' +
+				'<text x="50%" y="50%" font-size="30" fill="white" text-anchor="middle" dominant-baseline="middle">Coronal</text>' +
+				'</svg>');
+			}
+			else if(casename=="case2"){
+				TRref=4000;NEXref=2;bdwref=30;fovref=24;
+				TEref=90;phaseref=288;freqref=288;epaisseurref=4;
+				document.getElementById("nbrTR").value=4000;
+				document.getElementById("nbrTE").value=90;
+				document.getElementById("nbrETL").value=14;
+				document.getElementById("nbrNEX").value=2;
+				document.getElementById("nbrFOV").value=24;
+				document.getElementById("nbrFreq").value=288;
+				document.getElementById("nbrPhase").value=288;
+				document.getElementById("nbrSthks").value=4;
+				document.getElementById("nbrSintr").value=0.4;
+				document.getElementById("nbrNofSlc").value=20;
+				document.getElementById("nbrVarBdw").value=15;
+				document.getElementById("nbrTotalBdw").value=30;
+				document.getElementById("nbrBdwppxl").value=104.2;
+				document.getElementById("nbrNofPixel").value=2;
+				document.getElementById("btnCase1").className="";
+				document.getElementById("btnCase2").className="current";
+				document.getElementById("btnCase3").className="";
+				document.getElementById("btnCase4").className="";
+				document.getElementById("btnCase5").className="";
+				document.getElementById("btnCase6").className="";
+				document.getElementById("btnCase7").className="";
+				document.getElementById("imgCase7").style.display="none";
+				document.getElementById("lblDisplayResults").innerText="";			
+				document.getElementById("btnresult").style.display="inline";
+				document.getElementById("lblDisplayResults").style.display="inline";
+				document.getElementById("lblQuestion").innerText="Pour cette séquence  Spin Echo Rapide, vous avez besoin de 20 coupes seulement, la machine en autorise 24. Comment optimiser les réglages afin de profiter de la marge de manoeuvre pour améliorer la résolution spatiale sans modifier la pondération, la couverture  anatomique ni le temps d'acquisition?";
+				document.getElementById("popup").className="popcase2";
+				document.getElementById("popupContent").innerHTML="L'augmentation du nombre de codage en fréquence ou du nombre de <br>" + " codage de phase permet d'améliorer la résolution. Le codage de fréquence dépend de la rapidité avec laquelle le signal FID est échantillonné. L'augmentation de la fréquence d'échantillonnage n'entraîne aucune pénalité de temps. L'augmentation du nombre de pas de codage de phase augmente proportionnellement le temps d'acquisition avec le nombre de ligne en phase.\n Ainsi, en augmentant seulement le nombre de codage de fréquence, vous pouvez améliorer votre résolution spatiale sans affecter le temps d'acquisition.\n Attention: vous devrez peut-être ajuster d'autres paramètres pour garantir une bonne optimisation.";
+				CheckRadio();DsiplaySpinEcho();cname="case2";
+			}
+			else if(casename=="case3"){
+				TRref=540;NEXref=2;bdwref=36;fovref=24;
+				TEref=10;phaseref=320;freqref=320;epaisseurref=4;
+				document.getElementById("nbrTR").value=540;
+				document.getElementById("nbrTE").value=10;
+				document.getElementById("nbrETL").value=2;
+				document.getElementById("nbrNEX").value=2;
+				document.getElementById("nbrFOV").value=24;
+				document.getElementById("nbrFreq").value=320;
+				document.getElementById("nbrPhase").value=320;
+				document.getElementById("nbrSthks").value=4;
+				document.getElementById("nbrSintr").value=0.4;
+				document.getElementById("nbrNofSlc").value=20;
+				document.getElementById("nbrVarBdw").value=18;
+				document.getElementById("nbrTotalBdw").value=36;
+				document.getElementById("nbrBdwppxl").value=112.5;
+				document.getElementById("nbrNofPixel").value=1.8;
+				document.getElementById("btnCase1").className="";
+				document.getElementById("btnCase2").className="";
+				document.getElementById("btnCase3").className="current";
+				document.getElementById("btnCase4").className="";
+				document.getElementById("btnCase5").className="";
+				document.getElementById("btnCase6").className="";
+				document.getElementById("btnCase7").className="";
+				document.getElementById("imgCase7").style.display="none";
+				document.getElementById("lblDisplayResults").innerText="";
+				document.getElementById("btnresult").style.display="inline";
+				document.getElementById("lblDisplayResults").style.display="inline";
+				document.getElementById("lblQuestion").innerText="Pour cette séquence  Spin Echo Rapide, vous avez besoin de 20 coupes seulement, la machine en autorise 24. Comment optimiser les réglages afin de profiter de la marge de manoeuvre pour ameliorer le rapport signal sur bruit sans changer la résolution spatiale ni le temps d'acquisition?";
+				document.getElementById("popup").className="popcase3";
+				document.getElementById("popupContent").innerHTML="La variation de la bande passante du récepteur a un effet direct sur le rapport signal sur bruit (RSB). Ainsi, en diminuant la bande passante du récepteur à une valeur critique, vous pouvez améliorer le RSB.\n Attention: vous devrez peut-être ajuster d'autres paramètres pour garantir une bonne optimisation.";
+				DsiplaySpinEcho();Calculation();cname="case3";
+			}
+			else if(casename=="case4"){
+				TRref=10000;NEXref=1;bdwref=36;fovref=24;
+				TEref=88;phaseref=256;freqref=384;epaisseurref=5;
+				document.getElementById("nbrTR").value=10000;
+				document.getElementById("nbrTE").value=88;
+				document.getElementById("nbrETL").value=31;
+				document.getElementById("nbrNEX").value=1;
+				document.getElementById("nbrFOV").value=24;
+				document.getElementById("nbrFreq").value=384;
+				document.getElementById("nbrPhase").value=256;
+				document.getElementById("nbrSthks").value=5;
+				document.getElementById("nbrSintr").value=1.5;
+				document.getElementById("nbrNofSlc").value=24;
+				document.getElementById("nbrVarBdw").value=18;
+				document.getElementById("nbrTotalBdw").value=36;
+				document.getElementById("nbrBdwppxl").value=93.8;
+				document.getElementById("nbrNofPixel").value=2.2;
+				document.getElementById("btnCase1").className="";
+				document.getElementById("btnCase2").className="";
+				document.getElementById("btnCase3").className="";
+				document.getElementById("btnCase4").className="current";
+				document.getElementById("btnCase5").className="";
+				document.getElementById("btnCase6").className="";
+				document.getElementById("btnCase7").className="";
+				document.getElementById("imgCase7").style.display="none";
+				document.getElementById("lblDisplayResults").innerText="";
+				document.getElementById("btnresult").style.display="inline";
+				document.getElementById("lblDisplayResults").style.display="inline";
+				document.getElementById("lblQuestion").innerText="Pour cette séquence Spin Echo Rapide pondérée T2, nous obtenons une image de mauvaise qualité: présence d'un bluring trop important. Comment optimiser les réglages afin de réduire cet effet flou sans modifier la pondération ni la couverture anatomique (perte de rapport signal sur bruit tolérée jusqu'à 20%)?";
+				document.getElementById("popup").className="popcase4";
+				document.getElementById("popupContent").innerHTML="En diminuant le paramètre TF/ETL, vous pouvez réduire l'artéfact de blurring.\n Attention : vous devrez peut-être ajuster d'autres paramètres pour garantir une bonne optimisation.";
+				Calculation();DsiplaySpinEcho();cname="case4";
+			}
+			else if(casename=="case5"){
+				TRref=500;NEXref=1;bdwref=36;fovref=24;
+				TEref=20;phaseref=256;freqref=320;epaisseurref=5;
+				document.getElementById("nbrTR").value=500;
+				document.getElementById("nbrTE").value=20;
+				document.getElementById("nbrETL").value=3;
+				document.getElementById("nbrNEX").value=1;
+				document.getElementById("nbrFOV").value=24;
+				document.getElementById("nbrFreq").value=320;
+				document.getElementById("nbrPhase").value=256;
+				document.getElementById("nbrSthks").value=5;
+				document.getElementById("nbrSintr").value=1.5;
+				document.getElementById("nbrNofSlc").value=24;
+				document.getElementById("nbrVarBdw").value=18;
+				document.getElementById("nbrTotalBdw").value=36;
+				document.getElementById("nbrBdwppxl").value=112.5;
+				document.getElementById("nbrNofPixel").value=1.8;			
+				document.getElementById("btnCase1").className="";
+				document.getElementById("btnCase2").className="";
+				document.getElementById("btnCase3").className="";
+				document.getElementById("btnCase4").className="";
+				document.getElementById("btnCase5").className="current";
+				document.getElementById("btnCase6").className="";
+				document.getElementById("btnCase7").className="";
+				document.getElementById("imgCase7").style.display="none";
+				document.getElementById("lblDisplayResults").innerText="";
+				document.getElementById("btnresult").style.display="inline";
+				document.getElementById("lblDisplayResults").style.display="inline";
+				document.getElementById("lblQuestion").innerText="Pour cette séquence Spin Echo Rapide pondérée T1, je souhaite réaliser 24 coupes. Comment optimiser les paramètres pour obtenir ces 24 coupes sans modifier la zone de couverture ni la résolution spatiale et également sans que le temps d'acquisition ne soit supérieur à 1 minute et 10 secondes (perte de SNR tolérée à 30%)?";
+				document.getElementById("popup").className="popcase5";
+				document.getElementById("popupContent").innerHTML="En diminuant le paramètre TF/ETL, vous pouvez augmenter le temps <br>" + " d'acquisition. En augmentant la bande passante du récepteur, le RSB sera réduit.\n Attention: vous devrez peut-être ajuster d'autres paramètres pour garantir une bonne optimisation.";
+				CheckRadio();DsiplaySpinEcho();cname="case5";
+			}
+			else if(casename=="case6"){
+				TRref=4000;NEXref=2;bdwref=36;fovref=24;
+				TEref=90;phaseref=288;freqref=304;epaisseurref=5;
+				document.getElementById("nbrTR").value=4000;
+				document.getElementById("nbrTE").value=90;
+				document.getElementById("nbrETL").value=25;
+				document.getElementById("nbrNEX").value=2;
+				document.getElementById("nbrFOV").value=24;
+				document.getElementById("nbrFreq").value=304;
+				document.getElementById("nbrPhase").value=288;
+				document.getElementById("nbrSthks").value=5;
+				document.getElementById("nbrSintr").value=1.5;
+				document.getElementById("nbrNofSlc").value=24;
+				document.getElementById("nbrVarBdw").value=18;
+				document.getElementById("nbrTotalBdw").value=36;
+				document.getElementById("nbrBdwppxl").value=112.5;
+				document.getElementById("nbrNofPixel").value=1.8;	
+				document.getElementById("btnCase1").className="";
+				document.getElementById("btnCase2").className="";
+				document.getElementById("btnCase3").className="";
+				document.getElementById("btnCase4").className="";
+				document.getElementById("btnCase5").className="";
+				document.getElementById("btnCase6").className="current";
+				document.getElementById("btnCase7").className="";
+				document.getElementById("imgCase7").style.display="none";
+				document.getElementById("lblDisplayResults").innerText="";
+				document.getElementById("btnresult").style.display="inline";
+				document.getElementById("lblDisplayResults").style.display="inline";
+				document.getElementById("lblQuestion").innerHTML ="Nous avons la chance d'utiliser une nouvelle antenne tête. Le gain de rapport signal sur bruit est colossal. Je souhaite en profiter pour améliorer la résolution spatiale, en utilisant une taille de pixel inférieur à 0.5mm<sup style=font-size:11px>2</sup>, sans changer la couverture anatomique ni augmenter le temps d'acquisition. Il faut alors optimiser les paramètres.";
+				document.getElementById("popup").className="popcase6";
+				document.getElementById("popupContent").innerHTML="En diminuant le paramètre TF/ETL, vous pouvez réduire l'effet de blurring.\n En diminuant le NEX, vous pouvez réduire le temps d'acquisition.\n En augmentant la taille de la matrice, vous pouvez améliorer la résolution de l'image.\n En augmentant la bande passante du récepteur, le SNR sera réduit.";
+				CheckRadio();DsiplaySpinEcho();cname="case6";
+			}
+			else if(casename=="case7"){
+				TRref=4000;NEXref=2;bdwref=30;fovref=24;TEref=90;
+				phaseref=320;freqref=320;epaisseurref=4;
+				document.getElementById("nbrTR").value=4000;
+				document.getElementById("nbrTE").value=90;
+				document.getElementById("nbrETL").value=13;
+				document.getElementById("nbrNEX").value=2;
+				document.getElementById("nbrFOV").value=24;
+				document.getElementById("nbrFreq").value=320;
+				document.getElementById("nbrPhase").value=320;
+				document.getElementById("nbrSthks").value=4;
+				document.getElementById("nbrSintr").value=0.4;
+				document.getElementById("nbrNofSlc").value=20;
+				document.getElementById("nbrVarBdw").value=15;
+				document.getElementById("nbrTotalBdw").value=30;
+				document.getElementById("nbrBdwppxl").value=93.8;
+				document.getElementById("nbrNofPixel").value=2.2;	
+				document.getElementById("btnCase1").className="";
+				document.getElementById("btnCase2").className="";
+				document.getElementById("btnCase3").className="";
+				document.getElementById("btnCase4").className="";
+				document.getElementById("btnCase5").className="";
+				document.getElementById("btnCase6").className="";
+				document.getElementById("btnCase7").className="current";
+				document.getElementById("imgCase7").style.display="inline";
+				document.getElementById("lblDisplayResults").innerText="";
+				document.getElementById("btnresult").style.display="none";
+				document.getElementById("lblDisplayResults").style.display="none";
+				document.getElementById("lblQuestion").innerText="Les paramètres sont libres et vous permettent de faire des simulations.";
+				CheckRadio();DsiplaySpinEcho();cname="case7";
+			}
+			return casename;
+
+		}
+		
+		function CheckRadio(){
+			var nameBDW = document.getElementsByName('rd');
+			for (i=0;i<nameBDW.length; i++){
+				if(nameBDW[i].checked){
+					user_input = nameBDW[i].value;
+				}
+			}
+			if(user_input=="varBDW"){checkname="varBDW";}
+			else if(user_input=="BDW"){checkname="BDW";}
+			else if(user_input=="pBDW"){checkname="pBDW";} 
+			else if(user_input=="nBDW"){checkname="nBDW";}
+			Calculation();
+		}
+		function Chngmax(){
+			var freq = document.getElementById("nbrFreq").value;
+			var phase = document.getElementById("nbrPhase").value;
+			//document.getElementById("nbrPhase").max = freq;
+			if(phase>=freq){
+				document.getElementById("nbrPhase").value=freq;
+			} 
+			else if(freq<=96){
+				document.getElementById("nbrPhase").value = freq;
+			}
+			Calculation();
+		}
+		function Calculation(){
+			//get values 
+			TR= document.getElementById("nbrTR").value;
+			TE= document.getElementById("nbrTE").value;
+			ETL= document.getElementById("nbrETL").value;
+			NEX= document.getElementById("nbrNEX").value;
+			fov= document.getElementById("nbrFOV").value;
+			freq= document.getElementById("nbrFreq").value;
+			phase= document.getElementById("nbrPhase").value;
+			epaisseur= document.getElementById("nbrSthks").value;
+			gap= document.getElementById("nbrSintr").value;
+			coupes= document.getElementById("nbrNofSlc").value;
+			vBDW= document.getElementById("nbrVarBdw").value;
+			bdw= document.getElementById("nbrTotalBdw").value;
+			pBDW= document.getElementById("nbrBdwppxl").value;
+			NBDW= document.getElementById("nbrNofPixel").value;
+			//Calculate BDWs
+			if(checkname=="varBDW"){
+				bdw=vBDW*2;
+				pBDW=Math.round((bdw*1000/freq)*10)/10;
+				NBDW=Math.round((208/pBDW)*10)/10;
+				document.getElementById("nbrVarBdw").disabled=false;
+				document.getElementById("nbrTotalBdw").disabled=true;
+				document.getElementById("nbrBdwppxl").disabled=false;
+				document.getElementById("nbrNofPixel").disabled=true;
+			}
+			else if(checkname=="BDW"){
+				vBDW=bdw/2;
+				pBDW=Math.round((bdw*1000/freq)*10)/10;
+				NBDW=Math.round((208/pBDW)*10)/10;
+				document.getElementById("nbrVarBdw").disabled=true;
+				document.getElementById("nbrTotalBdw").disabled=false;
+				document.getElementById("nbrBdwppxl").disabled=false;
+				document.getElementById("nbrNofPixel").disabled=true;
+			}
+			else if(checkname=="pBDW"){
+				bdw=Math.round(((pBDW*freq)/1000)*10)/10;
+				vBDW=bdw/2;
+				NBDW=Math.round((208/pBDW)*10)/10; //alert("NBDW"+NBDW);
+				document.getElementById("nbrVarBdw").disabled=true;
+				document.getElementById("nbrTotalBdw").disabled=true;
+				document.getElementById("nbrBdwppxl").disabled=false;
+				document.getElementById("nbrNofPixel").disabled=true;
+			}
+			else if(checkname=="nBDW"){
+				bdw=Math.round(((pBDW*freq)/1000)*10)/10;
+				vBDW= bdw/2;
+				pBDW=(208/NBDW).toFixed(1);
+				document.getElementById("nbrVarBdw").disabled=true;
+				document.getElementById("nbrTotalBdw").disabled=true;
+				document.getElementById("nbrBdwppxl").disabled=false;
+				document.getElementById("nbrNofPixel").disabled=false;
+			}
+			if(vBDW<=3){vBDW=3;}
+			else if(vBDW>=60){vBDW=60;}
+			else{vBDW=vBDW;}
+			if(bdw<=6){bdw=6;}
+			else if(bdw>=120){bdw=120;}
+			else{bdw=bdw;}
+			if(pBDW<=1){pBDW=1;}
+			else if(pBDW>=1000){pBDW=1000;}
+			else{pBDW=pBDW;}
+			if(NBDW<=1){NBDW=1;}
+			else if(NBDW>=5){NBDW=5;}
+			else{NBDW=NBDW;}
+			//calculate parameter
+			dFov=fov*10;
+			TEm=(2+Math.round((freq/bdw)*100)/100).toFixed(2);
+			TEM=(TEm*ETL).toFixed(2);
+			nbcoupes=Math.floor(TR/TEM);
+			tac=Math.round((phase*(TR/1000)/ETL)*NEX);
+			acq=Math.ceil(coupes/nbcoupes);
+			voxel=Math.round((fov*10/phase)*(fov*10/freq)*epaisseur*10)/10;
+			natomicvolume=Math.round(((coupes*epaisseur)+((coupes-1)*gap))*fov*fov/10);	
+			tps=tac*acq;
+			echoeff=Math.round(TE/TEm);
+			if(echoeff==0){echoeff=1;}
+			//if Echo>train->take the last echo of the train
+			else if(echoeff>=ETL){echoeff=ETL;}
+			TEeffreel=echoeff*TEm;
+			Temideal=((echoeff*TEm*2)-TEm);
+			//calculate values of snrref
+			var voxelref = Math.round((fovref*10/phaseref)*(fovref*10/freqref)*epaisseurref*10)/10;
+			var TEmref= (2+Math.round((freqref/bdwref)*100)/100).toFixed(2);
+			var echoeffref= Math.round(TEref/TEmref);
+			var TEeffreelref= echoeffref*TEmref;
+			//calculate SNR
+			snrref= rho*(1-Math.exp(-TRref/T1))*Math.exp(-TEeffreelref/T2)*Math.sqrt(NEXref)*voxelref*(1/Math.sqrt(bdwref));
+			snrreel= rho*(1-Math.exp(-TR/T1))*Math.exp(-TEeffreel/T2)*Math.sqrt(NEX)*voxel*(1/Math.sqrt(bdw));
+			snr=Math.round((snrreel/snrref)*100)+"%";
+			if(btnRestclicked=="true"){
+				TRref=TR;NEXref=NEX;bdwref=bdw;fovref=fov;
+				TEref=TE;phaseref=phase;freqref=freq;epaisseurref=epaisseur;
+				snrref=snrreel;
+				snr=Math.round((snrreel/snrref)*100)+"%";
+				//snr=parseFloat(Math.round((snrreel/snrref)*100).toFixed(2))+"%";
+				btnRestclicked="false";
+			}
+			else{btnRestclicked="false";}
+			//move RedDiv
+			echoeffred= Math.round(TEeffreel*(374)/TEM);
+			var echos=Math.round(TEm*374/TEM);
+			newechoeffred=Math.round(+echoeffred + +echos);
+			currentposition=Math.round(+newechoeffred + -echos);
+			document.getElementById("divred").style.left=(currentposition)+"px";
+			//pictures Contrast||invert
+			snrsg=rhosg*(1-Math.exp(-TR/T1sg))*Math.exp(-TEeffreel/T2sg)*Math.sqrt(NEX)*voxel*(1/Math.sqrt(bdw));
+			snrsb=rhosb*(1-Math.exp(-TR/T1sb))*Math.exp(-TEeffreel/T2sb)*Math.sqrt(NEX)*voxel*(1/Math.sqrt(bdw));
+			snreau=rhoeau*(1-Math.exp(-TR/T1eau))*Math.exp(-TEeffreel/T2eau)*Math.sqrt(NEX)*voxel*(1/Math.sqrt(bdw));
+			snrfat=rhofat*(1-Math.exp(-TR/T1fat))*Math.exp(-TEeffreel/T2fat)*Math.sqrt(NEX)*voxel*(1/Math.sqrt(bdw));
+			if(snrsg>snrsb && snrsg>snreau && snrsg>snrfat){snrsup = snrsg;}
+			else if(snrsb>snrsg && snrsb>snreau && snrsb>snrfat){snrsup = snrsb;}
+			else if(snreau>snrsb && snreau>snrsg && snreau>snrfat){snrsup = snreau;}
+			else if(snrfat>snrsb && snrfat>snreau && snrfat>snrsg){snrsup = snrfat;}
+			if(snrsg<snrsb && snrsg<snreau && snrsg<snrfat){snrinf = snrsg;}
+			else if(snrsb<snrsg && snrsb<snreau && snrsb<snrfat){snrinf = snrsb;}
+			else if(snreau<snrsb && snreau<snrsg && snreau<snrfat){snrinf = snreau;}
+			else if(snrfat<snrsb && snrfat<snreau && snrfat<snrsg){snrinf = snrfat;}
+			srnampl=snrsup-snrinf;
+			//calculate colors value
+			clefsgnormal=(((snrsg - snrinf)/srnampl)+0.05).toFixed(2);
+			clefsbnormal=(((snrsb - snrinf)/srnampl)+0.05).toFixed(2);
+			clefeaunormal=(((snreau - snrinf)/srnampl)+0.05).toFixed(2);
+			cleffatnormal=(((snrfat - snrinf)/srnampl)+0.05).toFixed(2);
+			res=0;
+			bas=((+ETL+1)/2)-1.5;
+			haut=((+ETL+1)/2)+1.5;
+			bon=(+ETL+1)/2;	
+			//Calculate Blur
+			function ChangeBlurring(){
+				bblur=((TEM/2)-TEeffreel).toFixed(0);
+				for(i=10;i<500;i+=5){
+					if(bblur<=10){
+						newDeviationEtl=0;
+					}
+					else if(bblur>i && bblur<(+i+ +5)){
+						var step= i/5;
+						var accStep= +step + -2;
+						newDeviationEtl = (accStep*0.25).toFixed(2);
+					}
+				}
+				for(i=4.1;i<20.1;i+=0.1){
+					if(epaisseur<=4){
+						newDeviationSt=0;
+					}
+					else if(epaisseur>=i && epaisseur<(+i+ +0.2)){
+						var step= i/0.2;
+						var accStep= +step + -14;
+						newDeviationSt =(accStep*0.04).toFixed(2);
+					}
+				}
+				newDeviation= (+newDeviationSt+ +newDeviationEtl).toFixed(2);
+				document.getElementById("bf1").setAttribute("stdDeviation", newDeviation);
+			}
+			ChangeColors();DisplayValues();ChangeBlurring();ChangeFov();ChangeFrePixels();
+		}
+
+		function ChangeColors(){
+		document.getElementById("comp1").setAttribute("tableValues", +clefsgnormal+" "+clefsgnormal);
+		document.getElementById("comp2").setAttribute("tableValues", +clefsgnormal+" "+clefsgnormal);
+		document.getElementById("comp3").setAttribute("tableValues", +clefsgnormal+" "+clefsgnormal);
+		document.getElementById("comp4").setAttribute("tableValues", +clefeaunormal+" "+clefeaunormal);
+		document.getElementById("comp5").setAttribute("tableValues", +clefeaunormal+" "+clefeaunormal);
+		document.getElementById("comp6").setAttribute("tableValues", +clefeaunormal+" "+clefeaunormal);
+		document.getElementById("comp7").setAttribute("tableValues", +cleffatnormal+" "+cleffatnormal);
+		document.getElementById("comp8").setAttribute("tableValues", +cleffatnormal+" "+cleffatnormal);
+		document.getElementById("comp9").setAttribute("tableValues", +cleffatnormal+" "+cleffatnormal);
+		document.getElementById("comp10").setAttribute("tableValues", +clefsbnormal+" "+clefsbnormal);
+		document.getElementById("comp11").setAttribute("tableValues", +clefsbnormal+" "+clefsbnormal);
+		document.getElementById("comp12").setAttribute("tableValues", +clefsbnormal+" "+clefsbnormal);
+		document.getElementById("comppic1").setAttribute("tableValues", +clefeaunormal+" "+clefeaunormal);
+		document.getElementById("comppic2").setAttribute("tableValues", +clefeaunormal+" "+clefeaunormal);
+		document.getElementById("comppic3").setAttribute("tableValues", +clefeaunormal+" "+clefeaunormal);
+		document.getElementById("comppic4").setAttribute("tableValues", +cleffatnormal+" "+cleffatnormal);
+		document.getElementById("comppic5").setAttribute("tableValues", +cleffatnormal+" "+cleffatnormal);
+		document.getElementById("comppic6").setAttribute("tableValues", +cleffatnormal+" "+cleffatnormal);
+		document.getElementById("comppic7").setAttribute("tableValues", +clefsgnormal+" "+clefsgnormal);
+		document.getElementById("comppic8").setAttribute("tableValues", +clefsgnormal+" "+clefsgnormal);
+		document.getElementById("comppic9").setAttribute("tableValues", +clefsgnormal+" "+clefsgnormal);
+		document.getElementById("comppic10").setAttribute("tableValues", +clefeaunormal+" "+clefeaunormal);
+		document.getElementById("comppic11").setAttribute("tableValues", +clefeaunormal+" "+clefeaunormal);
+		document.getElementById("comppic12").setAttribute("tableValues", +clefeaunormal+" "+clefeaunormal);
+		document.getElementById("comppic13").setAttribute("tableValues", +clefsgnormal+" "+clefsgnormal);
+		document.getElementById("comppic14").setAttribute("tableValues", +clefsgnormal+" "+clefsgnormal);
+		document.getElementById("comppic15").setAttribute("tableValues", +clefsgnormal+" "+clefsgnormal);
+		document.getElementById("comppic16").setAttribute("tableValues", +clefsbnormal+" "+clefsbnormal);
+		document.getElementById("comppic17").setAttribute("tableValues", +clefsbnormal+" "+clefsbnormal);
+		document.getElementById("comppic18").setAttribute("tableValues", +clefsbnormal+" "+clefsbnormal);
+	}
+		
+	function ResetRSB() {
+    btnRestclicked = "true";
+    Calculation();
+    CheckCases(cname);
+
+    const resetBtn = document.getElementById("btnReset");
+    resetBtn.classList.remove("show");
+    resetBtn.classList.add("hide");
+
+    const glow = document.getElementById("glowLight");
+    if (glow) {
+        glow.style.opacity = "0";
+        glow.src = "";
+    }
+
+    const lblResults = document.getElementById("lblDisplayResults");
+    if (lblResults) {
+        lblResults.innerText = "";
+    }
+
+    const imageLights = document.getElementById("imageLights");
+    if (imageLights) {
+        imageLights.src = "images/main-images/Full-3-lights.png";
+    }
+
+    // console.log("RSB Reset completed.");
+}
+function ResetLightsAndButtonOnly() {
+    // Reset lights
+    const glow = document.getElementById("glowLight");
+    if (glow) {
+        glow.style.opacity = "0";
+        glow.src = "";
+    }
+
+    const imageLights = document.getElementById("imageLights");
+    if (imageLights) {
+        imageLights.src = "images/main-images/Full-3-lights.png";
+    }
+
+    const lblResults = document.getElementById("lblDisplayResults");
+    if (lblResults) {
+        lblResults.innerText = "";
+    }
+
+    const resetBtn = document.getElementById("btnReset");
+    if (resetBtn) {
+        resetBtn.classList.remove("show");
+        resetBtn.classList.add("hide");
+    }
+}
+
+		
+		function ResultFeedback(){
+			// document.getElementById("btnReset").style.display="inline";
+			const resetBtn = document.getElementById("btnReset");
+            resetBtn.classList.remove("hide");
+            resetBtn.classList.add("show");
+			if(cname=="case1"){
+				if((ETL==14 && TR>=3700 && TR<=4000 &&  TE>=85 && TE<=95 && nbcoupes>19 && freq==320&& phase==320&& epaisseur==4&& gap==0.4 && coupes==20 && fov==24 ) || (ETL==15 && TR>=3801 && TR<=4000 && TE>=96 && TE<=106 && nbcoupes>19 && freq==320&& phase==320&& epaisseur==4&& gap==0.4 && coupes==20 && fov==24)){
+					res=1;
+					// document.getElementById("imwordageLights").innerHTML="<img src='green-light.png' alt='Bonne Optimisation'";
+					showLight("green");
+				}	
+				else if(((TR>=4000 &&  echoeff>=bas && echoeff<=haut && echoeff!=bon)||(TR<4000 && TR>3500 && echoeff==bon)) && freq==320&& phase==320&& epaisseur==4&& gap==0.4&& coupes==20&& fov==32&& TEm<13&& NEX==2&& tps<197){
+					res=2;
+					// document.getElementById("imageLights").innerHTML="<img src='green-light.png' alt='Optimisation Imparfaite'";
+					showLight("yellow");
+				}	
+				else if(res==0){
+					// document.getElementById("imageLights").innerHTML="<img src='green-light.png' alt='Mauvaise Optimisation'";
+					showLight("red");
+				}
+				// console.log("testing")
+			}
+			else if(cname=="case2"){
+				if(TR>=4000 && tps==165 && phase>=288 && epaisseur==4 && gap==0.4 && coupes==20 && ((freq==336 && TE>=86 && TE<=96) || (freq==352 && TE>=90 && TE<=100) || (freq=368 && TE>=93 && TE<=103))){	
+					res=1;
+					// document.getElementById("lblDisplayResults").innerText="Bonne Optimisation";
+					showLight("green");
+				}	
+				else if (((TR>=4000 && echoeff>=bas && echoeff<=haut && echoeff!=bon)||(TR<4000 && TR>3500 && echoeff==bon)) && freq>320&& phase>=320&& epaisseur==4&& gap==0.4&& coupes==20&& fov==32&& NEX ==2&& tps==197){
+					res=1;
+					// document.getElementById("lblDisplayResults").innerText="Optimisation Imparfaite";
+					showLight("yellow");
+				}	
+				else if (res==0){
+					// document.getElementById("lblDisplayResults").innerText="Mauvaise Optimisation";
+					showLight("red");
+				}	  
+			}
+			else if(cname=="case3"){
+				if(TR==540 && TE>0 && TE<=19 && ETL==2 && freq==320 && phase==320 && epaisseur==4 && gap==0.4 && coupes==20 && fov==24 && bdw>=27.9 && bdw<=34.8 && NEX==2){
+					res=1;
+					// document.getElementById("lblDisplayResults").innerText="Bonne Optimisation";
+					showLight("green");
+				}	
+				else if(res==0){
+					// document.getElementById("lblDisplayResults").innerText="Mauvaise Optimisation";
+					showLight("red");
+				} 
+			}
+			else if(cname=="case4"){
+				 if(TR>=5000 && TR<=10000 && TE>75 && TE<130 && echoeff==(+ETL+1)/2 && freq==384 && phase==256 && epaisseur==5 && gap==1.5 && coupes==24 && fov==24 && TEm<13 && NEX==1 && snrreel>= 0.22435926169700025){
+					res=1;
+					// document.getElementById("lblDisplayResults").innerText="Bonne Optimisation";
+					showLight("green");
+				}	
+				else if(((TR>=4000 &&  echoeff>=bas && echoeff<=haut && echoeff!=bon)||(TR<4000 && TR>3500 && echoeff==bon))&&TE>75 && TE<130 && freq==384 && phase==256 && epaisseur==5 && gap==1.5 && coupes==24 && fov==24 && NEX==1 && snrreel>= 0.299145682262667*0.75 ){
+					res=1;
+					// document.getElementById("lblDisplayResults").innerText="Optimisation Imparfaite";
+					showLight("yellow");
+				}	
+				else if(res==0){
+					// document.getElementById("lblDisplayResults").innerText="Mauvaise Optimisation";
+					showLight("red");
+				}
+			}
+			else if(cname=="case5"){
+				 if(TR>=400 && TR<=500 && TE<25 && freq==320 && phase==256 && epaisseur==5 && gap==1.5 && coupes==24 && fov==24 && TEm<40 && NEX==1 && tps<=70 && snrreel>= 0.0642498612333608 && Math.round((snrreel/snrref)*100)>=70){
+					res=1;
+					// document.getElementById("lblDisplayResults").innerText="Bonne Optimisation";
+					showLight("green");
+				}	
+				else if((TR>500 && TR<=650 && TE<25 && freq==320 && phase==256 && epaisseur==5 && gap==1.5 && coupes==24 && fov==24 && snrreel>= 0.080312326541701*0.80 && TEm<40 && NEX ==1 && tps<=70)||(TR>=400 && TR<=650 && ETL>2 && echoeff!=bon && TE<25 && freq==320 && phase==256 && epaisseur==5 && gap==1.5 && coupes==24 && fov==24 && snrreel>=0.080312326541701*0.80 && NEX==1 && tps<=70 && TEm<40)){
+					res=1;
+					// document.getElementById("lblDisplayResults").innerText="Optimisation Imparfaite";
+					showLight("yellow");
+				}	
+				else if (res==0) {
+					// document.getElementById("lblDisplayResults").innerText="Mauvaise Optimisation";
+					showLight("red");
+				}
+			}
+			else if(cname=="case6"){
+				if(TR>=4000 && TE>=65 && echoeff==((+ETL+1)/2) && freq>=480 && phase>=480 && epaisseur==5 && gap==1.5 && coupes==24 && fov==24 && TEm<12.5 && tps<=171){
+					res=1;
+					// document.getElementById("lblDisplayResults").innerText="Bonne Optimisation";
+					showLight("green");
+				}	
+				else if(((TR>=4000 &&  echoeff>=bas && echoeff<=haut && echoeff!=bon)||(TR<4000 && TR>3500 && echoeff==bon))
+				&& freq>=480 && phase>=480 && epaisseur==5 && gap==1.5&& coupes==24 && fov==24 && TEm>12.5 && TEm<13.5 && NEX ==2 && tps<171){
+					res=1;
+					// document.getElementById("lblDisplayResults").innerText="Optimisation Imparfaite";
+					showLight("yellow");
+				}	
+				else if (res==0) {
+					// document.getElementById("lblDisplayResults").innerText="Mauvaise Optimisation";
+					showLight("red");
+				}
+			}				
+		}
+
+		function DisplayValues(casename){
+			//Change TE images
+			document.getElementById('picTE').src= ETL+ '.png';
+			//Display BDWs values
+			document.getElementById("nbrVarBdw").value=vBDW;
+			document.getElementById("nbrTotalBdw").value=bdw;
+			document.getElementById("nbrBdwppxl").value=pBDW;
+			//Display Chemical shift
+			document.getElementById("nbrNofPixel").value=NBDW;
+			document.getElementById("lblDisplayChemical").innerText= Math.round((fov*10/(bdw*1000))*208*10)/10+" mm";
+			//Display values Under pictures 
+			document.getElementById("lblDisplayFov").innerText= dFov + " mm";
+			document.getElementById("lblDisplaypBDW").innerText= pBDW +" Hz par pixel";
+			document.getElementById("lblDisplayBDW").innerText=  bdw + "kHz";
+			document.getElementById("lblDisplayMinusVar").innerText= "-"+ vBDW;
+			document.getElementById("lblDisplayPlusVar").innerText= "+"+ vBDW;
+			//Display values left side of pictures
+			document.getElementById("lblDisplayPixelSize").innerText=(Math.round((fov*10/freq)*1000)/1000 )+" x "+(Math.round((fov*10/phase)*1000)/1000)+" mm";
+			document.getElementById("lblDisplayVoxelSize").innerText=voxel+ " mm";
+			document.getElementById("lblDisplayAnatomicVol").innerText= natomicvolume + " cm";		
+			//Display Max No of Slices
+			document.getElementById("lblDisplayMaxnbSlices").innerText= nbcoupes;
+			//Display Acq time
+			document.getElementById("lblDisplayAcqTime").innerText= Math.floor(tps / 60) + " min " + (tps % 60 ? tps % 60 : '00 ')+ " s ";
+			//Display TE
+			document.getElementById("lblDisplayTEMin").innerText= TEm ;
+			document.getElementById("lblDisplayTEMax").innerText=TEM ;
+			//Display SNR and TEmIdeal, Te eff
+			document.getElementById("lblDisplaySNR").innerText=snr;
+			document.getElementById("lblDisplayTEeff").innerText=TEeffreel.toFixed(2);
+			document.getElementById("lblDisplayTEmideal").innerText=Temideal.toFixed(2);
+		}
+		function DsiplaySpinEcho(){
+			ETL=document.getElementById("nbrETL").value;
+			if(ETL==1){
+				document.getElementById("lblDisplayEcho").innerText= "SPIN ECHO";
+				document.getElementById("tab6").style.display="none";
+				document.getElementById("divTENnty").style.display="inline";
+			}
+			else if(ETL>1){
+				document.getElementById("lblDisplayEcho").innerText= "TURBO SPIN ECHO / FAST SPIN ECHO";
+				document.getElementById("tab6").style.display="inline";
+				document.getElementById("divTENnty").style.display="none";
+			}	
+		}
+		function ChangeFov(){
+			if(fov==49 && fov<=50){for(var i=0; i<7;i++){document.getElementById("g"+i).setAttribute("style", "transform: scale(0.5)");}}
+			else if(fov>=46 && fov<=48){for(var i=0; i<7;i++){document.getElementById("g"+i).setAttribute("style", "transform: scale(0.6)");}}
+			else if(fov>=43 && fov<=45){for(var i=0; i<7;i++){document.getElementById("g"+i).setAttribute("style", "transform: scale(0.65)");}}
+			else if(fov>=40 && fov<=42){for(var i=0; i<7;i++){document.getElementById("g"+i).setAttribute("style", "transform: scale(0.7)");}}
+			else if(fov>=37 && fov<=39){for(var i=0; i<7;i++){document.getElementById("g"+i).setAttribute("style", "transform: scale(0.75)");}}
+			else if(fov>=34 && fov<=36){for(var i=0; i<7;i++){document.getElementById("g"+i).setAttribute("style", "transform: scale(0.8)");}}
+			else if(fov>=31 && fov<=33){for(var i=0; i<7;i++){document.getElementById("g"+i).setAttribute("style", "transform: scale(0.85)");}}
+			else if(fov>=28 && fov<=30){for(var i=0; i<7;i++){document.getElementById("g"+i).setAttribute("style", "transform: scale(0.9)");}}
+			else if(fov>=25 && fov<=27){for(var i=0; i<7;i++){document.getElementById("g"+i).setAttribute("style", "transform: scale(0.95)");}}
+			else if(fov>=22 && fov<=24){for(var i=0; i<7;i++){document.getElementById("g"+i).setAttribute("style", "transform: scale(1.0)");}}
+			else if(fov>=19 && fov<=21){for(var i=0; i<7;i++){document.getElementById("g"+i).setAttribute("style", "transform: scale(1.1)");}}
+			else if(fov>=16 && fov<=18){for(var i=0; i<7;i++){document.getElementById("g"+i).setAttribute("style", "transform: scale(1.2)");}}
+			else if(fov>=13 && fov<=15){for(var i=0; i<7;i++){document.getElementById("g"+i).setAttribute("style", "transform: scale(1.3)");}}
+			else if(fov>=10 && fov<=12){for(var i=0; i<7;i++){document.getElementById("g"+i).setAttribute("style", "transform: scale(1.4)");}}
+			else if(fov>=6 && fov<=9){for(var i=0; i<7;i++){document.getElementById("g"+i).setAttribute("style", "transform: scale(1.5)");}}
+		}	
+		function ChangeFrePixels(){
+			if(freq>=320){
+				document.getElementById("svgr0").setAttribute("radius", "0");
+				document.getElementById("svgr1").setAttribute("radius", "0");
+				document.getElementById("svgr2").setAttribute("radius", "0");
+				document.getElementById("svgr3").setAttribute("radius", "0");
+				document.getElementById("svgr4").setAttribute("radius", "0");
+				document.getElementById("svgr5").setAttribute("radius", "0");
+				document.getElementById("svgr6").setAttribute("radius", "0");
+				
+				document.getElementById("svgFlood1").setAttribute("width", "0");
+				document.getElementById("svgFlood1").setAttribute("height", "0");
+			}		
+			else if(freq==304){
+				document.getElementById("svgr0").setAttribute("radius", "0.6");
+				document.getElementById("svgr1").setAttribute("radius", "0.6");
+				document.getElementById("svgr2").setAttribute("radius", "0.6");
+				document.getElementById("svgr3").setAttribute("radius", "0.6");
+				document.getElementById("svgr4").setAttribute("radius", "0.6");
+				document.getElementById("svgr5").setAttribute("radius", "0.6");
+				document.getElementById("svgr6").setAttribute("radius", "0.6");
+				
+				document.getElementById("svgFlood1").setAttribute("width", "3");
+				document.getElementById("svgFlood1").setAttribute("height", "3");
+			}
+			else if(freq>=288){
+				document.getElementById("svgr0").setAttribute("radius", "0.8");
+				document.getElementById("svgr1").setAttribute("radius", "0.8");
+				document.getElementById("svgr2").setAttribute("radius", "0.8");
+				document.getElementById("svgr3").setAttribute("radius", "0.8");
+				document.getElementById("svgr4").setAttribute("radius", "0.8");
+				document.getElementById("svgr5").setAttribute("radius", "0.8");
+				document.getElementById("svgr6").setAttribute("radius", "0.8");
+				document.getElementById("svgFlood1").setAttribute("width", "3");
+				document.getElementById("svgFlood1").setAttribute("height", "3");
+			}
+			else if(freq>=272){
+	
+				document.getElementById("svgr0").setAttribute("radius", "0.9");
+				document.getElementById("svgr1").setAttribute("radius", "0.9");
+				document.getElementById("svgr2").setAttribute("radius", "0.9");
+				document.getElementById("svgr3").setAttribute("radius", "0.9");
+				document.getElementById("svgr4").setAttribute("radius", "0.9");
+				document.getElementById("svgr5").setAttribute("radius", "0.9");
+				document.getElementById("svgr6").setAttribute("radius", "0.9");
+				document.getElementById("svgFlood1").setAttribute("width", "3");
+				document.getElementById("svgFlood1").setAttribute("height", "3");
+			}
+			else if(freq>=256){
+				document.getElementById("svgr0").setAttribute("radius", "1");
+				document.getElementById("svgr1").setAttribute("radius", "1");
+				document.getElementById("svgr2").setAttribute("radius", "1");
+				document.getElementById("svgr3").setAttribute("radius", "1");
+				document.getElementById("svgr4").setAttribute("radius", "1");
+				document.getElementById("svgr5").setAttribute("radius", "1");
+				document.getElementById("svgr6").setAttribute("radius", "1");
+				document.getElementById("svgFlood1").setAttribute("width", "3");
+				document.getElementById("svgFlood1").setAttribute("height", "3");
+			}
+			else if(freq>=240){
+				document.getElementById("svgr0").setAttribute("radius", "1.1");
+				document.getElementById("svgr1").setAttribute("radius", "1.1");
+				document.getElementById("svgr2").setAttribute("radius", "1.1");
+				document.getElementById("svgr3").setAttribute("radius", "1.1");
+				document.getElementById("svgr4").setAttribute("radius", "1.1");
+				document.getElementById("svgr5").setAttribute("radius", "1.1");
+				document.getElementById("svgr6").setAttribute("radius", "1.1");
+				document.getElementById("svgFlood1").setAttribute("width", "3");
+				document.getElementById("svgFlood1").setAttribute("height", "3");
+			}
+			else if(freq>=224){
+				document.getElementById("svgr0").setAttribute("radius", "1.2");
+				document.getElementById("svgr1").setAttribute("radius", "1.2");
+				document.getElementById("svgr2").setAttribute("radius", "1.2");
+				document.getElementById("svgr3").setAttribute("radius", "1.2");
+				document.getElementById("svgr4").setAttribute("radius", "1.2");
+				document.getElementById("svgr5").setAttribute("radius", "1.2");
+				document.getElementById("svgr6").setAttribute("radius", "1.2");
+				document.getElementById("svgFlood1").setAttribute("width", "3");
+				document.getElementById("svgFlood1").setAttribute("height", "3");
+			}
+			else if(freq>=208){
+				document.getElementById("svgr0").setAttribute("radius", "1.4");
+				document.getElementById("svgr1").setAttribute("radius", "1.4");
+				document.getElementById("svgr2").setAttribute("radius", "1.4");
+				document.getElementById("svgr3").setAttribute("radius", "1.4");
+				document.getElementById("svgr4").setAttribute("radius", "1.4");
+				document.getElementById("svgr5").setAttribute("radius", "1.4");
+				document.getElementById("svgr6").setAttribute("radius", "1.4");
+				document.getElementById("svgFlood1").setAttribute("width", "3");
+				document.getElementById("svgFlood1").setAttribute("height", "3");
+			}
+			else if(freq>=192){
+				document.getElementById("svgr0").setAttribute("radius", "1.6");
+				document.getElementById("svgr1").setAttribute("radius", "1.6");
+				document.getElementById("svgr2").setAttribute("radius", "1.6");
+				document.getElementById("svgr3").setAttribute("radius", "1.6");
+				document.getElementById("svgr4").setAttribute("radius", "1.6");
+				document.getElementById("svgr5").setAttribute("radius", "1.6");
+				document.getElementById("svgr6").setAttribute("radius", "1.6");
+				document.getElementById("svgFlood1").setAttribute("width", "3");
+				document.getElementById("svgFlood1").setAttribute("height", "3");
+			}
+			else if(freq>=176){
+				document.getElementById("svgr0").setAttribute("radius", "1.8");
+				document.getElementById("svgr1").setAttribute("radius", "1.8");
+				document.getElementById("svgr2").setAttribute("radius", "1.8");
+				document.getElementById("svgr3").setAttribute("radius", "1.8");
+				document.getElementById("svgr4").setAttribute("radius", "1.8");
+				document.getElementById("svgr5").setAttribute("radius", "1.8");
+				document.getElementById("svgr6").setAttribute("radius", "1.8");
+			}
+			else if(freq>=144){
+				document.getElementById("svgr0").setAttribute("radius", "2");
+				document.getElementById("svgr1").setAttribute("radius", "2");
+				document.getElementById("svgr2").setAttribute("radius", "2");
+				document.getElementById("svgr3").setAttribute("radius", "2");
+				document.getElementById("svgr4").setAttribute("radius", "2");
+				document.getElementById("svgr5").setAttribute("radius", "2");
+				document.getElementById("svgr6").setAttribute("radius", "2");
+			}
+			else if(freq>=128){
+				document.getElementById("svgr0").setAttribute("radius", "2.2");
+				document.getElementById("svgr1").setAttribute("radius", "2.2");
+				document.getElementById("svgr2").setAttribute("radius", "2.2");
+				document.getElementById("svgr3").setAttribute("radius", "2.2");
+				document.getElementById("svgr4").setAttribute("radius", "2.2");
+				document.getElementById("svgr5").setAttribute("radius", "2.2");
+				document.getElementById("svgr6").setAttribute("radius", "2.2");
+			}
+			else if(freq>=112){
+				document.getElementById("svgr0").setAttribute("radius", "2.4");
+				document.getElementById("svgr1").setAttribute("radius", "2.4");
+				document.getElementById("svgr2").setAttribute("radius", "2.4");
+				document.getElementById("svgr3").setAttribute("radius", "2.4");
+				document.getElementById("svgr4").setAttribute("radius", "2.4");
+				document.getElementById("svgr5").setAttribute("radius", "2.4");
+				document.getElementById("svgr6").setAttribute("radius", "2.4");
+			}		
+			else if(freq>=96){
+				document.getElementById("svgr0").setAttribute("radius", "2.6");
+				document.getElementById("svgr1").setAttribute("radius", "2.6");
+				document.getElementById("svgr2").setAttribute("radius", "2.6");
+				document.getElementById("svgr3").setAttribute("radius", "2.6");
+				document.getElementById("svgr4").setAttribute("radius", "2.6");
+				document.getElementById("svgr5").setAttribute("radius", "2.6");
+				document.getElementById("svgr6").setAttribute("radius", "2.6");
+			}
+		}	
+
+
+		function changeCases() {
+		const selectedCase = document.getElementById("casesDrp").value;
+		const btnResult = document.getElementById("btnresult");
+
+		if (selectedCase === "case1") {
+			document.getElementById("sagImage").src = "data:image/svg+xml;charset=UTF-8," +
+				encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="350" height="430">' +
+				'<rect width="100%" height="100%" fill="black"/>' +
+				'<text x="50%" y="50%" font-size="30" fill="white" text-anchor="middle" dominant-baseline="middle">Sagittal</text>' +
+				'</svg>');
+
+			document.getElementById("corImage").src = "data:image/svg+xml;charset=UTF-8," +
+				encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="350" height="430">' +
+				'<rect width="100%" height="100%" fill="black"/>' +
+				'<text x="50%" y="50%" font-size="30" fill="white" text-anchor="middle" dominant-baseline="middle">Coronal</text>' +
+				'</svg>');
+
+				document.getElementById("case-question").innerHTML= "";
+				document.getElementById("case-question").innerHTML= "Augmenter le TR par pas de 50 et observer les changements sur l’image , le signal sur bruit (S/B), le temps d’acquisition et le nombre de coupes autorisé par TR"
+
+
+			TRref=4000;NEXref=2;bdwref=30;fovref=24;
+			TEref=90;phaseref=320;freqref=320;epaisseurref=4;
+			document.getElementById("nbrTI").value = 0;
+			document.getElementById("nbrTR").value = 250;
+			document.getElementById("nbrETL").value = 2;
+			document.getElementById("nbrTE").value = 11;
+			document.getElementById("nbrNEX").value = 1;
+			document.getElementById("nbrConcat").value = 1;
+			document.getElementById("nbrBdwppxl").value = 111;
+			document.getElementById("nbrSthks").value = 4;
+			document.getElementById("nbrSintr").value = 0.4;
+			document.getElementById("nbrNofSlc").value = 1;
+			document.getElementById("nbrSurech").value = 100;
+			document.getElementById("nbrFOV").value = 24;
+			document.getElementById("nbrFovPhase").value = 100;
+			document.getElementById("nbrFreq").value = 320;
+			document.getElementById("nbrPhase").value = 320;
+
+			btnResult.disabled = true;
+			btnResult.style.opacity = "0.9";
+			btnResult.style.cursor = "not-allowed"; 
+
+		} else if (selectedCase === "case2") {
+			document.getElementById("case-question").innerHTML= "";
+				document.getElementById("case-question").innerHTML= "Question Cas 2"
+		}
+	}
+
+	function displayImage(value) {
+		const rangeStart = Math.floor(value / 100) * 100;
+		const image = imageListCase1.find(img => img === rangeStart);
+
+		if (image) {
+			 document.getElementById("axlImage").src = `images/ax-t1/${image}.jpeg`;
+		} else {
+			console.log("No image available for this range.");
+		}
+	}
+
+		function subTR(){
+			var max=20000,min=250;
+			var x=document.getElementById("nbrTR").value;
+			if(x>max){document.getElementById("nbrTR").value=max;}
+			else if(x<min){document.getElementById("nbrTR").value=min;}
+			var newx=(+x + -1);
+			if(newx<=max && newx>=min){document.getElementById("nbrTR").value=newx;}
+			Calculation();
+		}
+		function addTR(){
+			var max=20000,min=250;
+			var x=document.getElementById("nbrTR").value;
+			if(x>max){document.getElementById("nbrTR").value=max;}
+			else if(x<min){document.getElementById("nbrTR").value=min;}
+			var newx=(1 + +x);
+			if(newx<=max && newx>=min){document.getElementById("nbrTR").value=newx;}
+			Calculation();
+		}
+		function subTE(){
+			var max=20000,min=5;
+			var x=document.getElementById("nbrTE").value;
+			if(x>max){document.getElementById("nbrTE").value=max;}
+			else if(x<min){document.getElementById("nbrTE").value=min;}
+			var newx=(+x + -1);
+			if(newx<=max && newx>=min){document.getElementById("nbrTE").value=newx;}
+			Calculation();
+		}
+		function addTE(){
+			var max=20000,min=5;
+			var x=document.getElementById("nbrTE").value;
+			if(x>max){document.getElementById("nbrTE").value=max;}
+			else if(x<min){document.getElementById("nbrTE").value=min;}
+			var newx=(1 + +x);
+			if(newx<=max && newx>=min){document.getElementById("nbrTE").value=newx;}
+			Calculation();
+		}
+		function subETL(){
+			var max=40,min=1;
+			var x=document.getElementById("nbrETL").value;
+			if(x>max){document.getElementById("nbrETL").value=max;}
+			else if(x<min){document.getElementById("nbrETL").value=min;}
+			var newx=(+x + -1);
+			if(newx<=max && newx>=min){document.getElementById("nbrETL").value=newx;}
+			Calculation();DsiplaySpinEcho();
+		}
+		function addETL(){
+			var max=40,min=1;
+			var x=document.getElementById("nbrETL").value;
+			if(x>max){document.getElementById("nbrETL").value=max;}
+			else if(x<min){document.getElementById("nbrETL").value=min;}
+			var newx=(1 + +x);
+			if(newx<=max && newx>=min){document.getElementById("nbrETL").value=newx;}
+			Calculation();DsiplaySpinEcho();
+		}
+		function subNEX(){
+			var max=10,min=1;
+			var x=document.getElementById("nbrNEX").value;
+			if(x>max){document.getElementById("nbrNEX").value=max;}
+			else if(x<min){document.getElementById("nbrNEX").value=min;}
+			var newx=(+x + -1);
+			if(newx<=max && newx>=min){document.getElementById("nbrNEX").value=newx;}
+			Calculation();
+		}
+		function addNEX(){
+			var max=10,min=1;
+			var x=document.getElementById("nbrNEX").value;
+			if(x>max){document.getElementById("nbrNEX").value=max;}
+			else if(x<min){document.getElementById("nbrNEX").value=min;}
+			var newx=(1 + +x);
+			if(newx<=max && newx>=min){document.getElementById("nbrNEX").value=newx;}
+			Calculation();
+		}
+		function subFov(){
+			var max=50,min=6;
+			var x=document.getElementById("nbrFOV").value;
+			if(x>max){document.getElementById("nbrFOV").value=max;}
+			else if(x<min){document.getElementById("nbrFOV").value=min;}
+			var newx=(+x + -1);
+			if(newx<=max && newx>=min){document.getElementById("nbrFOV").value=newx;}
+			Calculation();
+		}
+		function addFov(){
+			var max=50,min=6;
+			var x=document.getElementById("nbrFOV").value;
+			if(x>max){document.getElementById("nbrFOV").value=max;}
+			else if(x<min){document.getElementById("nbrFOV").value=min;}
+			var newx=(1 + +x);
+			if(newx<=max && newx>=min){document.getElementById("nbrFOV").value=newx;}
+			Calculation();
+		}
+		function subFreq(){
+			var max=512,min=96;
+			var x=document.getElementById("nbrFreq").value;
+			if(x>max){document.getElementById("nbrFreq").value=max;}
+			else if(x<min){document.getElementById("nbrFreq").value=min;}
+			var newx=(+x + -16);
+			if(newx<=max && newx>=min){document.getElementById("nbrFreq").value=newx;}
+			Chngmax();
+		}
+		function addFreq(){
+			var max=512,min=96;
+			var x=document.getElementById("nbrFreq").value;
+			if(x>max){document.getElementById("nbrFreq").value=max;}
+			else if(x<min){document.getElementById("nbrFreq").value=min;}
+			var newx=(16 + +x);
+			if(newx<=max && newx>=min){document.getElementById("nbrFreq").value=newx;}
+			Calculation();
+			//addPhase();
+			//Chngmax();
+		}
+		function subPhase(){
+			var x=document.getElementById("nbrPhase").value;
+			var newx=(+x + -16);
+			if(newx<=96){document.getElementById("nbrPhase").value=96;}
+			else {document.getElementById("nbrPhase").value=newx;}
+			Calculation();
+		}
+		function addPhase(){
+			var max=512,min=96;
+			var x=document.getElementById("nbrPhase").value;
+			if(x>max){document.getElementById("nbrPhase").value=max;}
+			else if(x<min){document.getElementById("nbrPhase").value=min;}
+			var newx=(16 + +x);
+			if(newx<=max && newx>=min){document.getElementById("nbrPhase").value=newx;}
+			Chngmax();
+		}
+		function subSthks(){
+			var max=20,min=1.5;
+			var x=document.getElementById("nbrSthks").value;
+			if(x>max){document.getElementById("nbrSthks").value=max;}
+			else if(x<min){document.getElementById("nbrSthks").value=min;}
+			var newx=(+x + -0.1).toFixed(1);
+			if(newx<=max && newx>=min){document.getElementById("nbrSthks").value=newx;}
+			Calculation();
+		}
+		function addSthks(){
+			var max=20,min=1.5;
+			var x=document.getElementById("nbrSthks").value;
+			if(x>max){document.getElementById("nbrSthks").value=max;}
+			else if(x<min){document.getElementById("nbrSthks").value=min;}
+			var newx=(0.1 + +x).toFixed(1);
+			if(newx<=max && newx>=min){document.getElementById("nbrSthks").value=newx;}
+			Calculation();
+		}
+		function subSintr(){
+			var max=5,min=0;
+			var x=document.getElementById("nbrSintr").value;
+			if(x>max){document.getElementById("nbrSintr").value=max;}
+			else if(x<min){document.getElementById("nbrSintr").value=min;}
+			var newx=(+x + -0.1).toFixed(1);
+			if(newx<=max && newx>=min){document.getElementById("nbrSintr").value=newx;}
+			Calculation();
+		}
+		function addSintr(){
+			var max=5,min=0;
+			var x=document.getElementById("nbrSintr").value;
+			if(x>max){document.getElementById("nbrSintr").value=max;}
+			else if(x<min){document.getElementById("nbrSintr").value=min;}
+			var newx=(0.1 + +x).toFixed(1);
+			if(newx<=max && newx>=min){document.getElementById("nbrSintr").value=newx;}
+			Calculation();
+		}
+		function subNofSlc(){
+			var max=40,min=1;
+			var x=document.getElementById("nbrNofSlc").value;
+			if(x>max){document.getElementById("nbrNofSlc").value=max;}
+			else if(x<min){document.getElementById("nbrNofSlc").value=min;}
+			var newx=(+x + -1);
+			if(newx<=max && newx>=min){document.getElementById("nbrNofSlc").value=newx;}
+			Calculation();
+		}
+		function addNofSlc(){
+			var max=40,min=1;
+			var x=document.getElementById("nbrNofSlc").value;
+			if(x>max){document.getElementById("nbrNofSlc").value=max;}
+			else if(x<min){document.getElementById("nbrNofSlc").value=min;}
+			var newx=(1 + +x);
+			if(newx<=max && newx>=min){document.getElementById("nbrNofSlc").value=newx;}
+			Calculation();
+		}
+		function subVarBdw(){
+			var max=60,min=3;
+			var x=document.getElementById("nbrVarBdw").value;
+			if(x>max){document.getElementById("nbrVarBdw").value=max;}
+			else if(x<min){document.getElementById("nbrVarBdw").value=min;}
+			var newx=(+x + -0.05).toFixed(2);
+			if(newx<=max && newx>=min){document.getElementById("nbrVarBdw").value=newx;}
+			CheckRadio(),Calculation();
+		}
+		function addVarBdw(){
+			var max=60,min=3;
+			var x=document.getElementById("nbrVarBdw").value;
+			if(x>max){document.getElementById("nbrVarBdw").value=max;}
+			else if(x<min){document.getElementById("nbrVarBdw").value=min;}
+			var newx=(0.05 + +x).toFixed(2);
+			if(newx<=max && newx>=min){document.getElementById("nbrVarBdw").value=newx;}
+			CheckRadio();
+		}
+		function subTotalBdw(){
+			var max=120,min=6;
+			var x=document.getElementById("nbrTotalBdw").value;
+			if(x>max){document.getElementById("nbrTotalBdw").value=max;}
+			else if(x<min){document.getElementById("nbrTotalBdw").value=min;}
+			var newx=(+x + -0.1).toFixed(1);;
+			if(newx<=max && newx>=min){document.getElementById("nbrTotalBdw").value=newx;}
+			CheckRadio();
+		}
+		function addTotalBdw(){
+			var max=120,min=6;
+			var x=document.getElementById("nbrTotalBdw").value;
+			if(x>max){document.getElementById("nbrTotalBdw").value=max;}
+			else if(x<min){document.getElementById("nbrTotalBdw").value=min;}
+			var newx=(0.1 + +x).toFixed(1);
+			if(newx<=max && newx>=min){document.getElementById("nbrTotalBdw").value=newx;}
+			CheckRadio();
+		}
+		function subBdwppxl(){
+			var max=1000,min=1;
+			var x=document.getElementById("nbrBdwppxl").value;
+			if(x>max){document.getElementById("nbrBdwppxl").value=max;}
+			else if(x<min){document.getElementById("nbrBdwppxl").value=min;}
+			var newx=(+x + -0.1).toFixed(1);;
+			if(newx<=max && newx>=min){document.getElementById("nbrBdwppxl").value=newx;};
+		}
+		function addBdwppxl(){
+			var max=1000,min=1;
+			var x=document.getElementById("nbrBdwppxl").value;
+			if(x>max){document.getElementById("nbrBdwppxl").value=max;}
+			else if(x<min){document.getElementById("nbrBdwppxl").value=min;}
+			var newx=(0.1 + +x).toFixed(1);
+			if(newx<=max && newx>=min){document.getElementById("nbrBdwppxl").value=newx;};
+		}
+		function subNofPixel(){
+			var max=5,min=1;
+			var x=document.getElementById("nbrNofPixel").value;
+			if(x>max){document.getElementById("nbrNofPixel").value=max;}
+			else if(x<min){document.getElementById("nbrNofPixel").value=min;}
+			var newx=(+x + -0.1).toFixed(1);;
+			if(newx<=max && newx>=min){document.getElementById("nbrNofPixel").value=newx;}
+			CheckRadio();
+		}
+		function addNofPixel(){
+			var max=5,min=1;
+			var x=document.getElementById("nbrNofPixel").value;
+			if(x>max){document.getElementById("nbrNofPixel").value=max;}
+			else if(x<min){document.getElementById("nbrNofPixel").value=min;}
+			var newx=(0.1 + +x).toFixed(1);
+			if(newx<=max && newx>=min){document.getElementById("nbrNofPixel").value=newx;}
+			CheckRadio();
+		}
+		function search(event){
+			if(event.keyCode == 13){
+			var xTR=document.getElementById("nbrTR").value;
+			if(xTR==""||xTR<=250){document.getElementById("nbrTR").value=250;Calculation();}
+			else if(xTR>=20000){document.getElementById("nbrTR").value=20000;Calculation();}
+			else{document.getElementById("nbrTR").value=xTR;Calculation();}
+			var xTE=document.getElementById("nbrTE").value;
+			if(xTE==""||xTE<=5){document.getElementById("nbrTE").value=5;Calculation();}
+			else if(xTE>=20000){document.getElementById("nbrTE").value=20000;Calculation();}
+			else{document.getElementById("nbrTE").value=xTE;Calculation();}
+			var xETL=document.getElementById("nbrETL").value;
+			if(xETL==""||xETL<=1){document.getElementById("nbrETL").value=1;Calculation();DsiplaySpinEcho();}
+			else if(xETL>=40){document.getElementById("nbrETL").value=40;Calculation();DsiplaySpinEcho();}
+			else{document.getElementById("nbrETL").value=xETL;Calculation();DsiplaySpinEcho();/*ChangeBlurring();*/}
+			var xNEX=document.getElementById("nbrNEX").value;
+			if(xNEX==""||xNEX<=1){document.getElementById("nbrNEX").value=1;Calculation();}
+			else if(xNEX>=10){document.getElementById("nbrNEX").value=10;Calculation();}
+			else{document.getElementById("nbrNEX").value=xNEX;Calculation();}
+			var xFOV=document.getElementById("nbrFOV").value;
+			if(xFOV==""||xFOV<=6){document.getElementById("nbrFOV").value=6;Calculation();}
+			else if(xFOV>=50){document.getElementById("nbrFOV").value=50;Calculation();}
+			else{document.getElementById("nbrFOV").value=xFOV;Calculation();}
+			var xSthks=document.getElementById("nbrSthks").value;
+			if(xSthks==""||xSthks<=1.5){document.getElementById("nbrSthks").value=1.5;Calculation();}
+			else if(xSthks>=20){document.getElementById("nbrSthks").value=20;Calculation();}
+			else{document.getElementById("nbrSthks").value=xSthks;Calculation();}
+			var xSintr=document.getElementById("nbrSintr").value;
+			if(xSintr==""||xSintr<=0){document.getElementById("nbrSintr").value=0;Calculation();}
+			else if(xSintr>=5){document.getElementById("nbrSintr").value=5;Calculation();}
+			else{document.getElementById("nbrSintr").value=xSintr;Calculation();}
+			var xNofSlc=document.getElementById("nbrNofSlc").value;
+			if(xNofSlc==""||xNofSlc<=1){document.getElementById("nbrNofSlc").value=1;Calculation();}
+			else if(xNofSlc>=40){document.getElementById("nbrNofSlc").value=40;Calculation();}
+			else{document.getElementById("nbrNofSlc").value=xNofSlc;Calculation();}
+			var xVarBdw=document.getElementById("nbrVarBdw").value;
+			if(xVarBdw==""||xVarBdw<=3){document.getElementById("nbrVarBdw").value=3;CheckRadio();}
+			else if(xVarBdw>=60){document.getElementById("nbrVarBdw").value=60;CheckRadio();}
+			else{document.getElementById("nbrVarBdw").value=xVarBdw;CheckRadio();}
+			var xTotalBdw=document.getElementById("nbrTotalBdw").value;
+			if(xTotalBdw==""||xTotalBdw<=6){document.getElementById("nbrTotalBdw").value=6;CheckRadio();}
+			else if(xTotalBdw>=120){document.getElementById("nbrTotalBdw").value=120;CheckRadio();}
+			else{document.getElementById("nbrTotalBdw").value=xTotalBdw;CheckRadio();}
+			var xBdwppxl=document.getElementById("nbrBdwppxl").value;
+			if(xBdwppxl==""||xBdwppxl<=1){document.getElementById("nbrBdwppxl").value=1;;}
+			else if(xBdwppxl>=1000){document.getElementById("nbrBdwppxl").value=1000;;}
+			else{document.getElementById("nbrBdwppxl").value=xBdwppxl;;}
+			var xNofPixel=document.getElementById("nbrNofPixel").value;
+			if(xNofPixel==""||xNofPixel<=1){document.getElementById("nbrNofPixel").value=1;CheckRadio();}
+			else if(xNofPixel>=5){document.getElementById("nbrNofPixel").value=5;CheckRadio();}
+			else{document.getElementById("nbrNofPixel").value=xNofPixel;CheckRadio();}		 
+			}	
+		}
+		function isNumber(evt) {
+			evt=(evt)?evt:window.event;
+			var charCode=(evt.which)?evt.which:evt.keyCode;
+			if (charCode>31 && (charCode<48 || charCode>57)){return false;}
+			return true;
+		}
+		function showTip(){
+			document.getElementById("overlay").style.display = "inline";
+			document.getElementById("popup").style.display="inline";
+			document.getElementById("btnClosetip").style.display="inline";
+		}
+		function closeTip(){
+			document.getElementById("overlay").style.display = "none";
+			document.getElementById("popup").style.display="none";
+			document.getElementById("btnClosetip").style.display="none";
+		}
+		document.addEventListener('mouseup', function(e) {
+		var overlay = document.getElementById('overlay');
+		var closepopup = document.getElementById('popup');
+		var btclosetip = document.getElementById('btnClosetip');
+		if (!closepopup.contains(e.target)) {
+			closepopup.style.display = 'none';
+			btclosetip.style.display = 'none';
+			overlay.style.display = 'none';
+		}
+		});
+		function preload(){
+			var images = new Array();
+			function preload() {
+				for (i=0;i<preload.arguments.length;i++) {
+					images[i]=new Image();
+					images[i].src=preload.arguments[i];
+				}
+			}
+			preload("backgrd.png","backgrdCase7.png","1.png","2.png","3.png","4.png","5.png","6.png","7.png","8.png","9.png","10.png","11.png","12.png","13.png","14.png","15.png","16.png","17.png","18.png","19.png","20.png","21.png","22.png","23.png","24.png","25.png","26.png","27.png","28.png","29.png","30.png","31.png","32.png","33.png","34.png","35.png","36.png","37.png","38.png","39.png","40.png");	
+		}
+
+		function changeAppearance() {
+		const dropdown = document.getElementById("manufactorDrp");
+		const selectedValue = dropdown.value;
+
+		// Select containers individually
+		const menuBarContainer = document.querySelector('.mp-zero-container');
+		const topContainer = document.querySelector('.top-container');
+		const bottomContainer = document.querySelector('.bottom-container');
+		const drpManufactor = document.querySelector('#manufactorDrp');
+		
+		const paramContainers = document.querySelectorAll('.mp-box-container');
+		const paramInputs = document.querySelectorAll('.mp-input-button, .mp-input-button input, .mp-input-button select');
+		const nbrSlices = document.querySelectorAll('.lblDisplayMaxnbSlices');
+		const imgBorders = document.querySelectorAll('.mp-image-container');
+
+		if (!dropdown) {
+			console.error("Dropdown not found.");
+			return;
+		}
+
+		let menuBarColor, topContainerColor, bottomContainerColor, manufactorDrpColor, 
+			paramContainerColor, inputColor, sliceBorderColor, sliceBackgroundColor, borderColor;
+
+		// switch (selectedValue) {
+		// 	case "Siemens":
+		// 	menuBarColor = "#161824";
+		// 		topContainerColor = "#1d1f2e";
+		// 		bottomContainerColor = "#161824";
+		// 		manufactorDrpColor = "#222538";
+		// 		paramContainerColor = "#222538";
+		// 		inputColor = "#3b4163";
+		// 		sliceBorderColor = "1px solid #0ac154";
+		// 		sliceBackgroundColor = "#276d47";
+		// 		borderColor = "2px solid #6773a7";
+		// 		break;
+		// 	case "Philips":
+		// 	menuBarColor = "#161824";
+		// 		topContainerColor = "#1d1f2e";
+		// 		bottomContainerColor = "#161824";
+		// 		manufactorDrpColor = "#222538";
+		// 		paramContainerColor = "#222538";
+		// 		inputColor = "#3b4163";
+		// 		sliceBorderColor = "1px solid #0ac154";
+		// 		sliceBackgroundColor = "#276d47";
+		// 		borderColor = "2px solid #6773a7";
+		// 		break;
+		// 	case "Canon":
+		// 	menuBarColor = "#161824";
+		// 		topContainerColor = "#1d1f2e";
+		// 		bottomContainerColor = "#161824";
+		// 		manufactorDrpColor = "#222538";
+		// 		paramContainerColor = "#222538";
+		// 		inputColor = "#3b4163";
+		// 		sliceBorderColor = "1px solid #0ac154";
+		// 		sliceBackgroundColor = "#276d47";
+		// 		borderColor = "2px solid #6773a7";
+		// 		break;
+		// 	case "GE":
+		// 		menuBarColor = "#161824";
+		// 		topContainerColor = "#1d1f2e";
+		// 		bottomContainerColor = "#161824";
+		// 		manufactorDrpColor = "#222538";
+		// 		paramContainerColor = "#222538";
+		// 		inputColor = "#3b4163";
+		// 		sliceBorderColor = "1px solid #0ac154";
+		// 		sliceBackgroundColor = "#276d47";
+		// 		borderColor = "2px solid #6773a7";
+		// 		break;
+		// 	default:
+		// 	menuBarColor = "#161824";
+		// 		topContainerColor = "#1d1f2e";
+		// 		bottomContainerColor = "#161824";
+		// 		manufactorDrpColor = "#222538";
+		// 		paramContainerColor = "#222538";
+		// 		inputColor = "#3b4163";
+		// 		sliceBorderColor = "1px solid #0ac154";
+		// 		sliceBackgroundColor = "#276d47";
+		// 		borderColor = "2px solid #6773a7";
+		// }
+
+		if (menuBarContainer) menuBarContainer.style.backgroundColor = menuBarColor;
+		if (topContainer) topContainer.style.backgroundColor = topContainerColor;
+		if (bottomContainer) bottomContainer.style.backgroundColor = bottomContainerColor;
+		if (drpManufactor) drpManufactor.style.backgroundColor = manufactorDrpColor;
+
+		paramContainers.forEach(paramContainer => {
+			paramContainer.style.backgroundColor = paramContainerColor;
+		});
+
+		paramInputs.forEach(paramInput => {
+			paramInput.style.backgroundColor = inputColor;
+		});
+
+		nbrSlices.forEach(nbrSlice => {
+			nbrSlice.style.border = sliceBorderColor;
+			nbrSlice.style.backgroundColor = sliceBackgroundColor;
+		});
+
+		imgBorders.forEach(imgBorder => {
+			imgBorder.style.border = borderColor;
+		});
+
+		const labelMappings = {
+			Siemens: {
+				lbTR: "TR",
+				lbTSE: "TSE /EG",
+				lbTF: "FT",
+				lbTI: "TI",
+				lbTE: "TE",
+				lbNEX: "moyenne",
+				lbConcat: "Concat",
+				lblBdwppxl: "Bandwidth Hz / pixel",
+				lblSthks: "Epaisseur de coupe",
+				lblFacDist: "Facteur distance",
+				lblNofSlc: "Nombre de coupes",
+				lblDirPhase: "Dir encodage de phase",
+				lblSurech: "Suréchantillonnage %",
+				lblFovLect: "FOV lecture (mm)",
+				lblFovPhase: "FOV Phase %",
+				lblMatriceFreq: "Matrice en fréquence",
+				lblMatricePhase: "Matrice en phase",
+				lblSat: "SAT",
+				lblPat: "Acc",
+				AccLabel: "GRAPPA"
+			},
+			GE: {
+				lbTR: "TR",
+				lbTSE: "FSE /EG",
+				lbTF: "ETL",
+				lbTI: "TI",
+				lbTE: "TE",
+				lbNEX: "NEX",
+				lbConcat: "Concat",
+				lblBdwppxl: "BDW Total en KHz",
+				lblSthks: "Epaisseur de coupe",
+				lblFacDist: "Facteur distance",
+				lblNofSlc: "Nombre de coupes",
+				lblDirPhase: "Dir encodage de phase",
+				lblSurech: "Suréchantillonnage %",
+				lblFovLect: "FOV lecture (cm)",
+				lblFovPhase: "Asymmetric FOV %",
+				lblMatriceFreq: "Matrice en fréquence",
+				lblMatricePhase: "Matrice en phase",
+				lblSat: "SAT",
+				lblPat: "Acc",
+				AccLabel: "ARC",
+			},
+			Philips: {
+				lbTR: "TR",
+				lbTSE: "TSE /EG",
+				lbTF: "FT",
+				lbTI: "TI",
+				lbTE: "TE",
+				lbNEX: "NSA",
+				lbConcat: "Concat",
+				lblBdwppxl: "Nombre pixels de déplacement chimique",
+				lblSthks: "Epaisseur de coupe",
+				lblFacDist: "Facteur distance",
+				lblNofSlc: "Nombre de coupes",
+				lblDirPhase: "Dir encodage de phase",
+				lblSurech: "Suréchantillonnage %",
+				lblFovLect: "FOV lecture (mm)",
+				lblFovPhase: "Rectangular FOV %",
+				lblMatriceFreq: "Matrice en fréquence",
+				lblMatricePhase: "Matrice en phase",
+				lblSat: "SAT",
+				lblPat: "PAT",
+				AccLabel: "Sense"
+			},
+			Canon: {
+				lbTR: "TR",
+				lbTSE: "TSE /EG",
+				lbTF: "ETL",
+				lbTI: "TI",
+				lbTE: "TE",
+				lbNEX: "NAQ",
+				lbConcat: "Concat",
+				lblBdwppxl: "Bandwidth Hz / pixel",
+				lblSthks: "Epaisseur de coupe",
+				lblFacDist: "Facteur distance",
+				lblNofSlc: "Nombre de coupes",
+				lblDirPhase: "Dir encodage de phase",
+				lblSurech: "Suréchantillonnage %",
+				lblFovLect: "FOV lecture (mm)",
+				lblFovPhase: "Rectangular FOV %",
+				lblMatriceFreq: "Matrice en fréquence",
+				lblMatricePhase: "Matrice en phase",
+				lblSat: "SAT",
+				lblPat: "PAT",
+				AccLabel: "Sense"
+			}
+		};
+
+		const selectedLabels = labelMappings[selectedValue];
+		for (const [id, text] of Object.entries(selectedLabels)) {
+			const labelElement = document.getElementById(id);
+			if (labelElement) {
+				labelElement.textContent = text;
+			}
+		}
+
+
+	}
+
+
+	function showLight(color) {
+    const glow = document.getElementById("glowLight");
+    glow.style.opacity = "1";
+
+    if (color === "green") {
+        glow.src = "images/main-images/green-light.png";
+    } else if (color === "yellow") {
+        glow.src = "images/main-images/yellow-light.png";
+    } else if (color === "red") {
+        glow.src = "images/main-images/red-light.png";
+    }
+}
+
+// Function need to update the UI structure and calculate the value of new parameters
+// function updateETLLabel() {
+//     const selectElement = document.getElementById("selectFSEEG");
+//     const labelTF = document.getElementById("lbTF");
+//     const etlInput = document.getElementById("nbrETL");
+
+//     if (!selectElement || !labelTF || !etlInput) return;
+
+//     const selectedValue = selectElement.value;
+
+//     if (selectedValue === "FSE") {
+//         labelTF.innerText = "ETL"; 
+//         etlInput.value = 13; 
+//         etlInput.disabled = false; 
+//     } else if (selectedValue === "EG") {
+//         labelTF.innerText = "Angle de bascule"; 
+//         etlInput.value = 90; 
+//         etlInput.disabled = false;
+//     }
+
+//     calculateValue();
+// }
+
+// // Function to calculate but still not done
+// function calculateValue() {
+//     const selectElement = document.getElementById("selectFSEEG");
+//     const etlInput = document.getElementById("nbrETL");
+//     const resultDisplay = document.getElementById("calculationResult");
+
+//     if (!selectElement || !etlInput || !resultDisplay) return;
+
+//     const selectedValue = selectElement.value;
+//     let result;
+
+//     if (selectedValue === "FSE") {
+//         let ETL = parseFloat(etlInput.value);
+//         result = ETL * 2; 
+//         resultDisplay.innerText = `ETL Calculation Result: ${result}`;
+//     } else if (selectedValue === "EG") {
+      
+//         let angle = parseFloat(etlInput.value);
+//         result = Math.sin(angle * (Math.PI / 180)); 
+//         resultDisplay.innerText = `Angle de Bascule Result: ${result.toFixed(2)}`;
+//     }
+// }
+
+// document.getElementById("selectFSEEG")?.addEventListener("change", updateETLLabel);
+// document.getElementById("nbrETL")?.addEventListener("input", calculateValue);
+
+
+	</script>
+</head>
+<body onload="preload();CheckCases('case1');DsiplaySpinEcho();Calculation();DisplayValues('case1');" class="container" style="font-family:helvetica;">
+	<div id="BigTab">
+	   <div class="mp-zero-container">
+		  <img id="logo" src="logo.png"/>
+		  <div class="mp-items-measure">
+			 <!-- <label>Cases</label> -->
+			 <div class="mp-input-button mp-input-button-select custom-label mp-custom-select">
+				<select class="tabs-menu" id="caseDrp" onchange="CheckCases(this.value);Calculation();DisplayValues(this.value);">
+				   <option id="btnCase1" value="case1" onclick="CheckCases(this.value);Calculation();DisplayValues(this.value);" class="current" style="-moz-user-select: none;user-select:none;width:105px">Cas N&deg; 1</option>
+				   <option id="btnCase2" value="case2" onclick="CheckCases(this.value);Calculation();DisplayValues(this.value);" class="" style="-moz-user-select: none;user-select:none;width:105px">Cas N&deg; 2</option>
+				   <option id="btnCase3" value="case3" onclick="CheckCases(this.value);Calculation();DisplayValues(this.value);" class="" style="-moz-user-select: none;user-select:none;width:105px">Cas N&deg; 3</option>
+				   <option id="btnCase4" value="case4" onclick="CheckCases(this.value);Calculation();DisplayValues(this.value);" class="" style="-moz-user-select: none;user-select:none;width:105px">Cas N&deg; 4</option>
+				   <option id="btnCase5" value="case5" onclick="CheckCases(this.value);Calculation();DisplayValues(this.value);" class="" style="-moz-user-select: none;user-select:none;width:105px">Cas N&deg; 5</option>
+				   <option id="btnCase6" value="case6" onclick="CheckCases(this.value);Calculation();DisplayValues(this.value);" class="" style="-moz-user-select: none;user-select:none;width:105px">Cas N&deg; 6</option>
+				   <option id="btnCase7" value="case7" onclick="CheckCases(this.value);Calculation();DisplayValues(this.value);" class="" style="-moz-user-select: none;user-select:none;width:198px">Paramétrages libres</option>
+				</select>
+			 </div>
+		  </div>
+		  <div id="lblDisplayEch">
+			<p id="lblQuestion" class="case-question">Pour cette séquence  Spin Echo Rapide, vous avez besoin de 20 coupes seulement, la machine en autorise 24. Comment optimiser les réglages afin de profiter de la marge de manoeuvre pour gagner du temps sans changer la pondération, la couverture anatomique ni la résolution spatiale?</p>
+		  </div>
+		  <div class="hint-icon">
+			<img src="hint.png" alt="" id="btnTip" onclick="showTip();">
+		  </div>
+		  <div id="overlay" style="display: none;">
+		  <div id="popup">
+			<div id="popupContent">
+				<!-- Message will go here, from js code will be generated -->
+			  </div>
+				<button id="btnClosetip" class="btn-close" onclick="closeTip()" style="display: none;">X</button>
+		</div>
+	</div>
+		  <div class="mp-items-measure">
+			 <!-- <label>Machine</label> -->
+			 <div class="mp-input-button mp-input-button-select mp-custom-select">
+				<select id="manufactorDrp" onchange="changeAppearance()">
+					<option value="GE" selected>GE</option>
+				   <option value="Siemens">Siemens</option>
+				   <option value="Philips">Philips</option>
+				   <option value="Canon">Canon</option>
+				</select>
+			 </div>
+		  </div>
+	   </div>
+	   <div id="top-container" class="top-container">
+		  <div class="mp-One-container-flex">
+			 <div class="mp-image-container">
+				<img id="sagImage" src="images/ax-t1/200.jpeg" alt="p1">
+			 </div>
+			 <div class="mp-image-container">
+				<img id="corImage" src="images/ax-t1/200.jpeg" alt="p2">
+			 </div>
+			 <div class="mp-image-container" id="custom-highlight" >
+				<!-- <img id="axlImage" src="images/ax-t1/200.jpeg" alt="p3"> -->
+				 <div id="tabcrane">
+					<!-- <img id="picBackgrd" src="bck.png"> -->
+					<div class="svg-container">
+								<svg xmlns="http://www.w3.org/2000/svg" id="pic1" viewBox="0 0 208 208" color-interpolation-filters="sRGB">
+									<filter id="pixelate" x="0" y="0">
+										<feFlood x="0" y="0" height="3" width="3" id="svgFlood1"/>
+										<feComposite width="4" height="4"/>
+										<feTile result="a"/>
+										<feComposite in="SourceGraphic" in2="a" operator="in"/>
+										<feMorphology operator="dilate" radius="2" id="svgr0"/>
+									</filter>
+									
+									<filter id="blurFilter">
+										<feGaussianBlur in="SourceGraphic" stdDeviation="0" id="bf1" operator="in"/>
+									</filter>
+									
+									<g  id="g0"  filter="url(#blurFilter)" transform="scale(1.0)" transform-origin="center">
+										<g filter="url(#pixelate)">	
+											<image xlink:href="black.png" width="208px" height="208px"preserveAspectRatio="none" ></image>
+										</g>
+									</g>
+								</svg>
+				    </div>
+							<div class="svg-container">
+								<svg xmlns="http://www.w3.org/2000/svg" id="pic4" viewBox="0 0 208 208" color-interpolation-filters="sRGB">
+									<filter id="pixelate" x="0" y="0">
+										<feFlood x="0" y="0" height="3" width="3" id="svgFlood1"/>
+										<feComposite width="4" height="4"/>
+										<feTile result="a"/>
+										<feComposite in="SourceGraphic" in2="a" operator="in"/>
+										<feMorphology operator="dilate" radius="2" id="svgr1"/>
+									</filter>	
+									<filter id="invertpic4">
+										<feComponentTransfer>
+											<feFuncR type="table" tableValues="0 0" id="comppic1"></feFuncR>
+											<feFuncG type="table" tableValues="0 0" id="comppic2"></feFuncG>
+											<feFuncB type="table" tableValues="0 0" id="comppic3"></feFuncB>
+										</feComponentTransfer>
+									</filter>
+									
+									<filter id="blurFilter">
+										<feGaussianBlur in="SourceGraphic" stdDeviation="0" id="bf1" operator="in"/>
+									</filter>
+									<g id="g1" filter="url(#blurFilter)" transform="scale(1.0)" transform-origin="center"> 
+										<g filter="url(#pixelate)">
+											<image xlink:href="white.png" filter="url(#invertpic4)" width="208px" height="208px" preserveAspectRatio="none"></image>
+										</g>
+									</g>
+								</svg>
+							</div>
+							<div class="svg-container">
+								<svg xmlns="http://www.w3.org/2000/svg" id="picfat" viewBox="0 0 208 208" color-interpolation-filters="sRGB">
+									<filter id="pixelate" x="0" y="0">
+										<feFlood x="0" y="0" height="3" width="3" id="svgFlood1"/>
+										<feComposite width="4" height="4"/>
+										<feTile result="a"/>
+										<feComposite in="SourceGraphic" in2="a" operator="in"/>
+										<feMorphology operator="dilate" radius="2" id="svgr2"/>
+									</filter>
+									
+									<filter id="invertpicfat">
+										<feComponentTransfer>
+											<feFuncR type="table" tableValues="0 0" id="comppic4"></feFuncR>
+											<feFuncG type="table" tableValues="0 0" id="comppic5"></feFuncG>
+											<feFuncB type="table" tableValues="0 0" id="comppic6"></feFuncB>
+										</feComponentTransfer>
+									</filter>
+									
+									<filter id="blurFilter">
+										<feGaussianBlur in="SourceGraphic" stdDeviation="0" id="bf1"/>
+									</filter>
+									  
+									<g id="g2" filter="url(#blurFilter)" transform="scale(1.0)" transform-origin="center"> 
+										<g filter="url(#pixelate)">
+											<image xlink:href="fat.png" filter="url(#invertpicfat)" width="208px" height="208px" preserveAspectRatio="none" ></image>
+										</g>
+									</g>
+								</svg>
+							</div>
+							<div class="svg-container">
+								<svg xmlns="http://www.w3.org/2000/svg" id="picwatter" viewBox="0 0 208 208" color-interpolation-filters="sRGB">
+									<filter id="pixelate" x="0" y="0">
+										<feFlood x="0" y="0" height="3" width="3" id="svgFlood1"/>
+										<feComposite width="4" height="4"/>
+										<feTile result="a"/>
+										<feComposite in="SourceGraphic" in2="a" operator="in"/>
+										<feMorphology operator="dilate" radius="2" id="svgr3"/>
+									</filter>
+									
+									<filter id="invertpicwatter">
+										<feComponentTransfer>
+											<feFuncR type="table" tableValues="0 0" id="comppic7"></feFuncR>
+											<feFuncG type="table" tableValues="0 0" id="comppic8"></feFuncG>
+											<feFuncB type="table" tableValues="0 0" id="comppic9"></feFuncB>
+										</feComponentTransfer>
+									</filter>
+									
+									<filter id="blurFilter">
+										<feGaussianBlur in="SourceGraphic" stdDeviation="0" id="bf1"/>
+									</filter>
+									
+									<g id="g3" filter="url(#blurFilter)" transform="scale(1.0)" transform-origin="center"> 
+										<g filter="url(#pixelate)">
+											<image xlink:href="watter.png" filter="url(#invertpicwatter)" width="208px" height="208px" preserveAspectRatio="none"></image>
+										</g>	
+									</g>
+								</svg>
+							</div>
+							<div class="svg-container">
+								<svg xmlns="http://www.w3.org/2000/svg" id="picwmatter" viewBox="0 0 208 208" color-interpolation-filters="sRGB">
+									<filter id="pixelate" x="0" y="0">
+										<feFlood x="0" y="0" height="3" width="3" id="svgFlood1"/>
+										<feComposite width="4" height="4"/>
+										<feTile result="a"/>
+										<feComposite in="SourceGraphic" in2="a" operator="in"/>
+										<feMorphology operator="dilate" radius="2" id="svgr4" />
+									</filter>
+									
+									<filter id="invertpicwmatter">
+										<feComponentTransfer>
+											<feFuncR type="table" tableValues="0 0" id="comppic16"></feFuncR>
+											<feFuncG type="table" tableValues="0 0" id="comppic17"></feFuncG>
+											<feFuncB type="table" tableValues="0 0" id="comppic18"></feFuncB>
+										</feComponentTransfer>
+									</filter>
+									
+									<filter id="blurFilter">
+										<feGaussianBlur in="SourceGraphic" stdDeviation="0" id="bf1"/>
+									</filter>
+									
+									<g id="g4" filter="url(#blurFilter)" transform="scale(1.0)" transform-origin="center"> 
+										<g filter="url(#pixelate)">
+											<image xlink:href="wmatter.png" filter="url(#invertpicwmatter)" width="208px" height="208px" preserveAspectRatio="none"></image>
+										</g>
+									</g>
+								</svg>
+							</div>
+							<div class="svg-container">
+								<svg xmlns="http://www.w3.org/2000/svg" id="picwater" viewBox="0 0 208 208" color-interpolation-filters="sRGB">
+									<filter id="pixelate" x="0" y="0">
+										<feFlood x="0" y="0" height="3" width="3" id="svgFlood1"/>
+										<feComposite width="4" height="4"/>
+										<feTile result="a"/>
+										<feComposite in="SourceGraphic" in2="a" operator="in"/>
+										<feMorphology operator="dilate" radius="2" id="svgr5"/>
+									</filter>
+									
+									<filter id="invertpicwater">
+										<feComponentTransfer>
+											<feFuncR type="table" tableValues="0 0" id="comppic10"></feFuncR>
+											<feFuncG type="table" tableValues="0 0" id="comppic11"></feFuncG>
+											<feFuncB type="table" tableValues="0 0" id="comppic12"></feFuncB>
+										</feComponentTransfer>
+									</filter>
+									
+									<filter id="blurFilter">
+										<feGaussianBlur in="SourceGraphic" stdDeviation="0" id="bf1"/>
+									</filter>
+									
+									<g id="g5" filter="url(#blurFilter)" transform="scale(1.0)" transform-origin="center"> 
+										<g filter="url(#pixelate)">
+											<image xlink:href="water.png" filter="url(#invertpicwater)" width="208px" height="208px" preserveAspectRatio="none"></image>
+										</g>
+									</g>
+								</svg>
+							</div>
+							<div class="svg-container">
+								<svg xmlns="http://www.w3.org/2000/svg" id="picgrey" viewBox="0 0 208 208" color-interpolation-filters="sRGB">
+									<filter id="pixelate" x="0" y="0">
+										<feFlood x="0" y="0" height="3" width="3" id="svgFlood1"/>
+										<feComposite width="4" height="4"/>
+										<feTile result="a"/>
+										<feComposite in="SourceGraphic" in2="a" operator="in"/>
+										<feMorphology operator="dilate" radius="2" id="svgr6"/>
+									</filter>
+									
+									<filter id="invertpicgrey">
+										<feComponentTransfer>
+											<feFuncR type="table" tableValues="0 0" id="comppic13"></feFuncR>
+											<feFuncG type="table" tableValues="0 0" id="comppic14"></feFuncG>
+											<feFuncB type="table" tableValues="0 0" id="comppic15"></feFuncB>
+										</feComponentTransfer>
+									</filter>
+									
+									<filter id="blurFilter">
+										<feGaussianBlur in="SourceGraphic" stdDeviation="0" id="bf1"/>
+									</filter>
+									
+									<g id="g6" filter="url(#blurFilter)" transform="scale(1.0)" transform-origin="center"> 
+										<g filter="url(#pixelate)">
+											<image xlink:href="grey.png" filter="url(#invertpicgrey)" width="208px" height="208px" preserveAspectRatio="none"></image>
+										</g>
+									</g>
+								</svg>
+							</div>
+				 </div>
+			 </div>
+			 <!-- result -->
+			 <!-- <div class="mp-result-container" id="tabResult">
+				<h2>Résultat</h2>
+				<img id="imageLights" src="images/main-images/Full-3-lights.png" alt="Three-lights">
+				Delete the label or comment it out
+				<label id="lblDisplayResults" style="font-size:20px"></label>
+				<div><button id="btnresult" style="height:30px;cursor:pointer;-moz-user-select: none;user-select:none;" onclick="ResultFeedback()">Valider</button></div>
+			 </div> -->
+			 <div class="mp-result-container" id="tabResult">
+				<h2>Résultat</h2>
+			
+				<div class="light-wrapper">
+					<img id="imageLights" src="images/main-images/Full-3-lights.png" alt="Three-lights">
+					<img id="glowLight" class="overlay-light" src="" alt="Result Light">
+				</div>
+			
+				<div class="btn-flex">
+					<button id="btnresult" class="Btn-validate" onclick="ResultFeedback()">Valider</button>
+					<button id="btnReset" class="hide Btn-validate" onclick="ResetRSB()">Réinitialiser</button>
+				</div>
+			</div>
+			 
+		  </div>
+		  <!-- Second Row five containers includes icon boxes component abd inout fields  START-->
+		  <div class="mp-second-container-flex">
+			 <div class="mp-icon-input-box">
+				<div class="mp-icon-box">
+				   <img src="Timer-icon.png" alt="Timer-icon">
+				   <p>Temps d'acquisition</p>
+				</div>
+				<span><label id="lblDisplayAcqTime"></label></span>
+			 </div>
+			 <div class="mp-icon-input-box">
+				<div class="mp-icon-box">
+				   <img src="Accelaration-icon.png" alt="Accelaration-icon">
+				   <p>Facteur d’accélération</p>
+				</div>
+				<span><label>0</label></span>
+			 </div>
+			 <div class="mp-icon-input-box">
+				<div class="mp-icon-box">
+				   <img src="Volume-icon.png" alt="volume-icon">
+				   <p>Volume de voxel</p>
+				</div>
+				<span><label id="lblDisplayVoxelSize"></label><sup>3</sup></span>
+			 </div>
+			 <div class="mp-icon-input-box">
+				<div class="mp-icon-box">
+				   <img src="Wifi-icon.png" alt="wifi-icon">
+				   <p>S/B rel %.</p>
+				</div>
+				<span><label id="lblDisplaySNR"></label></span>
+			 </div>
+			 <div class="mp-icon-input-box-last">
+				<div class="mp-icon-box-last">
+				   <img src="temp.png" alt="Meter">
+				   <!-- <p>SAR</p> -->
+				   <span><label>Mode Normal</label></span>
+				</div>
+			 </div>
+		  </div>
+	   </div>
+	   <!-- END -->
+	   <!-- Tables section start -->
+	   <div id="bottom-container" class="bottom-container">
+		  <div class="mp-flex-con-three" id="tab1">
+			<!-- Third container Start -->
+			<div class="mp-box-container" id="custom-third">
+				<div class="mp-column-con">
+				   <div class="mp-items-measure">
+					  <label id="lblFovLect"> FoV Lecture (mm)</label>
+					  <div class="mp-input-button">
+						 <input type="number" id='nbrFOV' value="24" onkeydown="search(event)"  onkeypress="return isNumber(event)"/>
+						 <div class="mp-buttons">
+							<button onclick="addFov()"><i class="fa-solid fa-angle-up"></i></button>
+							<button onclick="subFov()"><i class="fa-solid fa-angle-down"></i></button>
+						 </div>
+					  </div>
+				   </div>
+				   <div class="mp-items-measure">
+					  <label id="lblFovPhase">FoV Phase % (mm)</label>
+					  <div class="mp-input-button" style="cursor: no-drop; background-color: #3b41632d;">
+						 <input id="nbrFovPhase" type="number" value="100" onkeydown="search(event)" onkeypress="return isNumber(event)" style="pointer-events: none; background-color: #3b416300;"/>
+						 <div class="mp-buttons" style="pointer-events: none;">
+							<button><i class="fa-solid fa-angle-up"></i></button>
+							<button><i class="fa-solid fa-angle-down"></i></button>
+						 </div>
+					  </div>
+				   </div>
+				   <div class="mp-items-measure">
+					  <label id="lblMatriceFreq">Matrice en fréquence</label>
+					  <div class="mp-input-button">
+						 <input type="number" id='nbrFreq' value="320" onkeydown="search(event)"  onkeypress="return isNumber(event)"/>
+						 <div class="mp-buttons">
+							<button onclick='addFreq()'><i class="fa-solid fa-angle-up"></i></button>
+							<button onclick='subFreq()'><i class="fa-solid fa-angle-down"></i></button>
+						 </div>
+					  </div>
+				   </div>
+				   <div class="mp-items-measure">
+					  <label id="lblMatricePhase">Matrice en phase</label>
+					  <div class="mp-input-button">
+						 <input type="number" id='nbrPhase' value="320" onkeydown="search(event)"  onkeypress="return isNumber(event)"/>
+						 <div class="mp-buttons">
+							<button onclick='addPhase()'><i class="fa-solid fa-angle-up"></i></button>
+							<button onclick='subPhase()'><i class="fa-solid fa-angle-down"></i></button>
+						 </div>
+					  </div>
+				   </div>
+				</div>
+			 </div>
+			 <!-- End container Start -->
+			 <div class="mp-box-container">
+				<div class="mp-column-con">
+				   <div class="mp-items-measure">
+					  <label id="lbTR">TR</label>
+					  <div class="mp-input-button">
+						 <input type="number" id="nbrTR" value="3000" onkeydown="search(event)"  onkeypress="return isNumber(event)"/>
+						 <div class="mp-buttons">
+							<button onclick="addTR()"><i class="fa-solid fa-angle-up"></i></button>
+							<button onclick="subTR()"><i class="fa-solid fa-angle-down"></i></button>
+						 </div>
+					  </div>
+				   </div>
+				   <!-- <div class="mp-items-measure">
+					  <label id="lbTSE">TSE / EG</label>
+					  <div class="mp-input-button mp-input-button-select">
+						 <select>
+							<option value="ft" selected>FT</option>
+							<option value="alpha">α</option>
+						 </select>
+					  </div>
+				   </div>
+				   <div class="mp-items-measure">
+					  <label id="lbTF">TF/ETL</label>
+					  <div class="mp-input-button">
+						 <input type="number" id='nbrETL' value="13" onkeydown="search(event)"  onkeypress="return isNumber(event)"/>
+						 <div class="mp-buttons">
+							<button onclick='addETL()'><i class="fa-solid fa-angle-up"></i></button>
+							<button onclick="subETL()"><i class="fa-solid fa-angle-down"></i></button>
+						 </div>
+					  </div>
+				   </div> -->
+				   <div class="mp-items-measure">
+					<label id="lbTSE">FSE / EG</label>
+					<div class="mp-input-button mp-input-button-select mp-custom-select" style="cursor: no-drop; background-color: #3b416318;">
+						<select id="selectFSEEG" style="pointer-events: none; background-color: #3b41632d;">
+							<option value="FSE" selected>FSE</option>
+							<option value="EG">EG</option>
+						</select>
+					</div>
+				</div>
+				
+				<div class="mp-items-measure">
+					<label id="lbTF">ETL</label>
+					<div class="mp-input-button">
+						<input type="number" id="nbrETL" value="13" />
+						<div class="mp-buttons">
+							<button onclick="addETL()"><i class="fa-solid fa-angle-up"></i></button>
+							<button onclick="subETL()"><i class="fa-solid fa-angle-down"></i></button>
+						</div>
+					</div>
+				</div>
+				
+				   <div class="mp-items-measure">
+					  <label id="lbTI">TI</label>
+					  <div class="mp-input-button mp-input-button-select mp-custom-select" style="cursor: no-drop; background-color: #3b416318;">
+						<select id="nbrTI" style="pointer-events: none; background-color: #3b41632d;">
+							<option selected>Off</option>
+							<option >On</option> 
+						</select>
+					</div>
+				   </div>
+				</div>
+				<!-- End First column -->
+				<!-- Start Second column -->
+				<div class="mp-column-con">
+				   <div class="mp-items-measure custom-margin-left">
+					  
+					  <label id="lbTE">TE</label>
+					  <div class="mp-input-button">
+						 <input type="number" id='nbrTE' value="90" onkeydown="search(event)"  onkeypress="return isNumber(event)"/>
+						 <div class="mp-buttons">
+							<button onclick="addTE()"><i class="fa-solid fa-angle-up"></i></button>
+							<button onclick="subTE()"><i class="fa-solid fa-angle-down"></i></button>
+						 </div>
+					  </div>
+				   </div>
+				   <div class="mp-items-measure custom-margin-left">
+					  
+					  <label id="lbNEX">NEX</label>
+					  <div class="mp-input-button">
+						 <input type="number" id='nbrNEX' value="2"  onkeydown="search(event)"  onkeypress="return isNumber(event)"/>
+						 <div class="mp-buttons">
+							<button onclick='addNEX()'><i class="fa-solid fa-angle-up"></i></button>
+							<button onclick='subNEX()'><i class="fa-solid fa-angle-down"></i></button>
+						 </div>
+					  </div>
+				   </div>
+				   <div class="mp-items-measure custom-margin-left">
+					  
+					  <label id="lbConcat">Concat</label>
+					  <div class="mp-input-button" style="cursor: no-drop; background-color: #3b41632d;">
+						 <input id="nbrConcat" type="number" value="1" style="pointer-events: none; background-color: #3b416300;"/>
+						 <div class="mp-buttons" style="pointer-events: none;">
+							<button><i class="fa-solid fa-angle-up"></i></button>
+							<button><i class="fa-solid fa-angle-down"></i></button>
+						 </div>
+					  </div>
+				   </div>
+				   <div class="mp-items-measure" id="bdwPerPixelContainer">
+					   <label id="lblBdwppxl">BDW par pixel</label>
+					<div class="mp-input-button">
+					   <input type="number" id='nbrBdwppxl' value="93.8" onkeydown="search(event)"  onkeypress="return isNumber(event)"/>
+					   <div class="mp-buttons">
+						  <button onclick="addBdwppxl()"><i class="fa-solid fa-angle-up"></i></button>
+						  <button onclick="subBdwppxl()"><i class="fa-solid fa-angle-down"></i></button>
+					   </div>
+					</div>
+				 </div>
+				</div>
+				<!-- END Second column-->
+			 </div>
+			 <!-- Second container Start -->
+			 <div class="mp-box-container" >
+				<div class="mp-column-con">
+				   <div class="mp-items-measure">
+					  
+					  <label id="lblSthks">Epaisseur de coupe</label>
+					  <div class="mp-input-button">
+						 <input type="number" id='nbrSthks' value="4" onkeydown="search(event)"  onkeypress="return isNumber(event)"/>
+						 <div class="mp-buttons">
+							<button onclick="addSthks()"><i class="fa-solid fa-angle-up"></i></button>
+							<button onclick="subSthks()"><i class="fa-solid fa-angle-down"></i></button>
+						 </div>
+					  </div>
+				   </div>
+				   <div class="mp-items-measure">
+					  
+					  <label id="lblFacDist">Facteur distance</label>
+					  <div class="mp-input-button">
+						 <input id="nbrSintr" type="number"/>
+						 <div class="mp-buttons">
+							<button onclick="addSintr()"><i class="fa-solid fa-angle-up"></i></button>
+							<button onclick="subSintr()"><i class="fa-solid fa-angle-down"></i></button>
+						 </div>
+					  </div>
+				   </div>
+				   <div class="mp-items-measure">
+					  <label id="lblNofSlc">Nombre de coupes</label>
+					  <div class="mp-input-button">
+						 <input type="number" id='nbrNofSlc' value="20" onkeydown="search(event)"  onkeypress="return isNumber(event)"/>
+						 <div class="mp-buttons">
+							<button onclick="addNofSlc()"><i class="fa-solid fa-angle-up"></i></button>
+							<button onclick="subNofSlc()"><i class="fa-solid fa-angle-down"></i></button>
+						 </div>
+					  </div>
+				   </div>
+				   <div class="mp-items-measure" style="height: 58.75px;">
+				   </div>
+				</div>
+				<!-- End First column -->
+				<!-- Start Second column -->
+				<div class="mp-column-con custom-mpsecond-container-box">
+				   <div class="mp-items-measure">
+					  
+					  <label id="lblDirPhase">Dir encodage de phase</label>
+					  <div class="mp-input-button mp-input-button-select mp-custom-select" style="cursor: no-drop; background-color: #3b416318;">
+						 <select id="" style="pointer-events: none; background-color: #3b41632d;">
+							<option value="dg" selected>D/G</option>
+							<option value="ap" >A/P</option>
+							<option value="si" >S/I</option>
+						 </select>
+					  </div>
+				   </div>
+				   <div class="mp-items-measure">
+					  <label id="lblSurech">Suréchantillonnage %</label>
+					  <div class="mp-input-button" style="cursor: no-drop; background-color: #3b41632d;">
+						 <input id="nbrSurech" type="number" style="pointer-events: none; background-color: #3b416300;"/>
+						 <div class="mp-buttons" style="pointer-events: none;">
+							<button><i class="fa-solid fa-angle-up"></i></button>
+							<button><i class="fa-solid fa-angle-down"></i></button>
+						 </div>
+					  </div>
+				   </div>
+				   <div class="mp-items-measure" id="bdwletiationContainer" style="display:none;">
+					  <div class="mp-input-radio">
+						 <input type="radio" name="rd" style="cursor:pointer;width: 18px;height: 18px; margin-right: 10px; min-width: 18px;" id="rdletBdw " onclick="CheckRadio(),Calculation()"  value="letBDW" ></input>
+						 <label id="lblletBdw">letiation de BDW +-</label>
+					  </div>
+					  <div class="mp-input-button">
+						 <input type="number" id='nbrletBdw' value="15" onkeydown="search(event)"  onkeypress="return isNumber(event)"/>
+						 <div class="mp-buttons">
+							<button onclick="addletBdw()"><i class="fa-solid fa-angle-up"></i></button>
+							<button onclick="subletBdw()"><i class="fa-solid fa-angle-down"></i></button>
+						 </div>
+					  </div>
+				   </div>
+				   <div class="mp-items-measure" id="bdwTotalContainer" style="display:none;">
+					  <div class="mp-input-radio">
+						 <input type="radio" name="rd" style="cursor:pointer;width: 18px;height: 18px; margin-right: 10px; min-width: 18px;" id="rdBdw " onclick="CheckRadio(),Calculation()" value="BDW" checked></input>
+						 <label id="lblTotalBdw">BDW totale en KHz</label>
+					  </div>
+					  <div class="mp-input-button">
+						 <input type="number" id='nbrTotalBdw' value="30" onkeydown="search(event)"  onkeypress="return isNumber(event)"/>
+						 <div class="mp-buttons">
+							<button onclick="addTotalBdw()"><i class="fa-solid fa-angle-up"></i></button>
+							<button onclick="subTotalBdw()"><i class="fa-solid fa-angle-down"></i></button>
+						 </div>
+					  </div>
+				   </div>
+				   <div class="mp-items-measure" style="display:none;">
+					  <div class="mp-input-radio">
+						 <input type="radio" name="rd"  style="cursor:pointer;width: 18px;height: 18px; margin-right: 10px; min-width: 18px;" id="rdnBdw" onclick="CheckRadio(),Calculation()" value="nBDW"></input>
+						 <h3 id="lblNofPixel">Nbr pixel de deplacement chimique</h3>
+					  </div>
+					  <div class="mp-input-button">
+						 <input type="number" id='nbrNofPixel' value="2.2" onkeydown="search(event)"  onkeypress="return isNumber(event)"/>
+						 <div class="mp-buttons">
+							<button onclick="addNofPixel()"><i class="fa-solid fa-angle-up"></i></button>
+							<button onclick="subNofPixel()"><i class="fa-solid fa-angle-down"></i></button>
+						 </div>
+					  </div>
+				   </div>
+				   <div class="mp-items-measures mp-custom-input nmbr-slice-mTR-container">
+					<label class="lblMaxnbSlices">Nombre de coupes max par TR</label>
+					<label id="lblDisplayMaxnbSlices" class="lblDisplayMaxnbSlices"></label>
+				</div>
+				   <!-- <div class="mp-items-measure" style="height: 58.75px;">
+					  </div> -->
+				</div>
+				<!-- END Second column-->
+			 </div>
+			 <!-- End container Start -->
+			 <!-- Fourth container Start -->
+			 <div class="mp-box-container" id="custom-fourth">
+				<div class="mp-column-con">
+				   <div class="mp-items-measure-custom">
+					  <label id="lblSat" style="width: 40px !important;">SAT</label>
+					  <div class="mp-input-button mp-input-button-select mp-custom-select" style="cursor: no-drop; background-color: #3b416318;">
+						 <select style="pointer-events: none; background-color: #3b41632d;">
+							<option value="fat" selected>FAT-Sat</option>
+							<option value="spair" >pré-Sat</option>
+							<option value="exct" >SPAIR</option>
+						 </select>
+					  </div>
+				   </div>
+				   <div class="mp-items-measure-custom">
+					  <label id="lblPat" style="width: 40px !important;">Acc</label>
+					  <div class="mp-input-button mp-input-button-select mp-custom-select" style="cursor: no-drop; background-color: #3b416318;">
+						 <select style="pointer-events: none; background-color: #3b41632d;">
+							<option id="AccLabel" value="grappa" selected>ARC</option>
+							<option value="N/A" >N/A</option>
+						 </select>
+					  </div>
+				   </div>
+				</div>
+			 </div>
+			 <!-- End container Start -->
+		  </div>
+		  <div class="mp-fourthlast-container">
+			 <div class="mp-image-letiation">
+				<div id="tabPicDiv" style="-moz-user-select: none;user-select:none;">
+				   <img id="picTE" src="13.png"/>
+				   <div id="divred"></div>
+				   <div id="divTENnty"><b>TE: 90</b></div>
+				</div>
+
+				<div id="tab6" class="table-container">
+					<div class="row">
+						<div class="cell left"><b>TEmin:</b> <span id="lblDisplayTEMin">11.01</span></div>
+						<div class="cell right"><b>TEmax:</b> <span id="lblDisplayTEMax">22.02</span></div>
+					</div>
+				
+					<div class="row">
+						<div class="cell left"><b>TE eff réel:</b> <span id="lblDisplayTEeff">11.01</span></div>
+						<div class="cell right"><b>TE Max idéal:</b> <span id="lblDisplayTEmideal">11.01</span></div>
+					</div>
+				</div>
+				
+				
+			 </div>
+			 <!-- <div class="mp-items-measures mp-custom-input nmbr-slice-mTR-container">
+				<label class="lblMaxnbSlices">Nombre de coupes max par TR</label>
+				<label id="lblDisplayMaxnbSlices" class="lblDisplayMaxnbSlices"></label>
+			</div> -->
+		  </div>
+	   </div>
+	   <!-- <div style="display: none;">
+	<button style="display: none;" id="btnTip" onclick="showTip();">
+	   <table id="popup" style="display: none;">
+		  <tr>
+			 <td style="vertical-align: baseline;">Le paramètre TF/ETL est le nombre d'échos recueillis dans le même cycle de répétition (temps TR). Il s'agit d'une mesure d'accélération du temps d’acquisition, par exemple, pour un facteur turbo 3, le temps d’acquisition est divisé par 3 par rapport à une séquence SE avec des paramètres comparables.<br>
+				Ainsi, en augmentant votre facteur TF/ETL, vous pouvez réduire le temps d'acquisition. <br>
+				Attention : vous devrez peut-être ajuster d'autres paramètres pour garantir une bonne optimisation.
+				testomhg
+			 </td>
+		  </tr>
+	   </table>
+	<button id="btnClosetip" class="btn-close" style="display: none;">X</button>
+</div> -->
+
+	<div class="mp-hiding-env" style="display: none;">
+		<table id="BigTab">
+			<tr>
+				<td>
+					<table id="tabQuestion">
+						<tr>
+							<td><label id="" style="-moz-user-select: none;user-select:none;color:white"><b>Question:</b></label></td>
+						</tr>
+						<tr>
+							<td><label id="lblQuestion" style="-moz-user-select: none;user-select:none;font-size:15px">Pour cette séquence  Spin Echo Rapide, vous avez besoin de 20 coupes seulement, la machine en autorise 24. Comment optimiser les réglages afin de profiter de la marge de manoeuvre pour gagner du temps sans changer la pondération, la couverture anatomique ni la résolution spatiale?</label></td>
+						</tr>
+					</table>
+					<div id="divEcho"><b><label style="-moz-user-select: none;user-select:none;" id="lblDisplayEcho"></label></b></div>    
+					<table id="tab1"> 
+						<tr>
+							<td><label id="lblTR" style="-moz-user-select: none;user-select:none;">TR</label></td>
+							<td>
+								<table>
+									<tr>
+										<td rowspan="2"><input type='text' id='nbrTR' value="4000" style="width:60px;border:0.5px solid gray;text-align:center" onkeydown="search(event)"  onkeypress="return isNumber(event)"/></td>
+										<td><button  onclick='subTR()' style="-moz-user-select: none;user-select:none;text-align:center;margin:0;padding:0;width:24px; height: 21px; cursor: pointer;">-</button></td>
+										<td><button  onclick='addTR()' style="-moz-user-select: none;user-select:none;text-align:center;margin:0;padding:0;width:24px; height: 21px; cursor: pointer;">+</button></td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+						<tr>
+							<td><label id="lblTE" style="-moz-user-select: none;user-select:none;">TE</label></td>
+							<td>
+								<table>
+									<tr>
+										<td rowspan="2"><input type='text' id='nbrTE' value="90" style="width:60px;border:0.5px solid gray;text-align:center"onkeydown="search(event)"  onkeypress="return isNumber(event)"/></td>
+										<td><button  onclick='subTE()' style="-moz-user-select: none;user-select:none;text-align:center;margin:0;padding:0;width:24px; height: 21px; cursor: pointer;">-</button></td>
+										<td><button  onclick='addTE()' style="-moz-user-select: none;user-select:none;text-align:center;margin:0;padding:0;width:24px; height: 21px; cursor: pointer;">+</button></td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+						<tr >
+							<td><label id="lblETL" style="-moz-user-select: none;user-select:none;">TF/ETL</label></td>
+							<td>
+								<table>
+									<tr>
+										<td rowspan="2"><input type='text' id='nbrETL' value="13" style="width:60px;border:0.5px solid gray;text-align:center" onkeydown="search(event)"  onkeypress="return isNumber(event)"/></td>
+										<td><button  onclick='subETL()' style="-moz-user-select: none;user-select:none;text-align:center;margin:0;padding:0;width:24px; height: 21px; cursor: pointer;">-</button></td>
+										<td><button  onclick='addETL()' style="-moz-user-select: none;user-select:none;text-align:center;margin:0;padding:0;width:24px; height: 21px; cursor: pointer;">+</button></td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+						<tr >
+							<td><label id="lblNEX" style="-moz-user-select: none;user-select:none;">NEX</label></td>
+							<td>
+								<table>
+									<tr>
+										<td rowspan="2"><input type='text' id='nbrNEX' value="2" style="width:60px;border:0.5px solid gray;text-align:center" onkeydown="search(event)"  onkeypress="return isNumber(event)"/></td>
+										<td><button  onclick='subNEX()' style="-moz-user-select: none;user-select:none;text-align:center;margin:0;padding:0;width:24px; height: 21px; cursor: pointer;">-</button></td>
+										<td><button  onclick='addNEX()' style="-moz-user-select: none;user-select:none;text-align:center;margin:0;padding:0;width:24px; height: 21px; cursor: pointer;">+</button></td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+					</table>
+					<table id="tab2">
+						<tr>
+							<td><label id="lblFOV" style="-moz-user-select: none;user-select:none;">FOV</label></td>
+							<td>
+								<table>
+									<tr>
+										<td rowspan="2"><input type='text' id='nbrFOV' value="24" style="width:60px;border:0.5px solid gray;text-align:center" onkeydown="search(event)"  onkeypress="return isNumber(event)"/></td>
+										<td><button onclick='subFov()' style="-moz-user-select: none;user-select:none;text-align:center;margin: 0; padding: 0;width:24px; height: 21px; cursor: pointer;">-</button></td>
+										<td><button onclick='addFov()' style="-moz-user-select: none;user-select:none;text-align:center;margin: 0; padding: 0;width:24px; height: 21px; cursor: pointer;">+</button></td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+						<tr>
+							<td><label id="lblFreq" style="-moz-user-select: none;user-select:none;">Matrice en fréquence</label></td>
+							<td>
+								<table>
+									<tr>
+										<td rowspan="2"><input type='text' id='nbrFreq' value="320" style="width:60px;border:0.5px solid gray;text-align:center" onkeydown="search(event)"  onkeypress="return isNumber(event)" readonly="readonly"/></td>
+										<td><button  onclick='subFreq()' style="-moz-user-select: none;user-select:none;text-align:center;margin: 0; padding: 0;width:24px; height: 21px; cursor: pointer;">-</button></td>
+										<td><button  onclick='addFreq()' style="-moz-user-select: none;user-select:none;text-align:center;margin: 0; padding: 0;width:24px; height: 21px; cursor: pointer;">+</button></td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+						<tr>
+							<td><label id="lblPhase" style="-moz-user-select: none;user-select:none;">Matrice en phase</label></td>
+								<td>
+									<table>
+										<tr>
+											<td rowspan="2"><input type='text' id='nbrPhase' value="320" style="width:60px;border:0.5px solid gray;text-align:center" onkeydown="search(event)"  onkeypress="return isNumber(event)" readonly="readonly"/></td>
+											<td><button  onclick='subPhase()' style="-moz-user-select: none;user-select:none;text-align:center;margin: 0; padding: 0;width:24px; height: 21px; cursor: pointer;">-</button></td>
+											<td><button  onclick='addPhase()' style="-moz-user-select: none;user-select:none;text-align:center;margin: 0; padding: 0;width:24px; height: 21px; cursor: pointer;">+</button></td>
+										</tr>
+									</table>
+								</td>
+						</tr>
+						<tr>
+							<td><label id="lblSthick" style="-moz-user-select: none;user-select:none;">Epaisseur de coupe</label></td>
+							<td>
+								<table>
+									<tr>
+										<td rowspan="2"><input type='text' id='nbrSthks' value="4" style="width:60px;border:0.5px solid gray;text-align:center" onkeydown="search(event)"  onkeypress="return isNumber(event)"/></td>
+										<td><button  onclick='subSthks()' style="-moz-user-select: none;user-select:none;text-align:center;margin: 0; padding: 0;width:24px; height: 21px; cursor: pointer;">-</button></td>
+										<td><button  onclick='addSthks()' style="-moz-user-select: none;user-select:none;text-align:center;margin: 0; padding: 0;width:24px; height: 21px; cursor: pointer;">+</button></td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+						<tr>
+							<td><label id="lblSintr"style="-moz-user-select: none;user-select:none;">Espace entre les coupes</label></td>
+							<td>
+								<table>
+									<tr>
+										<td rowspan="2"><input type='text' id='nbrSintr' value="0.4" style="width:60px;border:0.5px solid gray;text-align:center" onkeydown="search(event)"  onkeypress="return isNumber(event)"/></td>
+										<td><button  onclick='subSintr()' style="-moz-user-select: none;user-select:none;text-align:center;margin: 0; padding: 0;width:24px; height: 21px; cursor: pointer;">-</button></td>
+										<td><button  onclick='addSintr()' style="-moz-user-select: none;user-select:none;text-align:center;margin: 0; padding: 0;width:24px; height: 21px; cursor: pointer;">+</button></td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+						<tr>
+							<td><label id="lblNoSlice" style="-moz-user-select: none;user-select:none;">Nombre de coupes </label></td>
+							<td>
+								<table>
+									<tr>
+										<td rowspan="2"><input type='text' id='nbrNofSlc' value="20" style="width:60px;border:0.5px solid gray;text-align:center" onkeydown="search(event)"  onkeypress="return isNumber(event)"/></td>
+										<td><button  onclick='subNofSlc()' style="-moz-user-select: none;user-select:none;text-align:center;margin:0;padding:0;width:24px; height: 21px; cursor: pointer;">-</button></td>
+										<td><button  onclick='addNofSlc()' style="-moz-user-select: none;user-select:none;text-align:center;margin:0;padding:0;width:24px; height: 21px; cursor: pointer;">+</button></td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+					</table> 
+					<table id="tab3">
+						<tr>
+							<td><input type="radio" name="rd" style="cursor:pointer;width: 18px;height: 18px;" id="rdVarBdw " onclick="CheckRadio(),Calculation()"  value="varBDW" ></input></td>
+							<td><label id="lblVarBdw"style="-moz-user-select: none;user-select:none;">Variation de BDW +-</label></td>
+							<td>
+								<table>
+									<tr>
+										<td rowspan="2"><input type='text' id='nbrVarBdw' value="15" style="width:60px;border:0.5px solid gray;text-align:center" onkeydown="search(event)"  onkeypress="return isNumber(event)"/></td>
+										<td><button  onclick='subVarBdw()' style="-moz-user-select: none;user-select:none;text-align:center;margin:0;padding:0;width:24px; height: 21px; cursor: pointer;">-</button></td>
+										<td><button  onclick='addVarBdw()' style="-moz-user-select: none;user-select:none;text-align:center;margin:0;padding:0;width:24px; height: 21px; cursor: pointer;">+</button></td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+						<tr>
+							<td><input type="radio" name="rd" style="cursor:pointer;width: 18px;height: 18px;" id="rdBdw " onclick="CheckRadio(),Calculation()" value="BDW" checked></input></td>
+							<td><label id="lblTotalBdw"style="-moz-user-select: none;user-select:none;">BDW totale en KHz</label></td>
+							<td>
+								<table>
+									<tr>
+										<td rowspan="2"><input type='text' id='nbrTotalBdw' value="30" style="width:60px;border:0.5px solid gray;text-align:center" onkeydown="search(event)"  onkeypress="return isNumber(event)"/></td>
+										<td><button  onclick='subTotalBdw()' style="-moz-user-select: none;user-select:none;text-align:center;margin:0;padding:0;width:24px; height: 21px; cursor: pointer;">-</button></td>
+										<td><button  onclick='addTotalBdw()' style="-moz-user-select: none;user-select:none;text-align:center;margin:0;padding:0;width:24px; height: 21px; cursor: pointer;">+</button></td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+						<tr>
+							<td><input type="radio" name="rd" style="cursor:pointer;width: 18px;height: 18px;"  id=" rdpBdw" onclick="CheckRadio(),Calculation()"  value="pBDW"></input></td>
+							<td><label id="lblBdwppxl" style="-moz-user-select: none;user-select:none;">BDW par pixel</label></td>
+							<td>
+								<table>
+									<tr>
+										<td rowspan="2"><input type='text' id='nbrBdwppxl' value="93.8" style="width:60px;border:0.5px solid gray;text-align:center" onkeydown="search(event)"  onkeypress="return isNumber(event)"/></td>
+										<td><button  onclick='subBdwppxl()' style="-moz-user-select: none;user-select:none;text-align:center;margin:0;padding:0;width:24px; height: 21px; cursor: pointer;">-</button></td>
+										<td><button  onclick='addBdwppxl()' style="-moz-user-select: none;user-select:none;text-align:center;margin:0;padding:0;width:24px; height: 21px; cursor: pointer;">+</button></td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+						<tr>
+							<td><input type="radio" name="rd"  style="cursor:pointer;width: 18px;height: 18px;" id="rdnBdw" onclick="CheckRadio(),Calculation()" value="nBDW"></input></td>
+							<td><label id="lblNofPixel" style="-moz-user-select: none;user-select:none;">Nbr pixel de deplacement chimique</label></td>
+							<td>
+								<table>
+									<tr>
+										<td rowspan="2"><input type='text' id='nbrNofPixel' value="2.2" style="width:60px;border:0.5px solid gray;text-align:center" onkeydown="search(event)"  onkeypress="return isNumber(event)"/></td>
+										<td><button  onclick='subNofPixel()' style="-moz-user-select: none;user-select:none;text-align:center;margin:0;padding:0;width:24px; height: 21px; cursor: pointer;">-</button></td>
+										<td><button  onclick='addNofPixel()' style="-moz-user-select: none;user-select:none;text-align:center;margin:0;padding:0;width:24px; height: 21px; cursor: pointer;">+</button></td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+						<tr style="-moz-user-select: none;user-select:none;font-style:italic;height:28px;"><td></td><td><label id=""style="-moz-user-select: none;user-select:none;">Déplacement chimique</label></td><td><label id="lblDisplayChemical"></label></td></tr>
+					</table>
+					<table id="tab4">  
+						<tr><td style="width:160px;"><label id=""style="-moz-user-select: none;user-select:none;"> Nbr coupes Max:</label></td><td><label id="lblDisplayMaxnbSlices"></label></td></tr>   
+						<tr><td><label id=""style="-moz-user-select: none;user-select:none;">Temps d'acquisition:</label></td><td><label id="lblDisplayAcqTime"></label></td></tr>
+						<tr><td><label id=""style="-moz-user-select: none;user-select:none;">RSB Relatif </label></td><td><label id="lblDisplaySNR"></label></td></tr>
+						<tr><td><button id="btnreset" style="height:30px;cursor:pointer;" onclick="ResetRSB()">Reset RSB</button></td><td></td></tr>
+					</table>
+					<table id="tab5">
+						<tr>
+							<td style="height:40px; text-align:center;" colspan="3"><label id="" style="font-size:18px;">BDW </label><label id="lblDisplayBDW" style="font-size:18px;"></label></td>
+						</tr>
+						<tr>
+							<td style="height:35px; "><label id="lblDisplayMinusVar" style="font-size:17px;"></label></td>
+							<td style="text-align: center;"><label id="" style="font-size:18px;">Variation</label></td>
+							<td style="text-align: center;"><label id="lblDisplayPlusVar" style="font-size:17px;"></label></td>
+						</tr>
+					</table>
+					<table id="tab6">
+						<tr style="-moz-user-select: none;user-select:none;font-size:10px"><td ><b><label id="" >TEmin: </label><label id="lblDisplayTEMin"></label></b></td><td></td><td></td><td><b><label id="">TEmax: </label><label id="lblDisplayTEMax"></label></b></td></tr>
+						<tr><td></td><td></td><td></td><td></td></tr>
+						<tr style="-moz-user-select: none;user-select:none;font-size:15px;font-style:italic"><td></td><td style="width:130px;"><label id="">TE eff réel: </label><label id="lblDisplayTEeff"></label></td><td><label id="">TE Max idéal: </label><label id="lblDisplayTEmideal"></label></td><td></td></tr>
+					</table>
+					<table id="tabResult" >
+						<tr><td style="-moz-user-select: none;user-select:none;height:40px;width:202px;"><label id="lblDisplayResults" style="font-size:20px"></label></td></tr>
+						<tr><td style="text-align:center;left:100px;height:45px;"><button id="btnresult" style="height:30px;cursor:pointer;-moz-user-select: none;user-select:none;" onclick="ResultFeedback()">Valider</button></td></tr>
+					</table>
+					<table id="tabPxlVxl" style="-moz-user-select: none;user-select:none;">
+						<tr>
+							<td>
+								<label id="">Taille du pixel</label><br><b><label id="lblDisplayPixelSize"></label></b>
+							</td>
+						</tr>
+						<tr><td></td></tr>
+						<tr><td></td></tr>
+						<tr>
+							<td>
+								<label id="">Taille du voxel</label><br><b><label id="lblDisplayVoxelSize"></label><sup>3</sup></b>
+							</td>
+						</tr>
+						<tr><td></td></tr>
+						<tr><td></td></tr>
+						<tr>
+							<td style="width:125px;">
+								<label id="">Couverture anatomique</label><br><b><label id="lblDisplayAnatomicVol"></label><sup>3</sup>
+							</td>
+						</tr>
+					</table>
+					<table id="tabcircle" style="-moz-user-select: none;user-select:none;">
+						<tr>
+							<td>
+								<div class="svg-container">
+									<svg xmlns="http://www.w3.org/2000/svg" id="circlesg" viewBox="0 0 70 70" color-interpolation-filters="sRGB">
+										<filter id="invert">
+											<feComponentTransfer>
+												<feFuncR type="table" tableValues="0 0" id="comp1"></feFuncR>
+												<feFuncG type="table" tableValues="0 0" id="comp2"></feFuncG>
+												<feFuncB type="table" tableValues="0 0" id="comp3"></feFuncB>
+											</feComponentTransfer>
+										</filter>
+										<image xlink:href="blacksg.png" filter="url(#invert)" width="70px" height="70px" ></image>
+									</svg>
+								</div>
+							</td>
+							<td style="width:40px;"><label id="lblgrey"></label></td>
+							<td>
+								<div class="svg-container">
+									<svg xmlns="http://www.w3.org/2000/svg" id="circlewat" viewbox="0 0 70 70" color-interpolation-filters="sRGB">
+										<filter id="invert1">
+											<feComponentTransfer>
+												<feFuncR type="table" tableValues="0 0" id="comp4"></feFuncR>
+												<feFuncG type="table" tableValues="0 0" id="comp5"></feFuncG>
+												<feFuncB type="table" tableValues="0 0" id="comp6"></feFuncB>
+											</feComponentTransfer>
+										</filter>
+										<image xlink:href="blackwat.png" filter="url(#invert1)" width="70px" height="70px" ></image>
+									</svg>
+								</div>
+							</td>
+						</tr>
+						<tr><td style="text-align:center"><label id="">SG</label></td><td></td><td style="text-align:center"><label id="">Eau  </label></td></tr>
+						<tr>
+							<td>
+								<div class="svg-container">
+									<svg xmlns="http://www.w3.org/2000/svg" id="circlefat" viewbox="0 0 70 70" color-interpolation-filters="sRGB">
+										<filter id="invert2">
+											<feComponentTransfer>
+												<feFuncR type="table" tableValues="0 0" id="comp7"></feFuncR>
+												<feFuncG type="table" tableValues="0 0" id="comp8"></feFuncG>
+												<feFuncB type="table" tableValues="0 0" id="comp9"></feFuncB>
+											</feComponentTransfer>
+										</filter>
+										<image xlink:href="blackfat.png" filter="url(#invert2)" width="70px" height="70px" ></image>
+									</svg>
+								</div>
+							</td>
+							<td><label id="lblft"></label></td>
+							<td>
+								<div class="svg-container">
+									<svg xmlns="http://www.w3.org/2000/svg" id="circlesb" viewbox="0 0 70 70" color-interpolation-filters="sRGB">
+										<filter id="invert3">
+											<feComponentTransfer>
+												<feFuncR type="table" tableValues="0 0" id="comp10"></feFuncR>
+												<feFuncG type="table" tableValues="0 0" id="comp11"></feFuncG>
+												<feFuncB type="table" tableValues="0 0" id="comp12"></feFuncB>
+											</feComponentTransfer>
+										</filter>
+										<image xlink:href="blacksb.png" filter="url(#invert3)" width="70px" height="70px" ></image>
+									</svg>
+								</div>
+							</td>
+						</tr>
+						<tr><td style="text-align:center"><label id="" >Graisse</label></td><td></td><td style="text-align:center"><label  id="">SB</label></td></tr>
+					</table>
+					<table id="tabcrane" style="-moz-user-select: none;user-select:none;">
+						<tr>
+							<td>
+								<img id="picBackgrd" src="bck.png">
+								<div class="svg-container">
+									<svg xmlns="http://www.w3.org/2000/svg" id="pic1" viewbox="0 0 208 208" color-interpolation-filters="sRGB">
+										<filter id="pixelate" x="0" y="0">
+											<feFlood x="0" y="0" height="3" width="3" id="svgFlood1"/>
+											<feComposite width="4" height="4"/>
+											<feTile result="a"/>
+											<feComposite in="SourceGraphic" in2="a" operator="in"/>
+											<feMorphology operator="dilate" radius="2" id="svgr0"/>
+										</filter>
+										
+										<filter id="blurFilter">
+											<feGaussianBlur in="SourceGraphic" stdDeviation="0" id="bf1" operator="in"/>
+										</filter>
+										
+										<g  id="g0"  filter="url(#blurFilter)" transform="scale(1.0)" transform-origin="center">
+											<g filter="url(#pixelate)">	
+												<image xlink:href="black.png" width="208px" height="208px"preserveAspectRatio="none" ></image>
+											</g>
+										</g>
+									</svg>
+								</div>
+								<div class="svg-container">
+									<svg xmlns="http://www.w3.org/2000/svg" id="pic4" viewbox="0 0 208 208" color-interpolation-filters="sRGB">
+										<filter id="pixelate" x="0" y="0">
+											<feFlood x="0" y="0" height="3" width="3" id="svgFlood1"/>
+											<feComposite width="4" height="4"/>
+											<feTile result="a"/>
+											<feComposite in="SourceGraphic" in2="a" operator="in"/>
+											<feMorphology operator="dilate" radius="2" id="svgr1"/>
+										</filter>	
+										<filter id="invertpic4">
+											<feComponentTransfer>
+												<feFuncR type="table" tableValues="0 0" id="comppic1"></feFuncR>
+												<feFuncG type="table" tableValues="0 0" id="comppic2"></feFuncG>
+												<feFuncB type="table" tableValues="0 0" id="comppic3"></feFuncB>
+											</feComponentTransfer>
+										</filter>
+										
+										<filter id="blurFilter">
+											<feGaussianBlur in="SourceGraphic" stdDeviation="0" id="bf1" operator="in"/>
+										</filter>
+										<g id="g1" filter="url(#blurFilter)" transform="scale(1.0)" transform-origin="center"> 
+											<g filter="url(#pixelate)">
+												<image xlink:href="white.png" filter="url(#invertpic4)" width="208px" height="208px" preserveAspectRatio="none"></image>
+											</g>
+										</g>
+									</svg>
+								</div>
+								<div class="svg-container">
+									<svg xmlns="http://www.w3.org/2000/svg" id="picfat" viewbox="0 0 208 208" color-interpolation-filters="sRGB">
+										<filter id="pixelate" x="0" y="0">
+											<feFlood x="0" y="0" height="3" width="3" id="svgFlood1"/>
+											<feComposite width="4" height="4"/>
+											<feTile result="a"/>
+											<feComposite in="SourceGraphic" in2="a" operator="in"/>
+											<feMorphology operator="dilate" radius="2" id="svgr2"/>
+										</filter>
+										
+										<filter id="invertpicfat">
+											<feComponentTransfer>
+												<feFuncR type="table" tableValues="0 0" id="comppic4"></feFuncR>
+												<feFuncG type="table" tableValues="0 0" id="comppic5"></feFuncG>
+												<feFuncB type="table" tableValues="0 0" id="comppic6"></feFuncB>
+											</feComponentTransfer>
+										</filter>
+										
+										<filter id="blurFilter">
+											<feGaussianBlur in="SourceGraphic" stdDeviation="0" id="bf1"/>
+										</filter>
+										  
+										<g id="g2" filter="url(#blurFilter)" transform="scale(1.0)" transform-origin="center"> 
+											<g filter="url(#pixelate)">
+												<image xlink:href="fat.png" filter="url(#invertpicfat)" width="208px" height="208px" preserveAspectRatio="none" ></image>
+											</g>
+										</g>
+									</svg>
+								</div>
+								<div class="svg-container">
+									<svg xmlns="http://www.w3.org/2000/svg" id="picwatter" viewbox="0 0 208 208" color-interpolation-filters="sRGB">
+										<filter id="pixelate" x="0" y="0">
+											<feFlood x="0" y="0" height="3" width="3" id="svgFlood1"/>
+											<feComposite width="4" height="4"/>
+											<feTile result="a"/>
+											<feComposite in="SourceGraphic" in2="a" operator="in"/>
+											<feMorphology operator="dilate" radius="2" id="svgr3"/>
+										</filter>
+										
+										<filter id="invertpicwatter">
+											<feComponentTransfer>
+												<feFuncR type="table" tableValues="0 0" id="comppic7"></feFuncR>
+												<feFuncG type="table" tableValues="0 0" id="comppic8"></feFuncG>
+												<feFuncB type="table" tableValues="0 0" id="comppic9"></feFuncB>
+											</feComponentTransfer>
+										</filter>
+										
+										<filter id="blurFilter">
+											<feGaussianBlur in="SourceGraphic" stdDeviation="0" id="bf1"/>
+										</filter>
+										
+										<g id="g3" filter="url(#blurFilter)" transform="scale(1.0)" transform-origin="center"> 
+											<g filter="url(#pixelate)">
+												<image xlink:href="watter.png" filter="url(#invertpicwatter)" width="208px" height="208px" preserveAspectRatio="none"></image>
+											</g>	
+										</g>
+									</svg>
+								</div>
+								<div class="svg-container">
+									<svg xmlns="http://www.w3.org/2000/svg" id="picwmatter" viewbox="0 0 208 208" color-interpolation-filters="sRGB">
+										<filter id="pixelate" x="0" y="0">
+											<feFlood x="0" y="0" height="3" width="3" id="svgFlood1"/>
+											<feComposite width="4" height="4"/>
+											<feTile result="a"/>
+											<feComposite in="SourceGraphic" in2="a" operator="in"/>
+											<feMorphology operator="dilate" radius="2" id="svgr4" />
+										</filter>
+										
+										<filter id="invertpicwmatter">
+											<feComponentTransfer>
+												<feFuncR type="table" tableValues="0 0" id="comppic16"></feFuncR>
+												<feFuncG type="table" tableValues="0 0" id="comppic17"></feFuncG>
+												<feFuncB type="table" tableValues="0 0" id="comppic18"></feFuncB>
+											</feComponentTransfer>
+										</filter>
+										
+										<filter id="blurFilter">
+											<feGaussianBlur in="SourceGraphic" stdDeviation="0" id="bf1"/>
+										</filter>
+										
+										<g id="g4" filter="url(#blurFilter)" transform="scale(1.0)" transform-origin="center"> 
+											<g filter="url(#pixelate)">
+												<image xlink:href="wmatter.png" filter="url(#invertpicwmatter)" width="208px" height="208px" preserveAspectRatio="none"></image>
+											</g>
+										</g>
+									</svg>
+								</div>
+								<div class="svg-container">
+									<svg xmlns="http://www.w3.org/2000/svg" id="picwater" viewbox="0 0 208 208" color-interpolation-filters="sRGB">
+										<filter id="pixelate" x="0" y="0">
+											<feFlood x="0" y="0" height="3" width="3" id="svgFlood1"/>
+											<feComposite width="4" height="4"/>
+											<feTile result="a"/>
+											<feComposite in="SourceGraphic" in2="a" operator="in"/>
+											<feMorphology operator="dilate" radius="2" id="svgr5"/>
+										</filter>
+										
+										<filter id="invertpicwater">
+											<feComponentTransfer>
+												<feFuncR type="table" tableValues="0 0" id="comppic10"></feFuncR>
+												<feFuncG type="table" tableValues="0 0" id="comppic11"></feFuncG>
+												<feFuncB type="table" tableValues="0 0" id="comppic12"></feFuncB>
+											</feComponentTransfer>
+										</filter>
+										
+										<filter id="blurFilter">
+											<feGaussianBlur in="SourceGraphic" stdDeviation="0" id="bf1"/>
+										</filter>
+										
+										<g id="g5" filter="url(#blurFilter)" transform="scale(1.0)" transform-origin="center"> 
+											<g filter="url(#pixelate)">
+												<image xlink:href="water.png" filter="url(#invertpicwater)" width="208px" height="208px" preserveAspectRatio="none"></image>
+											</g>
+										</g>
+									</svg>
+								</div>
+								<div class="svg-container">
+									<svg xmlns="http://www.w3.org/2000/svg" id="picgrey" viewbox="0 0 208 208" color-interpolation-filters="sRGB">
+										<filter id="pixelate" x="0" y="0">
+											<feFlood x="0" y="0" height="3" width="3" id="svgFlood1"/>
+											<feComposite width="4" height="4"/>
+											<feTile result="a"/>
+											<feComposite in="SourceGraphic" in2="a" operator="in"/>
+											<feMorphology operator="dilate" radius="2" id="svgr6"/>
+										</filter>
+										
+										<filter id="invertpicgrey">
+											<feComponentTransfer>
+												<feFuncR type="table" tableValues="0 0" id="comppic13"></feFuncR>
+												<feFuncG type="table" tableValues="0 0" id="comppic14"></feFuncG>
+												<feFuncB type="table" tableValues="0 0" id="comppic15"></feFuncB>
+											</feComponentTransfer>
+										</filter>
+										
+										<filter id="blurFilter">
+											<feGaussianBlur in="SourceGraphic" stdDeviation="0" id="bf1"/>
+										</filter>
+										
+										<g id="g6" filter="url(#blurFilter)" transform="scale(1.0)" transform-origin="center"> 
+											<g filter="url(#pixelate)">
+												<image xlink:href="grey.png" filter="url(#invertpicgrey)" width="208px" height="208px" preserveAspectRatio="none"></image>
+											</g>
+										</g>
+									</svg>
+								</div>
+							</td>
+						</tr>
+					</table>
+					<table id="tabPicDiv" style="-moz-user-select: none;user-select:none;">
+						<tr>
+							<td><img id="picTE" src="13.png"/></td>
+							<td><div id="divred"></div></td>
+						</tr>
+					</table>
+					<div id="divfov"><label id="">Fov :</label><label id="lblDisplayFov"></label></div>
+					<div id="divHz"><label id=""></label><label id="lblDisplaypBDW" style="font-size:11px;"></label></div>
+					<div id="divNntydegree"><b><label id="" >90&deg; </label></b></div>
+					<div id="divTENnty"><b><label id="" >TE: 90</label></b></div>
+				</td>
+			</tr>
+		</table>
+		<img id="imgCase7" src="backgrdCase7.png"/>
+		<img id="logo" src="logo.png"/>
+		<img id="tips" src="tips.png" style="position:absolute;width:55px;top:60px;left:835px;"/>
+		<img id="tipsdashes" class="blink_me" src="dashes.png" style="position:absolute;width:55px;top:60px;left:835px;"/>
+		<!-- <button id="btnTip" onclick="showTip();">
+		<table id="popup">
+		<tr><td style="vertical-align: baseline;">Le paramètre TF/ETL est le nombre d'échos recueillis dans le même cycle de répétition (temps TR). Il s'agit d'une mesure d'accélération du temps d’acquisition, par exemple, pour un facteur turbo 3, le temps d’acquisition est divisé par 3 par rapport à une séquence SE avec des paramètres comparables.<br>
+		Ainsi, en augmentant votre facteur TF/ETL, vous pouvez réduire le temps d'acquisition. <br>
+		Attention : vous devrez peut-être ajuster d'autres paramètres pour garantir une bonne optimisation.</td></tr>
+		</table>
+		<button id="btnClosetip" class="btn-close">X</button> -->
+	</div>
+
+ </body>
+ </html>

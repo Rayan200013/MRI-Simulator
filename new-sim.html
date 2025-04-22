@@ -925,7 +925,61 @@ let btnRestclicked="false";
 		if(newx<=max && newx>=min){document.getElementById("nbrNofSlc").value=newx;}
 		Calculation();
 	}
-
+	// New calculation from old file
+	function subVarBdw(){
+		var max=60,min=3;
+		var x=document.getElementById("nbrVarBdw").value;
+		if(x>max){document.getElementById("nbrVarBdw").value=max;}
+		else if(x<min){document.getElementById("nbrVarBdw").value=min;}
+		var newx=(+x + -0.05).toFixed(2);
+		if(newx<=max && newx>=min){document.getElementById("nbrVarBdw").value=newx;}
+		CheckRadio(),Calculation();
+	}
+	function addVarBdw(){
+		var max=60,min=3;
+		var x=document.getElementById("nbrVarBdw").value;
+		if(x>max){document.getElementById("nbrVarBdw").value=max;}
+		else if(x<min){document.getElementById("nbrVarBdw").value=min;}
+		var newx=(0.05 + +x).toFixed(2);
+		if(newx<=max && newx>=min){document.getElementById("nbrVarBdw").value=newx;}
+		CheckRadio();
+	}
+	function subTotalBdw(){
+		var max=120,min=6;
+		var x=document.getElementById("nbrTotalBdw").value;
+		if(x>max){document.getElementById("nbrTotalBdw").value=max;}
+		else if(x<min){document.getElementById("nbrTotalBdw").value=min;}
+		var newx=(+x + -0.1).toFixed(1);;
+		if(newx<=max && newx>=min){document.getElementById("nbrTotalBdw").value=newx;}
+		CheckRadio();
+	}
+	function addTotalBdw(){
+		var max=120,min=6;
+		var x=document.getElementById("nbrTotalBdw").value;
+		if(x>max){document.getElementById("nbrTotalBdw").value=max;}
+		else if(x<min){document.getElementById("nbrTotalBdw").value=min;}
+		var newx=(0.1 + +x).toFixed(1);
+		if(newx<=max && newx>=min){document.getElementById("nbrTotalBdw").value=newx;}
+		CheckRadio();
+	}
+	function subNofPixel(){
+		var max=5,min=1;
+		var x=document.getElementById("nbrNofPixel").value;
+		if(x>max){document.getElementById("nbrNofPixel").value=max;}
+		else if(x<min){document.getElementById("nbrNofPixel").value=min;}
+		var newx=(+x + -0.1).toFixed(1);;
+		if(newx<=max && newx>=min){document.getElementById("nbrNofPixel").value=newx;}
+		CheckRadio();
+	}
+	function addNofPixel(){
+		var max=5,min=1;
+		var x=document.getElementById("nbrNofPixel").value;
+		if(x>max){document.getElementById("nbrNofPixel").value=max;}
+		else if(x<min){document.getElementById("nbrNofPixel").value=min;}
+		var newx=(0.1 + +x).toFixed(1);
+		if(newx<=max && newx>=min){document.getElementById("nbrNofPixel").value=newx;}
+		CheckRadio();
+	}
 	
 	function subBdwppxl() {
 		const max = 1000, min = 1;
@@ -980,25 +1034,78 @@ let btnRestclicked="false";
 		if (callback) callback();
 	}
 
-	function search(event) {
-		if (event.keyCode === 13) {
-			validateAndSetValue("nbrTR", 250, 20000, 250, () => {
-				Calculation();
-				const nbrTRValue = document.getElementById("nbrTR").value;
-				displayImage(nbrTRValue);
-			});
-			validateAndSetValue("nbrTE", 5, 20000, 5, Calculation);
-			validateAndSetValue("nbrETL", 1, 40, 1, () => {
-				Calculation();
-				DsiplaySpinEcho();
-			});
-			validateAndSetValue("nbrNEX", 1, 10, 1, Calculation);
-			validateAndSetValue("nbrFOV", 6, 50, 6, Calculation);
-			validateAndSetValue("nbrSthks", 1.5, 20, 1.5, Calculation);
-			validateAndSetValue("nbrSintr", 0, 5, 0, Calculation);
-			validateAndSetValue("nbrNofSlc", 1, 40, 1, Calculation);
-			validateAndSetValue("nbrBdwppxl", 1, 1000, 1, Calculation);
-		}
+	// function search(event) {
+	// 	if (event.keyCode === 13) {
+	// 		validateAndSetValue("nbrTR", 250, 20000, 250, () => {
+	// 			Calculation();
+	// 			const nbrTRValue = document.getElementById("nbrTR").value;
+	// 			displayImage(nbrTRValue);
+	// 		});
+	// 		validateAndSetValue("nbrTE", 5, 20000, 5, Calculation);
+	// 		validateAndSetValue("nbrETL", 1, 40, 1, () => {
+	// 			Calculation();
+	// 			DsiplaySpinEcho();
+	// 		});
+	// 		validateAndSetValue("nbrNEX", 1, 10, 1, Calculation);
+	// 		validateAndSetValue("nbrFOV", 6, 50, 6, Calculation);
+	// 		validateAndSetValue("nbrSthks", 1.5, 20, 1.5, Calculation);
+	// 		validateAndSetValue("nbrSintr", 0, 5, 0, Calculation);
+	// 		validateAndSetValue("nbrNofSlc", 1, 40, 1, Calculation);
+	// 		validateAndSetValue("nbrBdwppxl", 1, 1000, 1, Calculation);
+	// 	}
+	// }
+
+	function search(event){
+		if(event.keyCode == 13){
+		var xTR=document.getElementById("nbrTR").value;
+		if(xTR==""||xTR<=250){document.getElementById("nbrTR").value=250;Calculation();}
+		else if(xTR>=20000){document.getElementById("nbrTR").value=20000;Calculation();}
+		else{document.getElementById("nbrTR").value=xTR;Calculation();}
+		var xTE=document.getElementById("nbrTE").value;
+		if(xTE==""||xTE<=5){document.getElementById("nbrTE").value=5;Calculation();}
+		else if(xTE>=20000){document.getElementById("nbrTE").value=20000;Calculation();}
+		else{document.getElementById("nbrTE").value=xTE;Calculation();}
+		var xETL=document.getElementById("nbrETL").value;
+		if(xETL==""||xETL<=1){document.getElementById("nbrETL").value=1;Calculation();DsiplaySpinEcho();}
+		else if(xETL>=40){document.getElementById("nbrETL").value=40;Calculation();DsiplaySpinEcho();}
+		else{document.getElementById("nbrETL").value=xETL;Calculation();DsiplaySpinEcho();/*ChangeBlurring();*/}
+		var xNEX=document.getElementById("nbrNEX").value;
+		if(xNEX==""||xNEX<=1){document.getElementById("nbrNEX").value=1;Calculation();}
+		else if(xNEX>=10){document.getElementById("nbrNEX").value=10;Calculation();}
+		else{document.getElementById("nbrNEX").value=xNEX;Calculation();}
+		var xFOV=document.getElementById("nbrFOV").value;
+		if(xFOV==""||xFOV<=6){document.getElementById("nbrFOV").value=6;Calculation();}
+		else if(xFOV>=50){document.getElementById("nbrFOV").value=50;Calculation();}
+		else{document.getElementById("nbrFOV").value=xFOV;Calculation();}
+		var xSthks=document.getElementById("nbrSthks").value;
+		if(xSthks==""||xSthks<=1.5){document.getElementById("nbrSthks").value=1.5;Calculation();}
+		else if(xSthks>=20){document.getElementById("nbrSthks").value=20;Calculation();}
+		else{document.getElementById("nbrSthks").value=xSthks;Calculation();}
+		var xSintr=document.getElementById("nbrSintr").value;
+		if(xSintr==""||xSintr<=0){document.getElementById("nbrSintr").value=0;Calculation();}
+		else if(xSintr>=5){document.getElementById("nbrSintr").value=5;Calculation();}
+		else{document.getElementById("nbrSintr").value=xSintr;Calculation();}
+		var xNofSlc=document.getElementById("nbrNofSlc").value;
+		if(xNofSlc==""||xNofSlc<=1){document.getElementById("nbrNofSlc").value=1;Calculation();}
+		else if(xNofSlc>=40){document.getElementById("nbrNofSlc").value=40;Calculation();}
+		else{document.getElementById("nbrNofSlc").value=xNofSlc;Calculation();}
+		var xVarBdw=document.getElementById("nbrVarBdw").value;
+		if(xVarBdw==""||xVarBdw<=3){document.getElementById("nbrVarBdw").value=3;CheckRadio();}
+		else if(xVarBdw>=60){document.getElementById("nbrVarBdw").value=60;CheckRadio();}
+		else{document.getElementById("nbrVarBdw").value=xVarBdw;CheckRadio();}
+		var xTotalBdw=document.getElementById("nbrTotalBdw").value;
+		if(xTotalBdw==""||xTotalBdw<=6){document.getElementById("nbrTotalBdw").value=6;CheckRadio();}
+		else if(xTotalBdw>=120){document.getElementById("nbrTotalBdw").value=120;CheckRadio();}
+		else{document.getElementById("nbrTotalBdw").value=xTotalBdw;CheckRadio();}
+		var xBdwppxl=document.getElementById("nbrBdwppxl").value;
+		if(xBdwppxl==""||xBdwppxl<=1){document.getElementById("nbrBdwppxl").value=1;CheckRadio();}
+		else if(xBdwppxl>=1000){document.getElementById("nbrBdwppxl").value=1000;CheckRadio();}
+		else{document.getElementById("nbrBdwppxl").value=xBdwppxl;CheckRadio();}
+		var xNofPixel=document.getElementById("nbrNofPixel").value;
+		if(xNofPixel==""||xNofPixel<=1){document.getElementById("nbrNofPixel").value=1;CheckRadio();}
+		else if(xNofPixel>=5){document.getElementById("nbrNofPixel").value=5;CheckRadio();}
+		else{document.getElementById("nbrNofPixel").value=xNofPixel;CheckRadio();}		 
+		}	
 	}
 
 
@@ -1008,22 +1115,23 @@ let btnRestclicked="false";
 		if (charCode>31 && (charCode<48 || charCode>57)){return false;}
 		return true;
 	}
-	function showTip(){
-		document.getElementById("popup").style.display="inline";
-		document.getElementById("btnClosetip").style.display="inline";
-	}
-	function closeTip(){
-		document.getElementById("popup").style.display="none";
-		document.getElementById("btnClosetip").style.display="none";
-	}
-	document.addEventListener('mouseup', function(e) {
-    let closepopup = document.getElementById('popup');
-    let btclosetip = document.getElementById('btnClosetip');
-    if (!closepopup.contains(e.target)) {
-        closepopup.style.display = 'none';
-        btclosetip.style.display = 'none';
+	
+	function showTip() {
+    const popup = document.getElementById("popup");
+    popup.style.display = "block";
+   }
+
+function closeTip() {
+    document.getElementById("popup").style.display = "none";
+   }
+
+document.addEventListener("mouseup", function (e) {
+    const popup = document.getElementById("popup");
+    if (!popup.contains(e.target) && popup.style.display === "block") {
+        popup.style.display = "none";
     }
-	});
+    });
+
 	function preload(){
 		let images = new Array();
 		function preload() {
@@ -1060,37 +1168,37 @@ let btnRestclicked="false";
 
 		switch (selectedValue) {
 			case "Siemens":
-				menuBarColor = "#0a0a0a";
-				topContainerColor = "#10101e";
-				bottomContainerColor = "#0a0a0a";
-				manufactorDrpColor = "##1f1f1f";
-				paramContainerColor = "#161616";
-				inputColor = "#1f1f1f";
+			menuBarColor = "#161824";
+				topContainerColor = "#1d1f2e";
+				bottomContainerColor = "#161824";
+				manufactorDrpColor = "#222538";
+				paramContainerColor = "#222538";
+				inputColor = "#3b4163";
 				sliceBorderColor = "1px solid #0ac154";
 				sliceBackgroundColor = "#276d47";
-				borderColor = "2px solid #232342";
+				borderColor = "2px solid #6773a7";
 				break;
 			case "Philips":
-				menuBarColor = "#0a0a0a";
-				topContainerColor = "#191919";
-				bottomContainerColor = "#0a0a0a";
-				manufactorDrpColor = "#1f1f1f";
-				paramContainerColor = "#0e0e0e";
-				inputColor = "#1f1f1f";
-				sliceBorderColor = "1px solid #fff";
-				sliceBackgroundColor = "#7a7a7a";
-				borderColor = "2px solid #757575";
+			menuBarColor = "#161824";
+				topContainerColor = "#1d1f2e";
+				bottomContainerColor = "#161824";
+				manufactorDrpColor = "#222538";
+				paramContainerColor = "#222538";
+				inputColor = "#3b4163";
+				sliceBorderColor = "1px solid #0ac154";
+				sliceBackgroundColor = "#276d47";
+				borderColor = "2px solid #6773a7";
 				break;
 			case "Canon":
-				menuBarColor = "#0e0e0e";
+			menuBarColor = "#161824";
 				topContainerColor = "#1d1f2e";
-				bottomContainerColor = "#0e0e0e";
-				manufactorDrpColor = "#1f1f1f";
-				paramContainerColor = "#0a0a0a";
-				inputColor = "#1f1f1f";
-				sliceBorderColor = "1px solid #033b72";
-				sliceBackgroundColor = "#2a2d44";
-				borderColor = "2px solid #033b72";
+				bottomContainerColor = "#161824";
+				manufactorDrpColor = "#222538";
+				paramContainerColor = "#222538";
+				inputColor = "#3b4163";
+				sliceBorderColor = "1px solid #0ac154";
+				sliceBackgroundColor = "#276d47";
+				borderColor = "2px solid #6773a7";
 				break;
 			case "GE":
 				menuBarColor = "#161824";
@@ -1104,7 +1212,7 @@ let btnRestclicked="false";
 				borderColor = "2px solid #6773a7";
 				break;
 			default:
-				menuBarColor = "#4CAF50";
+			menuBarColor = "#161824";
 				topContainerColor = "#1d1f2e";
 				bottomContainerColor = "#161824";
 				manufactorDrpColor = "#222538";
@@ -1156,8 +1264,9 @@ let btnRestclicked="false";
 				lblFovPhase: "FOV Phase %",
 				lblMatriceFreq: "Matrice en fréquence",
 				lblMatricePhase: "Matrice en phase",
-				lblSat: "Sat",
-				lblPat: "PAT"
+				lblSat: "SAT",
+				lblPat: "Acc",
+				GRAPPA: "GRAPPA"
 			},
 			GE: {
 				lbTR: "TR",
@@ -1173,11 +1282,11 @@ let btnRestclicked="false";
 				lblNofSlc: "Nombre de coupes",
 				lblDirPhase: "Dir encodage de phase",
 				lblSurech: "Suréchantillonnage %",
-				lblFovLect: "FOV lecture (mm)",
+				lblFovLect: "FOV lecture (cm)",
 				lblFovPhase: "Asymmetric FOV %",
 				lblMatriceFreq: "Matrice en fréquence",
 				lblMatricePhase: "Matrice en phase",
-				lblSat: "Sat",
+				lblSat: "SAT",
 				lblPat: "PAT"
 			},
 			Philips: {
@@ -1198,7 +1307,7 @@ let btnRestclicked="false";
 				lblFovPhase: "Rectangular FOV %",
 				lblMatriceFreq: "Matrice en fréquence",
 				lblMatricePhase: "Matrice en phase",
-				lblSat: "Sat",
+				lblSat: "SAT",
 				lblPat: "PAT"
 			},
 			Canon: {
@@ -1219,7 +1328,7 @@ let btnRestclicked="false";
 				lblFovPhase: "Rectangular FOV %",
 				lblMatriceFreq: "Matrice en fréquence",
 				lblMatricePhase: "Matrice en phase",
-				lblSat: "Sat",
+				lblSat: "SAT",
 				lblPat: "PAT"
 			}
 		};
@@ -1231,7 +1340,60 @@ let btnRestclicked="false";
 				labelElement.textContent = text;
 			}
 		}
+
+
 	}
+
+
+	// Chebcking User Input, and the update the ETL label, stil to update the value of it and calculate ity
+	function updateETLLabel() {
+    const selectElement = document.getElementById("selectFSEEG");
+    const labelTF = document.getElementById("lbTF");
+    const etlInput = document.getElementById("nbrETL");
+
+    if (!selectElement || !labelTF || !etlInput) return;
+
+    const selectedValue = selectElement.value;
+
+    if (selectedValue === "FSE") {
+        labelTF.innerText = "ETL"; 
+        etlInput.value = 13; 
+        etlInput.disabled = false; 
+    } else if (selectedValue === "EG") {
+        labelTF.innerText = "Angle de bascule"; 
+        etlInput.value = 90; 
+        etlInput.disabled = false;
+    }
+
+    calculateValue();
+}
+
+// Function to calculate but still not done
+function calculateValue() {
+    const selectElement = document.getElementById("selectFSEEG");
+    const etlInput = document.getElementById("nbrETL");
+    const resultDisplay = document.getElementById("calculationResult");
+
+    if (!selectElement || !etlInput || !resultDisplay) return;
+
+    const selectedValue = selectElement.value;
+    let result;
+
+    if (selectedValue === "FSE") {
+        let ETL = parseFloat(etlInput.value);
+        result = ETL * 2; 
+        resultDisplay.innerText = `ETL Calculation Result: ${result}`;
+    } else if (selectedValue === "EG") {
+      
+        let angle = parseFloat(etlInput.value);
+        result = Math.sin(angle * (Math.PI / 180)); 
+        resultDisplay.innerText = `Angle de Bascule Result: ${result.toFixed(2)}`;
+    }
+}
+
+document.getElementById("selectFSEEG")?.addEventListener("change", updateETLLabel);
+document.getElementById("nbrETL")?.addEventListener("input", calculateValue);
+
 
 
 </script>
@@ -1241,7 +1403,7 @@ let btnRestclicked="false";
 	   <div class="mp-zero-container">
 		  <img id="logo" src="logo.png"/>
 		  <div class="mp-items-measure">
-			 <label>Cases</label>
+			 <!-- <label>Cases</label> -->
 			 <div class="mp-input-button mp-input-button-select">
 				<select id="casesDrp" onchange="changeCases()">
 				   <option value="case1" selected>cas 1</option>
@@ -1253,8 +1415,28 @@ let btnRestclicked="false";
 		  <div>
 			<p id="case-question" class="case-question">Augmenter le TR par pas de 50 et observer les changements sur l’image , le signal sur bruit (S/B), le temps d’acquisition et le nombre de coupes autorisé par TR</p>
 		  </div>
+		  <div class="hint-icon">
+			<img src="tips.png" alt="" id="btnTip" onclick="showTip()">
+		  </div>
+		  <div id="popup">
+			<button id="btnClosetip" class="btn-close" onclick="closeTip()">X</button>
+			<div>
+				Le paramètre TF/ETL est le nombre d'échos recueillis dans le même cycle de répétition (temps TR). 
+				Il s'agit d'une mesure d'accélération du temps d’acquisition, par exemple, pour un facteur turbo 3, 
+				le temps d’acquisition est divisé par 3 par rapport à une séquence SE avec des paramètres comparables.<br>
+				Ainsi, en augmentant votre facteur TF/ETL, vous pouvez réduire le temps d'acquisition.<br>
+				Attention : vous devrez peut-être ajuster d'autres paramètres pour garantir une bonne optimisation.
+			</div>
+		</div>
+		  <!-- <div id="popup" style="display: none;">
+			   <div style="vertical-align: baseline;">Le paramètre TF/ETL est le nombre d'échos recueillis dans le même cycle de répétition (temps TR). Il s'agit d'une mesure d'accélération du temps d’acquisition, par exemple, pour un facteur turbo 3, le temps d’acquisition est divisé par 3 par rapport à une séquence SE avec des paramètres comparables.<br>
+				  Ainsi, en augmentant votre facteur TF/ETL, vous pouvez réduire le temps d'acquisition. <br>
+				  Attention : vous devrez peut-être ajuster d'autres paramètres pour garantir une bonne optimisation.
+			   </div>
+			</div>
+			<button id="btnClosetip" class="btn-close" style="display: none;">X</button> -->
 		  <div class="mp-items-measure">
-			 <label>Machine</label>
+			 <!-- <label>Machine</label> -->
 			 <div class="mp-input-button mp-input-button-select">
 				<select id="manufactorDrp" onchange="changeAppearance()">
 					<option value="GE" selected>GE</option>
@@ -1273,7 +1455,7 @@ let btnRestclicked="false";
 			 <div class="mp-image-container">
 				<img id="corImage" src="images/ax-t1/200.jpeg" alt="p2">
 			 </div>
-			 <div class="mp-image-container">
+			 <div class="mp-image-container" id="custom-highlight" >
 				<img id="axlImage" src="images/ax-t1/200.jpeg" alt="p3">
 			 </div>
 			 <!-- result -->
@@ -1317,8 +1499,8 @@ let btnRestclicked="false";
 			 <div class="mp-icon-input-box-last">
 				<div class="mp-icon-box-last">
 				   <img src="temp.png" alt="Meter">
-				   <p>SAR</p>
-				   <span><label>Mode Low SAR</label></span>
+				   <!-- <p>SAR</p> -->
+				   <span><label>Mode Normal</label></span>
 				</div>
 			 </div>
 		  </div>
@@ -1327,6 +1509,52 @@ let btnRestclicked="false";
 	   <!-- Tables section start -->
 	   <div id="bottom-container" class="bottom-container">
 		  <div class="mp-flex-con-three" id="tab1">
+			<!-- Third container Start -->
+			<div class="mp-box-container" id="custom-third">
+				<div class="mp-column-con">
+				   <div class="mp-items-measure">
+					  <label id="lblFovLect"> FoV Lecture (mm)</label>
+					  <div class="mp-input-button">
+						 <input type="number" id='nbrFOV' value="24" onkeydown="search(event)"  onkeypress="return isNumber(event)"/>
+						 <div class="mp-buttons">
+							<button onclick="addFov()"><i class="fa-solid fa-angle-up"></i></button>
+							<button onclick="subFov()"><i class="fa-solid fa-angle-down"></i></button>
+						 </div>
+					  </div>
+				   </div>
+				   <div class="mp-items-measure">
+					  <label id="lblFovPhase">FoV Phase % (mm)</label>
+					  <div class="mp-input-button">
+						 <input id="nbrFovPhase" type="number" value="100" onkeydown="search(event)"  onkeypress="return isNumber(event)"/>
+						 <div class="mp-buttons">
+							<button><i class="fa-solid fa-angle-up"></i></button>
+							<button><i class="fa-solid fa-angle-down"></i></button>
+						 </div>
+					  </div>
+				   </div>
+				   <div class="mp-items-measure">
+					  <label id="lblMatriceFreq">Matrice en fréquence</label>
+					  <div class="mp-input-button">
+						 <input type="number" id='nbrFreq' value="320" onkeydown="search(event)"  onkeypress="return isNumber(event)"/>
+						 <div class="mp-buttons">
+							<button onclick='addFreq()'><i class="fa-solid fa-angle-up"></i></button>
+							<button onclick='subFreq()'><i class="fa-solid fa-angle-down"></i></button>
+						 </div>
+					  </div>
+				   </div>
+				   <div class="mp-items-measure">
+					  <label id="lblMatricePhase">Matrice en phase</label>
+					  <div class="mp-input-button">
+						 <input type="number" id='nbrPhase' value="320" onkeydown="search(event)"  onkeypress="return isNumber(event)"/>
+						 <div class="mp-buttons">
+							<button onclick='addPhase()'><i class="fa-solid fa-angle-up"></i></button>
+							<button onclick='subPhase()'><i class="fa-solid fa-angle-down"></i></button>
+						 </div>
+					  </div>
+				   </div>
+				</div>
+			 </div>
+			 <!-- End container Start -->
 			 <div class="mp-box-container">
 				<div class="mp-column-con">
 				   <div class="mp-items-measure">
@@ -1339,7 +1567,7 @@ let btnRestclicked="false";
 						 </div>
 					  </div>
 				   </div>
-				   <div class="mp-items-measure">
+				   <!-- <div class="mp-items-measure">
 					  <label id="lbTSE">TSE / EG</label>
 					  <div class="mp-input-button mp-input-button-select">
 						 <select>
@@ -1357,7 +1585,28 @@ let btnRestclicked="false";
 							<button onclick="subETL()"><i class="fa-solid fa-angle-down"></i></button>
 						 </div>
 					  </div>
-				   </div>
+				   </div> -->
+				   <div class="mp-items-measure">
+					<label id="lbTSE">FSE / EG</label>
+					<div class="mp-input-button mp-input-button-select">
+						<select id="selectFSEEG" onchange="updateETLLabel()">
+							<option value="FSE" selected>FSE</option>
+							<option value="EG">EG</option>
+						</select>
+					</div>
+				</div>
+				
+				<div class="mp-items-measure">
+					<label id="lbTF">TF/ETL</label>
+					<div class="mp-input-button">
+						<input type="number" id="nbrETL" value="13" />
+						<div class="mp-buttons">
+							<button onclick="addETL()"><i class="fa-solid fa-angle-up"></i></button>
+							<button onclick="subETL()"><i class="fa-solid fa-angle-down"></i></button>
+						</div>
+					</div>
+				</div>
+				
 				   <div class="mp-items-measure">
 					  <label id="lbTI">TI</label>
 					  <div class="mp-input-button">
@@ -1519,56 +1768,14 @@ let btnRestclicked="false";
 						 </div>
 					  </div>
 				   </div>
+				   <div class="mp-items-measures mp-custom-input nmbr-slice-mTR-container">
+					<label class="lblMaxnbSlices">Nombre de coupes max par TR</label>
+					<label id="lblDisplayMaxnbSlices" class="lblDisplayMaxnbSlices"></label>
+				</div>
 				   <!-- <div class="mp-items-measure" style="height: 58.75px;">
 					  </div> -->
 				</div>
 				<!-- END Second column-->
-			 </div>
-			 <!-- End container Start -->
-			 <!-- Third container Start -->
-			 <div class="mp-box-container" id="custom-third">
-				<div class="mp-column-con">
-				   <div class="mp-items-measure">
-					  <label id="lblFovLect"> FoV Lecture (mm)</label>
-					  <div class="mp-input-button">
-						 <input type="number" id='nbrFOV' value="24" onkeydown="search(event)"  onkeypress="return isNumber(event)"/>
-						 <div class="mp-buttons">
-							<button onclick="addFov()"><i class="fa-solid fa-angle-up"></i></button>
-							<button onclick="subFov()"><i class="fa-solid fa-angle-down"></i></button>
-						 </div>
-					  </div>
-				   </div>
-				   <div class="mp-items-measure">
-					  <label id="lblFovPhase">FoV Phase % (mm)</label>
-					  <div class="mp-input-button">
-						 <input id="nbrFovPhase" type="number" value="100" onkeydown="search(event)"  onkeypress="return isNumber(event)"/>
-						 <div class="mp-buttons">
-							<button><i class="fa-solid fa-angle-up"></i></button>
-							<button><i class="fa-solid fa-angle-down"></i></button>
-						 </div>
-					  </div>
-				   </div>
-				   <div class="mp-items-measure">
-					  <label id="lblMatriceFreq">Matrice en fréquence</label>
-					  <div class="mp-input-button">
-						 <input type="number" id='nbrFreq' value="320" onkeydown="search(event)"  onkeypress="return isNumber(event)"/>
-						 <div class="mp-buttons">
-							<button onclick='addFreq()'><i class="fa-solid fa-angle-up"></i></button>
-							<button onclick='subFreq()'><i class="fa-solid fa-angle-down"></i></button>
-						 </div>
-					  </div>
-				   </div>
-				   <div class="mp-items-measure">
-					  <label id="lblMatricePhase">Matrice en phase</label>
-					  <div class="mp-input-button">
-						 <input type="number" id='nbrPhase' value="320" onkeydown="search(event)"  onkeypress="return isNumber(event)"/>
-						 <div class="mp-buttons">
-							<button onclick='addPhase()'><i class="fa-solid fa-angle-up"></i></button>
-							<button onclick='subPhase()'><i class="fa-solid fa-angle-down"></i></button>
-						 </div>
-					  </div>
-				   </div>
-				</div>
 			 </div>
 			 <!-- End container Start -->
 			 <!-- Fourth container Start -->
@@ -1578,9 +1785,9 @@ let btnRestclicked="false";
 					  <label id="lblSat" style="width: 40px !important;">SAT</label>
 					  <div class="mp-input-button mp-input-button-select">
 						 <select >
-							<option value="fat" selected>FAT</option>
-							<option value="spair" >SPAIR</option>
-							<option value="exct" >Excitation d’eau</option>
+							<option value="fat" selected>FAT-Sat</option>
+							<option value="spair" >pré-Sat</option>
+							<option value="exct" >SPAIR</option>
 						 </select>
 					  </div>
 				   </div>
@@ -1588,7 +1795,7 @@ let btnRestclicked="false";
 					  <label id="lblPat" style="width: 40px !important;">PAT</label>
 					  <div class="mp-input-button mp-input-button-select">
 						 <select >
-							<option value="grappa" selected>GRAPPA</option>
+							<option id="GRAPPA" value="grappa" selected>GRAPPA</option>
 							<option value="sense" >Sense</option>
 							<option value="sms" >SMS</option>
 						 </select>
@@ -1620,13 +1827,13 @@ let btnRestclicked="false";
 				
 				
 			 </div>
-			 <div class="mp-items-measures mp-custom-input nmbr-slice-mTR-container">
+			 <!-- <div class="mp-items-measures mp-custom-input nmbr-slice-mTR-container">
 				<label class="lblMaxnbSlices">Nombre de coupes max par TR</label>
 				<label id="lblDisplayMaxnbSlices" class="lblDisplayMaxnbSlices"></label>
-			</div>
+			</div> -->
 		  </div>
 	   </div>
-	<button style="display: none;" id="btnTip" onclick="showTip();"/>
+	<button style="display: none;" id="btnTip" onclick="showTip();">
 	   <table id="popup" style="display: none;">
 		  <tr>
 			 <td style="vertical-align: baseline;">Le paramètre TF/ETL est le nombre d'échos recueillis dans le même cycle de répétition (temps TR). Il s'agit d'une mesure d'accélération du temps d’acquisition, par exemple, pour un facteur turbo 3, le temps d’acquisition est divisé par 3 par rapport à une séquence SE avec des paramètres comparables.<br>
