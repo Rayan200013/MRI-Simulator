@@ -7,6 +7,7 @@
 <link rel="stylesheet" type="text/css" href="newStyle-ray.css">
 <link href="fontawesome/css/all.min.css" rel="stylesheet">
 <script>
+	const imageListCase1 = [200, 300, 400, 450, 500, 550, 600, 650, 700, 750, 800, 850, 900, 1500];
 	var TR,TE,ETL,NEX,fov,freq,phase,epaisseur,gap,coupes,vBDW,bdw,pBDW,NBDW,nbcoupes,tac,voxel,TEm,TEM,tps,pixelsize,natomicvolume,dFov,checkname="BDW",echoeff,TEeffreel,snr,Temideal,snrref,snrreel,echoeffred,divleft,newposition,newechoeffred,oldechoeffred,snrsg,snrsb,snreau,snrfat,snrsup,snrinf,srnampl,clefsgnormal,clefsbnormal,clefeaunormal,cleffatnormal,casename,cname,fovref,phaseref,freqref,epaisseurref,bdwref,TRref,TEref,NEXref,res;
 	var rho=1,T1= 3000,T2=200,T1sg =750,T2sg=90,rhosg=0.84,T1fat=200,T2fat=90,rhofat=1,currentposition=201;
 	var T1eau=3000,T2eau=200,rhoeau=1,T1sb=500,T2sb=75,rhosb=0.72;
@@ -44,11 +45,15 @@
 				document.getElementById("lblDisplayResults").style.display="inline";
 				document.getElementById("lblQuestion").innerText="Pour cette séquence Spin Echo Rapide, vous avez besoin de 20 coupes seulement, la machine en autorise 24. Comment optimiser les réglages afin de profiter de la marge de manoeuvre pour gagner du temps sans changer la pondération, la couverture anatomique ni la résolution spatiale?";
 				document.getElementById("popup").className="popcase1";
-				// document.getElementById("popupContent").innertext="Le paramètre TF/ETL est le nombre d'échos recueillis dans le même cycle de répétition (  temps TR). Il s'agit d'une mesure d'accélération du temps d’acquisition, par exemple, pour un facteur turbo 3, le temps d’acquisition est divisé par 3 par rapport à une séquence SE avec des paramètres comparables.\n Ainsi, en augmentant votre facteur TF/ETL, vous pouvez réduire le temps d'acquisition.\n Attention : vous devrez peut-être ajuster d'autres paramètres pour garantir une bonne optimisation.";
+				// Changed the popContent into a real variable and then used it inside an if statement
+				// to check if the element exists before trying to set its innerHTML
+				// so it re render without giving a style error.
 				var popupContent = document.getElementById("popupContent");
 				if (popupContent) {
 					popupContent.innerHTML =`Le paramètre TF/ETL est le nombre d'échos recueillis dans le même cycle de répétition (  temps TR). Il s'agit d'une mesure d'accélération du temps d’acquisition, par exemple, pour un facteur turbo 3, le temps d’acquisition est divisé par 3 par rapport à une séquence SE avec des paramètres comparables.<br> Ainsi, en augmentant votre facteur TF/ETL, vous pouvez réduire le temps d'acquisition.<br> Attention : vous devrez peut-être ajuster d'autres paramètres pour garantir une bonne optimisation.`
 				}
+				document.getElementById("axlImageDiv").style.display = "none";
+                document.getElementById("tabcrane").style.display = "block";
 				CheckRadio();DsiplaySpinEcho();cname="case1";
 				document.getElementById('btnClosetip')
 				// Adding images intersection
@@ -98,6 +103,8 @@
 				if (popupContent) {
 					popupContent.innerHTML =`L'augmentation du nombre de codage en fréquence ou du nombre de <br>" + " codage de phase permet d'améliorer la résolution. Le codage de fréquence dépend de la rapidité avec laquelle le signal FID est échantillonné. L'augmentation de la fréquence d'échantillonnage n'entraîne aucune pénalité de temps. L'augmentation du nombre de pas de codage de phase augmente proportionnellement le temps d'acquisition avec le nombre de ligne en phase.<br> Ainsi, en augmentant seulement le nombre de codage de fréquence, vous pouvez améliorer votre résolution spatiale sans affecter le temps d'acquisition.<br> Attention: vous devrez peut-être ajuster d'autres paramètres pour garantir une bonne optimisation.`
 				}
+				document.getElementById("axlImageDiv").style.display = "none";
+                document.getElementById("tabcrane").style.display = "block";
 				CheckRadio();DsiplaySpinEcho();cname="case2";
 			}
 			else if(casename=="case3"){
@@ -135,6 +142,8 @@
 				if (popupContent) {
 					popupContent.innerHTML =`La variation de la bande passante du récepteur a un effet direct sur le rapport signal sur bruit (RSB). Ainsi, en diminuant la bande passante du récepteur à une valeur critique, vous pouvez améliorer le RSB.<br> Attention: vous devrez peut-être ajuster d'autres paramètres pour garantir une bonne optimisation.`
 				}
+				document.getElementById("axlImageDiv").style.display = "none";
+                document.getElementById("tabcrane").style.display = "block";
 				DsiplaySpinEcho();Calculation();cname="case3";
 			}
 			else if(casename=="case4"){
@@ -172,6 +181,8 @@
 				if (popupContent) {
 					popupContent.innerHTML =`En diminuant le paramètre TF/ETL, vous pouvez réduire l'artéfact de blurring. <br> Attention : vous devrez peut-être ajuster d'autres paramètres pour garantir une bonne optimisation.`
 				}
+				document.getElementById("axlImageDiv").style.display = "none";
+                document.getElementById("tabcrane").style.display = "block";
 				Calculation();DsiplaySpinEcho();cname="case4";
 			}
 			else if(casename=="case5"){
@@ -209,7 +220,9 @@
 				var popupContent = document.getElementById("popupContent");
 				if (popupContent) {
 					popupContent.innerHTML =`En diminuant le paramètre TF/ETL, vous pouvez augmenter le temps <br>" + " d'acquisition. En augmentant la bande passante du récepteur, le RSB sera réduit.<br> Attention: vous devrez peut-être ajuster d'autres paramètres pour garantir une bonne optimisation.`
-				}				
+				}
+				document.getElementById("axlImageDiv").style.display = "none";
+                document.getElementById("tabcrane").style.display = "block";
 				CheckRadio();DsiplaySpinEcho();cname="case5";
 			}
 			else if(casename=="case6"){
@@ -247,6 +260,8 @@
 				if (popupContent) {
 					popupContent.innerHTML =`En diminuant le paramètre TF/ETL, vous pouvez réduire l'effet de blurring. <br> En diminuant le NEX, vous pouvez réduire le temps d'acquisition.<br> En augmentant la taille de la matrice, vous pouvez améliorer la résolution de l'image.<br> En augmentant la bande passante du récepteur, le SNR sera réduit.`
 				}
+				document.getElementById("axlImageDiv").style.display = "none";
+                document.getElementById("tabcrane").style.display = "block";
 				CheckRadio();DsiplaySpinEcho();cname="case6";
 			}
 			else if(casename=="case7"){
@@ -314,9 +329,11 @@
 			document.getElementById("lblQuestion").innerText="Pour cette séquence Spin Echo Rapide, vous avez besoin de 20 coupes seulement, la machine en autorise 24. Comment optimiser les réglages afin de profiter de la marge de manoeuvre pour gagner du temps sans changer la pondération, la couverture anatomique ni la résolution spatiale?";
 			document.getElementById("popup").className="popcase8";
 			var popupContent = document.getElementById("popupContent");
-				if (popupContent) {
-					popupContent.innerHTML =`Le paramètre TF/ETL est le nombre d'échos recueillis dans le même cycle de répétition (  temps TR). Il s'agit d'une mesure d'accélération du temps d’acquisition, par exemple, pour un facteur turbo 3, le temps d’acquisition est divisé par 3 par rapport à une séquence SE avec des paramètres comparables.<br> Ainsi, en augmentant votre facteur TF/ETL, vous pouvez réduire le temps d'acquisition.<br> Attention : vous devrez peut-être ajuster d'autres paramètres pour garantir une bonne optimisation.`
-				}
+			if (popupContent) {
+			 popupContent.innerHTML =`Le paramètre TF/ETL est le nombre d'échos recueillis dans le même cycle de répétition (  temps TR). Il s'agit d'une mesure d'accélération du temps d’acquisition, par exemple, pour un facteur turbo 3, le temps d’acquisition est divisé par 3 par rapport à une séquence SE avec des paramètres comparables.<br> Ainsi, en augmentant votre facteur TF/ETL, vous pouvez réduire le temps d'acquisition.<br> Attention : vous devrez peut-être ajuster d'autres paramètres pour garantir une bonne optimisation.`
+			}
+			document.getElementById("axlImageDiv").style.display = "block";
+            document.getElementById("tabcrane").style.display = "none";
 			DsiplaySpinEcho();cname="case8";
 		}
 			return casename;
@@ -970,30 +987,48 @@ function ResetLightsAndButtonOnly() {
 		const image = imageListCase1.find(img => img === rangeStart);
 
 		if (image) {
-			 document.getElementById("axlImage").src = `images/ax-t1/${image}.jpeg`;
+			 document.getElementById("axlImage").src = `images/ax-t1-new/${image}.jpeg`;
 		} else {
 			console.log("No image available for this range.");
 		}
 	}
 
-		function subTR(){
-			var max=20000,min=250;
-			var x=document.getElementById("nbrTR").value;
-			if(x>max){document.getElementById("nbrTR").value=max;}
-			else if(x<min){document.getElementById("nbrTR").value=min;}
-			var newx=(+x + -1);
-			if(newx<=max && newx>=min){document.getElementById("nbrTR").value=newx;}
-			Calculation();
-		}
-		function addTR(){
-			var max=20000,min=250;
-			var x=document.getElementById("nbrTR").value;
-			if(x>max){document.getElementById("nbrTR").value=max;}
-			else if(x<min){document.getElementById("nbrTR").value=min;}
-			var newx=(1 + +x);
-			if(newx<=max && newx>=min){document.getElementById("nbrTR").value=newx;}
-			Calculation();
-		}
+	    function subTR() {
+	          const max = 20000, min = 250;
+	          const nbrTRInput = document.getElementById("nbrTR");
+	          let x = parseInt(nbrTRInput.value) || min;
+	          let newx = x;
+
+	          if (cname === "case8") {
+		          newx = x - 10;
+	          } else {
+		          newx = x - 1;
+	          }
+
+	          if (newx < min) newx = min;
+	          nbrTRInput.value = newx;
+
+	          Calculation();
+	          displayImage(newx);
+        }
+		function addTR() {
+	          const max = 20000, min = 250;
+	          const nbrTRInput = document.getElementById("nbrTR");
+	          let x = parseInt(nbrTRInput.value) || min;
+	          let newx = x;
+
+	          if (cname === "case8") {
+		          newx = x + 20;
+	          } else {
+		      newx = x + 1;
+	          }
+
+	          if (newx > max) newx = max;
+	          nbrTRInput.value = newx;
+
+	          Calculation();
+	          displayImage(newx);
+        }
 		function subTE(){
 			var max=20000,min=5;
 			var x=document.getElementById("nbrTE").value;
@@ -1275,8 +1310,8 @@ function ResetLightsAndButtonOnly() {
 			var xNofPixel=document.getElementById("nbrNofPixel").value;
 			if(xNofPixel==""||xNofPixel<=1){document.getElementById("nbrNofPixel").value=1;CheckRadio();}
 			else if(xNofPixel>=5){document.getElementById("nbrNofPixel").value=5;CheckRadio();}
-			else{document.getElementById("nbrNofPixel").value=xNofPixel;CheckRadio();}		 
-			}	
+			else{document.getElementById("nbrNofPixel").value=xNofPixel;CheckRadio();}
+			}
 		}
 		function isNumber(evt) {
 			evt=(evt)?evt:window.event;
@@ -1300,7 +1335,6 @@ function ResetLightsAndButtonOnly() {
         var closepopup = document.getElementById('popup');
         var btclosetip = document.getElementById('btnClosetip');
 
-        // ✅ Check if popup exists first
         if (closepopup && !closepopup.contains(e.target)) {
           if (closepopup) closepopup.style.display = 'none';
           if (btclosetip) btclosetip.style.display = 'none';
@@ -1519,11 +1553,8 @@ function ResetLightsAndButtonOnly() {
 				labelElement.textContent = text;
 			}
 		}
-
-
 	}
-
-
+	
 	function showLight(color) {
     const glow = document.getElementById("glowLight");
     glow.style.opacity = "1";
@@ -1635,13 +1666,15 @@ function ResetLightsAndButtonOnly() {
 	   <div id="top-container" class="top-container">
 		  <div class="mp-One-container-flex">
 			 <div class="mp-image-container">
-				<img id="sagImage" src="images/ax-t1/200.jpeg" alt="p1">
+				<img id="sagImage" src="images/ax-t1-new/200.jpeg" alt="p1">
 			 </div>
 			 <div class="mp-image-container">
-				<img id="corImage" src="images/ax-t1/200.jpeg" alt="p2">
+				<img id="corImage" src="images/ax-t1-new/200.jpeg" alt="p2">
 			 </div>
 			 <div class="mp-image-container" id="custom-highlight" >
-				<!-- <img id="axlImage" src="images/ax-t1/200.jpeg" alt="p3"> -->
+				<div id="axlImageDiv" style="display: none;">
+					<img id="axlImage" src="images/ax-t1-new/200.jpeg" alt="p3">
+				</div>
 				 <div id="tabcrane">
 					<!-- <img id="picBackgrd" src="bck.png"> -->
 					<div class="svg-container">
@@ -1911,7 +1944,7 @@ function ResetLightsAndButtonOnly() {
 				   <div class="mp-items-measure">
 					  <label id="lblFovLect"> FoV Lecture (mm)</label>
 					  <div class="mp-input-button">
-						 <input type="number" id='nbrFOV' value="24" onkeydown="search(event)"  onkeypress="return isNumber(event)"/>
+						 <input type="number" id='nbrFOV' value="24" onkeydown="search(event)" onkeypress="return isNumber(event)" onchange="search({ keyCode: 13 })"/>
 						 <div class="mp-buttons">
 							<button onclick="addFov()"><i class="fa-solid fa-angle-up"></i></button>
 							<button onclick="subFov()"><i class="fa-solid fa-angle-down"></i></button>
@@ -1956,7 +1989,7 @@ function ResetLightsAndButtonOnly() {
 				   <div class="mp-items-measure">
 					  <label id="lbTR">TR</label>
 					  <div class="mp-input-button">
-						 <input type="number" id="nbrTR" value="3000" onkeydown="search(event)"  onkeypress="return isNumber(event)"/>
+						 <input type="number" id="nbrTR" value="3000" onkeydown="search(event)"  onkeypress="return isNumber(event)" />
 						 <div class="mp-buttons">
 							<button onclick="addTR()"><i class="fa-solid fa-angle-up"></i></button>
 							<button onclick="subTR()"><i class="fa-solid fa-angle-down"></i></button>
@@ -1995,7 +2028,7 @@ function ResetLightsAndButtonOnly() {
 				<div class="mp-items-measure">
 					<label id="lbTF">ETL</label>
 					<div class="mp-input-button">
-						<input type="number" id="nbrETL" value="13" />
+						<input type="number" id="nbrETL" value="13" onkeydown="search(event)"  onkeypress="return isNumber(event)" oninput="search({ keyCode: 13 })"/>
 						<div class="mp-buttons">
 							<button onclick="addETL()"><i class="fa-solid fa-angle-up"></i></button>
 							<button onclick="subETL()"><i class="fa-solid fa-angle-down"></i></button>
@@ -2545,7 +2578,7 @@ function ResetLightsAndButtonOnly() {
 						</tr>
 						<tr><td style="text-align:center"><label id="" >Graisse</label></td><td></td><td style="text-align:center"><label  id="">SB</label></td></tr>
 					</table>
-					<table id="tabcrane" style="-moz-user-select: none;user-select:none;">
+					<!-- <table id="tabcrane" style="-moz-user-select: none;user-select:none;">
 						<tr>
 							<td>
 								<img id="picBackgrd" src="bck.png">
@@ -2744,7 +2777,7 @@ function ResetLightsAndButtonOnly() {
 								</div>
 							</td>
 						</tr>
-					</table>
+					</table> -->
 					<table id="tabPicDiv" style="-moz-user-select: none;user-select:none;">
 						<tr>
 							<td><img id="picTE" src="13.png"/></td>
