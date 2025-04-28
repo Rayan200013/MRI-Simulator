@@ -261,11 +261,12 @@ text-align: right;
 }
 
 .row:first-child .cell {
-font-size: 10px;
+font-size: 15px;
 }
 
 .row:last-child .cell {
-font-size: 14px;
+font-size: 15px;
+text-align: center;
 }
 
 #tabcircle{
@@ -555,6 +556,7 @@ text-decoration: none;
 }
 
 .mp-One-container-flex{
+  position: relative;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -580,6 +582,7 @@ text-decoration: none;
   width: 100%;
   margin: auto;
   height: 355px;
+  object-fit: contain;
   }
 
 /* Tab Result */
@@ -1031,4 +1034,9 @@ font-size: 18px
   #lbConcat, #lblFovPhase, #lbTI, #lblDirPhase, #lblSurech, #lblSat, #lblPat{
     cursor:no-drop;
     color: #b8b8b8 !important;
+  }
+  .refresh-icon{
+    position: absolute;
+    bottom: 38px;
+    right: -100px;
   }

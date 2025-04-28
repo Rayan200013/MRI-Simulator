@@ -57,16 +57,18 @@
 				CheckRadio();DsiplaySpinEcho();cname="case1";
 				document.getElementById('btnClosetip')
 				// Adding images intersection
-				document.getElementById("sagImage").src = "data:image/svg+xml;charset=UTF-8," +
-				encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="350" height="430">' +
-				'<rect width="100%" height="100%" fill="black"/>' +
-				'<text x="50%" y="50%" font-size="30" fill="white" text-anchor="middle" dominant-baseline="middle">Sagittal</text>' +
-				'</svg>');
-				document.getElementById("corImage").src = "data:image/svg+xml;charset=UTF-8," +
-				encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="350" height="430">' +
-				'<rect width="100%" height="100%" fill="black"/>' +
-				'<text x="50%" y="50%" font-size="30" fill="white" text-anchor="middle" dominant-baseline="middle">Coronal</text>' +
-				'</svg>');
+				// document.getElementById("sagImage").src = "data:image/svg+xml;charset=UTF-8," +
+				// encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="350" height="430">' +
+				// '<rect width="100%" height="100%" fill="black"/>' +
+				// '<text x="50%" y="50%" font-size="30" fill="white" text-anchor="middle" dominant-baseline="middle">Sagittal</text>' +
+				// '</svg>');
+				// document.getElementById("corImage").src = "data:image/svg+xml;charset=UTF-8," +
+				// encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="350" height="430">' +
+				// '<rect width="100%" height="100%" fill="black"/>' +
+				// '<text x="50%" y="50%" font-size="30" fill="white" text-anchor="middle" dominant-baseline="middle">Coronal</text>' +
+				// '</svg>');
+				document.getElementById("sagImage").src = "images/sagittal.png";
+			    document.getElementById("corImage").src = "images/coronal.png";
 			}
 			else if(casename=="case2"){
 				TRref=4000;NEXref=2;bdwref=30;fovref=24;
@@ -581,6 +583,13 @@
 
     // console.log("RSB Reset completed.");
 }
+function ResetLights(){
+	const resetBtn = document.getElementById("btnReset");
+    resetBtn.classList.remove("show");
+    resetBtn.classList.add("hide");
+	console.log("Keep lights and calculation");
+}
+
 function ResetLightsAndButtonOnly() {
     // Reset lights
     const glow = document.getElementById("glowLight");
@@ -717,7 +726,8 @@ function ResetLightsAndButtonOnly() {
 			else if(res==0){
 				showLight("red");
 			}
-		}		
+		}
+		console.log("Testing");
 		}
 
 		function DisplayValues(casename){
@@ -933,54 +943,45 @@ function ResetLightsAndButtonOnly() {
 		}	
 
 
-		function changeCases() {
-		const selectedCase = document.getElementById("casesDrp").value;
-		const btnResult = document.getElementById("btnresult");
+	// 	function changeCases() {
+	// 	const selectedCase = document.getElementById("casesDrp").value;
+	// 	const btnResult = document.getElementById("btnresult");
 
-		if (selectedCase === "case1") {
-			document.getElementById("sagImage").src = "data:image/svg+xml;charset=UTF-8," +
-				encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="350" height="430">' +
-				'<rect width="100%" height="100%" fill="black"/>' +
-				'<text x="50%" y="50%" font-size="30" fill="white" text-anchor="middle" dominant-baseline="middle">Sagittal</text>' +
-				'</svg>');
+	// 	if (selectedCase === "case1") {
+	// 		document.getElementById("sagImage").src = "images/sagittal.png";
+	// 		document.getElementById("corImage").src = "images/coronal.png";
 
-			document.getElementById("corImage").src = "data:image/svg+xml;charset=UTF-8," +
-				encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="350" height="430">' +
-				'<rect width="100%" height="100%" fill="black"/>' +
-				'<text x="50%" y="50%" font-size="30" fill="white" text-anchor="middle" dominant-baseline="middle">Coronal</text>' +
-				'</svg>');
-
-				document.getElementById("case-question").innerHTML= "";
-				document.getElementById("case-question").innerHTML= "Augmenter le TR par pas de 50 et observer les changements sur l’image , le signal sur bruit (S/B), le temps d’acquisition et le nombre de coupes autorisé par TR"
+	// 			document.getElementById("case-question").innerHTML= "";
+	// 			document.getElementById("case-question").innerHTML= "Augmenter le TR par pas de 50 et observer les changements sur l’image , le signal sur bruit (S/B), le temps d’acquisition et le nombre de coupes autorisé par TR"
 
 
-			TRref=4000;NEXref=2;bdwref=30;fovref=24;
-			TEref=90;phaseref=320;freqref=320;epaisseurref=4;
-			document.getElementById("nbrTI").value = 0;
-			document.getElementById("nbrTR").value = 250;
-			document.getElementById("nbrETL").value = 2;
-			document.getElementById("nbrTE").value = 11;
-			document.getElementById("nbrNEX").value = 1;
-			document.getElementById("nbrConcat").value = 1;
-			document.getElementById("nbrBdwppxl").value = 111;
-			document.getElementById("nbrSthks").value = 4;
-			document.getElementById("nbrSintr").value = 0.4;
-			document.getElementById("nbrNofSlc").value = 1;
-			document.getElementById("nbrSurech").value = 100;
-			document.getElementById("nbrFOV").value = 24;
-			document.getElementById("nbrFovPhase").value = 100;
-			document.getElementById("nbrFreq").value = 320;
-			document.getElementById("nbrPhase").value = 320;
+	// 		TRref=4000;NEXref=2;bdwref=30;fovref=24;
+	// 		TEref=90;phaseref=320;freqref=320;epaisseurref=4;
+	// 		document.getElementById("nbrTI").value = 0;
+	// 		document.getElementById("nbrTR").value = 250;
+	// 		document.getElementById("nbrETL").value = 2;
+	// 		document.getElementById("nbrTE").value = 11;
+	// 		document.getElementById("nbrNEX").value = 1;
+	// 		document.getElementById("nbrConcat").value = 1;
+	// 		document.getElementById("nbrBdwppxl").value = 111;
+	// 		document.getElementById("nbrSthks").value = 4;
+	// 		document.getElementById("nbrSintr").value = 0.4;
+	// 		document.getElementById("nbrNofSlc").value = 1;
+	// 		document.getElementById("nbrSurech").value = 100;
+	// 		document.getElementById("nbrFOV").value = 24;
+	// 		document.getElementById("nbrFovPhase").value = 100;
+	// 		document.getElementById("nbrFreq").value = 320;
+	// 		document.getElementById("nbrPhase").value = 320;
 
-			btnResult.disabled = true;
-			btnResult.style.opacity = "0.9";
-			btnResult.style.cursor = "not-allowed"; 
+	// 		btnResult.disabled = true;
+	// 		btnResult.style.opacity = "0.9";
+	// 		btnResult.style.cursor = "not-allowed"; 
 
-		} else if (selectedCase === "case2") {
-			document.getElementById("case-question").innerHTML= "";
-				document.getElementById("case-question").innerHTML= "Question Cas 2"
-		}
-	}
+	// 	} else if (selectedCase === "case2") {
+	// 		document.getElementById("case-question").innerHTML= "";
+	// 			document.getElementById("case-question").innerHTML= "Question Cas 2"
+	// 	}
+	// }
 
 	function displayImage(value) {
 		const rangeStart = Math.floor(value / 100) * 100;
@@ -1457,7 +1458,7 @@ function ResetLightsAndButtonOnly() {
 
 		const labelMappings = {
 			Siemens: {
-				lbTR: "TR",
+				lbTR: "TR ms",
 				lbTSE: "TSE /EG",
 				lbTF: "FT",
 				lbTI: "TI",
@@ -1465,8 +1466,8 @@ function ResetLightsAndButtonOnly() {
 				lbNEX: "moyenne",
 				lbConcat: "Concat",
 				lblBdwppxl: "Bandwidth Hz / pixel",
-				lblSthks: "Epaisseur de coupe",
-				lblFacDist: "Facteur distance",
+				lblSthks: "Epaisseur de coupe (mm)",
+				lblFacDist: "Espace inter-coupe",
 				lblNofSlc: "Nombre de coupes",
 				lblDirPhase: "Dir encodage de phase",
 				lblSurech: "Suréchantillonnage %",
@@ -1479,7 +1480,7 @@ function ResetLightsAndButtonOnly() {
 				AccLabel: "GRAPPA"
 			},
 			GE: {
-				lbTR: "TR",
+				lbTR: "TR ms",
 				lbTSE: "FSE /EG",
 				lbTF: "ETL",
 				lbTI: "TI",
@@ -1487,8 +1488,8 @@ function ResetLightsAndButtonOnly() {
 				lbNEX: "NEX",
 				lbConcat: "Concat",
 				lblBdwppxl: "BDW Total en KHz",
-				lblSthks: "Epaisseur de coupe",
-				lblFacDist: "Facteur distance",
+				lblSthks: "Epaisseur de coupe (mm)",
+				lblFacDist: "Espace inter-coupe",
 				lblNofSlc: "Nombre de coupes",
 				lblDirPhase: "Dir encodage de phase",
 				lblSurech: "Suréchantillonnage %",
@@ -1501,7 +1502,7 @@ function ResetLightsAndButtonOnly() {
 				AccLabel: "ARC",
 			},
 			Philips: {
-				lbTR: "TR",
+				lbTR: "TR ms",
 				lbTSE: "TSE /EG",
 				lbTF: "FT",
 				lbTI: "TI",
@@ -1509,8 +1510,8 @@ function ResetLightsAndButtonOnly() {
 				lbNEX: "NSA",
 				lbConcat: "Concat",
 				lblBdwppxl: "Nombre pixels de déplacement chimique",
-				lblSthks: "Epaisseur de coupe",
-				lblFacDist: "Facteur distance",
+				lblSthks: "Epaisseur de coupe (mm)",
+				lblFacDist: "Espace inter-coupe",
 				lblNofSlc: "Nombre de coupes",
 				lblDirPhase: "Dir encodage de phase",
 				lblSurech: "Suréchantillonnage %",
@@ -1523,7 +1524,7 @@ function ResetLightsAndButtonOnly() {
 				AccLabel: "Sense"
 			},
 			Canon: {
-				lbTR: "TR",
+				lbTR: "TR ms",
 				lbTSE: "TSE /EG",
 				lbTF: "ETL",
 				lbTI: "TI",
@@ -1531,8 +1532,8 @@ function ResetLightsAndButtonOnly() {
 				lbNEX: "NAQ",
 				lbConcat: "Concat",
 				lblBdwppxl: "Bandwidth Hz / pixel",
-				lblSthks: "Epaisseur de coupe",
-				lblFacDist: "Facteur distance",
+				lblSthks: "Epaisseur de coupe (mm)",
+				lblFacDist: "Espace inter-coupe",
 				lblNofSlc: "Nombre de coupes",
 				lblDirPhase: "Dir encodage de phase",
 				lblSurech: "Suréchantillonnage %",
@@ -1666,10 +1667,10 @@ function ResetLightsAndButtonOnly() {
 	   <div id="top-container" class="top-container">
 		  <div class="mp-One-container-flex">
 			 <div class="mp-image-container">
-				<img id="sagImage" src="images/ax-t1-new/200.jpeg" alt="p1">
+				<img id="sagImage" src="images/sagittal.png" alt="p1">
 			 </div>
 			 <div class="mp-image-container">
-				<img id="corImage" src="images/ax-t1-new/200.jpeg" alt="p2">
+				<img id="corImage" src="images/coronal.png" alt="p2">
 			 </div>
 			 <div class="mp-image-container" id="custom-highlight" >
 				<div id="axlImageDiv" style="display: none;">
@@ -1890,38 +1891,44 @@ function ResetLightsAndButtonOnly() {
 			
 				<div class="btn-flex">
 					<button id="btnresult" class="Btn-validate" onclick="ResultFeedback()">Valider</button>
-					<button id="btnReset" class="hide Btn-validate" onclick="ResetRSB()">Réinitialiser</button>
+					<button id="btnReset" class="hide Btn-validate" onclick="ResetLights()">Réinitialiser</button>
 				</div>
 			</div>
-			 
+			 <!-- Icon for refreshing -->
+			 <div class="refresh-icon">
+				<!-- <img src="refresh.png" alt="refresh" id="btnRefresh" onclick="Refresh()"> -->
+				 <button id="btnRefresh" class="Btn-validate" onclick="ResetRSB()">
+					 <i class="fa-solid fa-rotate-right"></i>
+				 </button>
+			 </div>
 		  </div>
 		  <!-- Second Row five containers includes icon boxes component abd inout fields  START-->
 		  <div class="mp-second-container-flex">
 			 <div class="mp-icon-input-box">
 				<div class="mp-icon-box">
 				   <img src="Timer-icon.png" alt="Timer-icon">
-				   <p>Temps d'acquisition</p>
+				   <p>Temps d'acquisition :</p>
 				</div>
 				<span><label id="lblDisplayAcqTime"></label></span>
 			 </div>
 			 <div class="mp-icon-input-box">
 				<div class="mp-icon-box">
 				   <img src="Accelaration-icon.png" alt="Accelaration-icon">
-				   <p>Facteur d’accélération</p>
+				   <p>Facteur d’accélération :</p>
 				</div>
-				<span><label>0</label></span>
+				<span><label>Neant</label></span>
 			 </div>
 			 <div class="mp-icon-input-box">
 				<div class="mp-icon-box">
 				   <img src="Volume-icon.png" alt="volume-icon">
-				   <p>Volume de voxel</p>
+				   <p>Volume de voxel :</p>
 				</div>
 				<span><label id="lblDisplayVoxelSize"></label><sup>3</sup></span>
 			 </div>
 			 <div class="mp-icon-input-box">
 				<div class="mp-icon-box">
 				   <img src="Wifi-icon.png" alt="wifi-icon">
-				   <p>S/B rel %.</p>
+				   <p>S/B rel :</p>
 				</div>
 				<span><label id="lblDisplaySNR"></label></span>
 			 </div>
@@ -1987,7 +1994,7 @@ function ResetLightsAndButtonOnly() {
 			 <div class="mp-box-container">
 				<div class="mp-column-con">
 				   <div class="mp-items-measure">
-					  <label id="lbTR">TR</label>
+					  <label id="lbTR">TR ms</label>
 					  <div class="mp-input-button">
 						 <input type="number" id="nbrTR" value="3000" onkeydown="search(event)"  onkeypress="return isNumber(event)" />
 						 <div class="mp-buttons">
@@ -2028,7 +2035,7 @@ function ResetLightsAndButtonOnly() {
 				<div class="mp-items-measure">
 					<label id="lbTF">ETL</label>
 					<div class="mp-input-button">
-						<input type="number" id="nbrETL" value="13" onkeydown="search(event)"  onkeypress="return isNumber(event)" oninput="search({ keyCode: 13 })"/>
+						<input type="number" id="nbrETL" value="13" onkeydown="search(event)"  onkeypress="return isNumber(event)" onchange="search({ keyCode: 13 })"/>
 						<div class="mp-buttons">
 							<button onclick="addETL()"><i class="fa-solid fa-angle-up"></i></button>
 							<button onclick="subETL()"><i class="fa-solid fa-angle-down"></i></button>
@@ -2053,7 +2060,7 @@ function ResetLightsAndButtonOnly() {
 					  
 					  <label id="lbTE">TE</label>
 					  <div class="mp-input-button">
-						 <input type="number" id='nbrTE' value="90" onkeydown="search(event)"  onkeypress="return isNumber(event)"/>
+						 <input type="number" id='nbrTE' value="90" onkeydown="search(event)"  onkeypress="return isNumber(event)" onchange="search({ keyCode: 13 })"/>
 						 <div class="mp-buttons">
 							<button onclick="addTE()"><i class="fa-solid fa-angle-up"></i></button>
 							<button onclick="subTE()"><i class="fa-solid fa-angle-down"></i></button>
@@ -2064,7 +2071,7 @@ function ResetLightsAndButtonOnly() {
 					  
 					  <label id="lbNEX">NEX</label>
 					  <div class="mp-input-button">
-						 <input type="number" id='nbrNEX' value="2"  onkeydown="search(event)"  onkeypress="return isNumber(event)"/>
+						 <input type="number" id='nbrNEX' value="2"  onkeydown="search(event)" onkeypress="return isNumber(event)" onchange="search({ keyCode: 13 })"/>
 						 <div class="mp-buttons">
 							<button onclick='addNEX()'><i class="fa-solid fa-angle-up"></i></button>
 							<button onclick='subNEX()'><i class="fa-solid fa-angle-down"></i></button>
@@ -2100,7 +2107,7 @@ function ResetLightsAndButtonOnly() {
 				<div class="mp-column-con">
 				   <div class="mp-items-measure">
 					  
-					  <label id="lblSthks">Epaisseur de coupe</label>
+					  <label id="lblSthks">Epaisseur de coupe (mm)</label>
 					  <div class="mp-input-button">
 						 <input type="number" id='nbrSthks' value="4" onkeydown="search(event)"  onkeypress="return isNumber(event)"/>
 						 <div class="mp-buttons">
@@ -2111,7 +2118,7 @@ function ResetLightsAndButtonOnly() {
 				   </div>
 				   <div class="mp-items-measure">
 					  
-					  <label id="lblFacDist">Facteur distance</label>
+					  <label id="lblFacDist">Espace inter-coupe</label>
 					  <div class="mp-input-button">
 						 <input id="nbrSintr" type="number"/>
 						 <div class="mp-buttons">
@@ -2141,16 +2148,17 @@ function ResetLightsAndButtonOnly() {
 					  <label id="lblDirPhase">Dir encodage de phase</label>
 					  <div class="mp-input-button mp-input-button-select mp-custom-select" style="cursor: no-drop; background-color: #3b416318;">
 						 <select id="" style="pointer-events: none; background-color: #3b41632d;">
-							<option value="dg" selected>D/G</option>
-							<option value="ap" >A/P</option>
-							<option value="si" >S/I</option>
+							<option value="dg" selected>Neuro R>L</option>
+							<option value="dg">D/G</option>
+							<option value="ap">A/P</option>
+							<option value="si">S/I</option>
 						 </select>
 					  </div>
 				   </div>
 				   <div class="mp-items-measure">
 					  <label id="lblSurech">Suréchantillonnage %</label>
 					  <div class="mp-input-button" style="cursor: no-drop; background-color: #3b41632d;">
-						 <input id="nbrSurech" type="number" style="pointer-events: none; background-color: #3b416300;"/>
+						 <input value="100" id="nbrSurech" type="number" style="pointer-events: none; background-color: #3b416300;"/>
 						 <div class="mp-buttons" style="pointer-events: none;">
 							<button><i class="fa-solid fa-angle-up"></i></button>
 							<button><i class="fa-solid fa-angle-down"></i></button>
@@ -2213,7 +2221,8 @@ function ResetLightsAndButtonOnly() {
 					  <label id="lblSat" style="width: 40px !important;">SAT</label>
 					  <div class="mp-input-button mp-input-button-select mp-custom-select" style="cursor: no-drop; background-color: #3b416318;">
 						 <select style="pointer-events: none; background-color: #3b41632d;">
-							<option value="fat" selected>FAT-Sat</option>
+							<option value="N/A" selected>N/A</option>
+							<option value="fat" >FAT-Sat</option>
 							<option value="spair" >pré-Sat</option>
 							<option value="exct" >SPAIR</option>
 						 </select>
@@ -2223,8 +2232,8 @@ function ResetLightsAndButtonOnly() {
 					  <label id="lblPat" style="width: 40px !important;">Acc</label>
 					  <div class="mp-input-button mp-input-button-select mp-custom-select" style="cursor: no-drop; background-color: #3b416318;">
 						 <select style="pointer-events: none; background-color: #3b41632d;">
-							<option id="AccLabel" value="grappa" selected>ARC</option>
-							<option value="N/A" >N/A</option>
+							 <option value="N/A" selected>N/A</option>
+							<option id="AccLabel" value="grappa">ARC</option>
 						 </select>
 					  </div>
 				   </div>
@@ -2247,8 +2256,8 @@ function ResetLightsAndButtonOnly() {
 					</div>
 				
 					<div class="row">
-						<div class="cell left"><b>TE eff réel:</b> <span id="lblDisplayTEeff">11.01</span></div>
-						<div class="cell right"><b>TE Max idéal:</b> <span id="lblDisplayTEmideal">11.01</span></div>
+						<div class="cell left"><b>TE eff :</b> <span id="lblDisplayTEeff">11.01</span></div>
+						<div style="display: none;" class="cell right"><b>TE Max idéal:</b> <span id="lblDisplayTEmideal">11.01</span></div>
 					</div>
 				</div>
 				
