@@ -382,6 +382,23 @@
 			bdw= document.getElementById("nbrTotalBdw").value;
 			pBDW= document.getElementById("nbrBdwppxl").value;
 			NBDW= document.getElementById("nbrNofPixel").value;
+
+			// After loading TR, TE, ETL, NEX, etc.
+fov = parseFloat(document.getElementById("nbrFOV").value);
+
+if (manufacturer !== "GE") {
+    // If user entered in cm but it should be mm
+    if (fov <= 50) { // assuming 50 cm is the max in cm
+        fov = fov * 10; // convert cm to mm
+        document.getElementById("nbrFOV").value = fov; // update input
+    }
+} else {
+    if (fov >= 50) { // meaning it is in mm and needs to go back to cm
+        fov = fov / 10;
+        document.getElementById("nbrFOV").value = fov; // update input
+    }
+}
+
 			//Calculate BDWs
 			if(checkname=="varBDW"){
 				bdw=vBDW*2;
@@ -519,6 +536,7 @@
 				}
 				newDeviation= (+newDeviationSt+ +newDeviationEtl).toFixed(2);
 				document.getElementById("bf1").setAttribute("stdDeviation", newDeviation);
+				// Inside Calculation() function after reading all values
 			}
 			ChangeColors();DisplayValues();ChangeBlurring();ChangeFov();ChangeFrePixels();
 		}
@@ -761,6 +779,18 @@ function ResetLightsAndButtonOnly() {
 			document.getElementById("lblDisplaySNR").innerText=snr;
 			document.getElementById("lblDisplayTEeff").innerText=TEeffreel.toFixed(2);
 			document.getElementById("lblDisplayTEmideal").innerText=Temideal.toFixed(2);
+
+			var displayFov = fov;
+            var displayUnit = "cm";
+            
+            if (manufacturer !== "GE") {
+                displayFov = fov * 10; // Convert back to mm for display
+                displayUnit = "mm";
+}
+
+document.getElementById("lblDisplayFov").innerText = displayFov + " " + displayUnit;
+
+
 		}
 		function DsiplaySpinEcho(){
 			ETL=document.getElementById("nbrETL").value;
@@ -1357,6 +1387,9 @@ function ResetLightsAndButtonOnly() {
 		function changeAppearance() {
 		const dropdown = document.getElementById("manufactorDrp");
 		const selectedValue = dropdown.value;
+		manufacturer = selectedValue;
+            Calculation();
+            DisplayValues();
 
 		// Select containers individually
 		const menuBarContainer = document.querySelector('.mp-zero-container');
@@ -1619,6 +1652,14 @@ function ResetLightsAndButtonOnly() {
 // document.getElementById("nbrETL")?.addEventListener("input", calculateValue);
 
 
+// Global variable:
+var manufacturer = "GE";
+function ChangeManufacturer(value) {
+    manufacturer = value;
+    Calculation();
+    DisplayValues();
+}
+
 	</script>
 </head>
 <body onload="preload();CheckCases('case1');DsiplaySpinEcho();Calculation();DisplayValues('case1');" class="container" style="font-family:helvetica;">
@@ -1655,7 +1696,7 @@ function ResetLightsAndButtonOnly() {
 		  <div class="mp-items-measure">
 			 <!-- <label>Machine</label> -->
 			 <div class="mp-input-button mp-input-button-select mp-custom-select">
-				<select id="manufactorDrp" onchange="changeAppearance()">
+				<select id="manufactorDrp" onchange="changeAppearance(); ChangeManufacturer(this.value)">
 					<option value="GE" selected>GE</option>
 				   <option value="Siemens">Siemens</option>
 				   <option value="Philips">Philips</option>
