@@ -7,6 +7,7 @@
 <link rel="stylesheet" type="text/css" href="newStyle-ray.css">
 <link href="fontawesome/css/all.min.css" rel="stylesheet">
 <script>
+	const imageListCase1 = [200, 300, 400, 450, 500, 550, 600, 650, 700, 750, 800, 850, 900, 1500];
 	var TR,TE,ETL,NEX,fov,freq,phase,epaisseur,gap,coupes,vBDW,bdw,pBDW,NBDW,nbcoupes,tac,voxel,TEm,TEM,tps,pixelsize,natomicvolume,dFov,checkname="BDW",echoeff,TEeffreel,snr,Temideal,snrref,snrreel,echoeffred,divleft,newposition,newechoeffred,oldechoeffred,snrsg,snrsb,snreau,snrfat,snrsup,snrinf,srnampl,clefsgnormal,clefsbnormal,clefeaunormal,cleffatnormal,casename,cname,fovref,phaseref,freqref,epaisseurref,bdwref,TRref,TEref,NEXref,res;
 	var rho=1,T1= 3000,T2=200,T1sg =750,T2sg=90,rhosg=0.84,T1fat=200,T2fat=90,rhofat=1,currentposition=201;
 	var T1eau=3000,T2eau=200,rhoeau=1,T1sb=500,T2sb=75,rhosb=0.72;
@@ -37,27 +38,37 @@
 				document.getElementById("btnCase5").className="";
 				document.getElementById("btnCase6").className="";
 				document.getElementById("btnCase7").className="";
+				document.getElementById("btnCase8").className="";
 				document.getElementById("imgCase7").style.display="none";
 				document.getElementById("lblDisplayResults").innerText="";			
 				document.getElementById("btnresult").style.display="inline";
 				document.getElementById("lblDisplayResults").style.display="inline";
 				document.getElementById("lblQuestion").innerText="Pour cette séquence Spin Echo Rapide, vous avez besoin de 20 coupes seulement, la machine en autorise 24. Comment optimiser les réglages afin de profiter de la marge de manoeuvre pour gagner du temps sans changer la pondération, la couverture anatomique ni la résolution spatiale?";
 				document.getElementById("popup").className="popcase1";
-				// document.getElementById("popupContent").innertext="Le paramètre TF/ETL est le nombre d'échos recueillis dans le même cycle de répétition (  temps TR). Il s'agit d'une mesure d'accélération du temps d’acquisition, par exemple, pour un facteur turbo 3, le temps d’acquisition est divisé par 3 par rapport à une séquence SE avec des paramètres comparables.\n Ainsi, en augmentant votre facteur TF/ETL, vous pouvez réduire le temps d'acquisition.\n Attention : vous devrez peut-être ajuster d'autres paramètres pour garantir une bonne optimisation.";
-				document.getElementById("popupContent").innerHTML="Le paramètre TF/ETL est le nombre d'échos recueillis dans le même cycle de répétition (  temps TR). Il s'agit d'une mesure d'accélération du temps d’acquisition, par exemple, pour un facteur turbo 3, le temps d’acquisition est divisé par 3 par rapport à une séquence SE avec des paramètres comparables.\n Ainsi, en augmentant votre facteur TF/ETL, vous pouvez réduire le temps d'acquisition.\n Attention : vous devrez peut-être ajuster d'autres paramètres pour garantir une bonne optimisation.";
+				// Changed the popContent into a real variable and then used it inside an if statement
+				// to check if the element exists before trying to set its innerHTML
+				// so it re render without giving a style error.
+				var popupContent = document.getElementById("popupContent");
+				if (popupContent) {
+					popupContent.innerHTML =`Le paramètre TF/ETL est le nombre d'échos recueillis dans le même cycle de répétition (  temps TR). Il s'agit d'une mesure d'accélération du temps d’acquisition, par exemple, pour un facteur turbo 3, le temps d’acquisition est divisé par 3 par rapport à une séquence SE avec des paramètres comparables.<br> Ainsi, en augmentant votre facteur TF/ETL, vous pouvez réduire le temps d'acquisition.<br> Attention : vous devrez peut-être ajuster d'autres paramètres pour garantir une bonne optimisation.`
+				}
+				document.getElementById("axlImageDiv").style.display = "none";
+                document.getElementById("tabcrane").style.display = "block";
 				CheckRadio();DsiplaySpinEcho();cname="case1";
 				document.getElementById('btnClosetip')
 				// Adding images intersection
-				document.getElementById("sagImage").src = "data:image/svg+xml;charset=UTF-8," +
-				encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="350" height="430">' +
-				'<rect width="100%" height="100%" fill="black"/>' +
-				'<text x="50%" y="50%" font-size="30" fill="white" text-anchor="middle" dominant-baseline="middle">Sagittal</text>' +
-				'</svg>');
-				document.getElementById("corImage").src = "data:image/svg+xml;charset=UTF-8," +
-				encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="350" height="430">' +
-				'<rect width="100%" height="100%" fill="black"/>' +
-				'<text x="50%" y="50%" font-size="30" fill="white" text-anchor="middle" dominant-baseline="middle">Coronal</text>' +
-				'</svg>');
+				// document.getElementById("sagImage").src = "data:image/svg+xml;charset=UTF-8," +
+				// encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="350" height="430">' +
+				// '<rect width="100%" height="100%" fill="black"/>' +
+				// '<text x="50%" y="50%" font-size="30" fill="white" text-anchor="middle" dominant-baseline="middle">Sagittal</text>' +
+				// '</svg>');
+				// document.getElementById("corImage").src = "data:image/svg+xml;charset=UTF-8," +
+				// encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="350" height="430">' +
+				// '<rect width="100%" height="100%" fill="black"/>' +
+				// '<text x="50%" y="50%" font-size="30" fill="white" text-anchor="middle" dominant-baseline="middle">Coronal</text>' +
+				// '</svg>');
+				document.getElementById("sagImage").src = "images/sagittal.png";
+			    document.getElementById("corImage").src = "images/coronal.png";
 			}
 			else if(casename=="case2"){
 				TRref=4000;NEXref=2;bdwref=30;fovref=24;
@@ -83,13 +94,19 @@
 				document.getElementById("btnCase5").className="";
 				document.getElementById("btnCase6").className="";
 				document.getElementById("btnCase7").className="";
+				document.getElementById("btnCase8").className="";
 				document.getElementById("imgCase7").style.display="none";
 				document.getElementById("lblDisplayResults").innerText="";			
 				document.getElementById("btnresult").style.display="inline";
 				document.getElementById("lblDisplayResults").style.display="inline";
 				document.getElementById("lblQuestion").innerText="Pour cette séquence  Spin Echo Rapide, vous avez besoin de 20 coupes seulement, la machine en autorise 24. Comment optimiser les réglages afin de profiter de la marge de manoeuvre pour améliorer la résolution spatiale sans modifier la pondération, la couverture  anatomique ni le temps d'acquisition?";
 				document.getElementById("popup").className="popcase2";
-				document.getElementById("popupContent").innerHTML="L'augmentation du nombre de codage en fréquence ou du nombre de <br>" + " codage de phase permet d'améliorer la résolution. Le codage de fréquence dépend de la rapidité avec laquelle le signal FID est échantillonné. L'augmentation de la fréquence d'échantillonnage n'entraîne aucune pénalité de temps. L'augmentation du nombre de pas de codage de phase augmente proportionnellement le temps d'acquisition avec le nombre de ligne en phase.\n Ainsi, en augmentant seulement le nombre de codage de fréquence, vous pouvez améliorer votre résolution spatiale sans affecter le temps d'acquisition.\n Attention: vous devrez peut-être ajuster d'autres paramètres pour garantir une bonne optimisation.";
+				var popupContent = document.getElementById("popupContent");
+				if (popupContent) {
+					popupContent.innerHTML =`L'augmentation du nombre de codage en fréquence ou du nombre de <br>" + " codage de phase permet d'améliorer la résolution. Le codage de fréquence dépend de la rapidité avec laquelle le signal FID est échantillonné. L'augmentation de la fréquence d'échantillonnage n'entraîne aucune pénalité de temps. L'augmentation du nombre de pas de codage de phase augmente proportionnellement le temps d'acquisition avec le nombre de ligne en phase.<br> Ainsi, en augmentant seulement le nombre de codage de fréquence, vous pouvez améliorer votre résolution spatiale sans affecter le temps d'acquisition.<br> Attention: vous devrez peut-être ajuster d'autres paramètres pour garantir une bonne optimisation.`
+				}
+				document.getElementById("axlImageDiv").style.display = "none";
+                document.getElementById("tabcrane").style.display = "block";
 				CheckRadio();DsiplaySpinEcho();cname="case2";
 			}
 			else if(casename=="case3"){
@@ -116,13 +133,19 @@
 				document.getElementById("btnCase5").className="";
 				document.getElementById("btnCase6").className="";
 				document.getElementById("btnCase7").className="";
+				document.getElementById("btnCase8").className="";
 				document.getElementById("imgCase7").style.display="none";
 				document.getElementById("lblDisplayResults").innerText="";
 				document.getElementById("btnresult").style.display="inline";
 				document.getElementById("lblDisplayResults").style.display="inline";
 				document.getElementById("lblQuestion").innerText="Pour cette séquence  Spin Echo Rapide, vous avez besoin de 20 coupes seulement, la machine en autorise 24. Comment optimiser les réglages afin de profiter de la marge de manoeuvre pour ameliorer le rapport signal sur bruit sans changer la résolution spatiale ni le temps d'acquisition?";
 				document.getElementById("popup").className="popcase3";
-				document.getElementById("popupContent").innerHTML="La variation de la bande passante du récepteur a un effet direct sur le rapport signal sur bruit (RSB). Ainsi, en diminuant la bande passante du récepteur à une valeur critique, vous pouvez améliorer le RSB.\n Attention: vous devrez peut-être ajuster d'autres paramètres pour garantir une bonne optimisation.";
+				var popupContent = document.getElementById("popupContent");
+				if (popupContent) {
+					popupContent.innerHTML =`La variation de la bande passante du récepteur a un effet direct sur le rapport signal sur bruit (RSB). Ainsi, en diminuant la bande passante du récepteur à une valeur critique, vous pouvez améliorer le RSB.<br> Attention: vous devrez peut-être ajuster d'autres paramètres pour garantir une bonne optimisation.`
+				}
+				document.getElementById("axlImageDiv").style.display = "none";
+                document.getElementById("tabcrane").style.display = "block";
 				DsiplaySpinEcho();Calculation();cname="case3";
 			}
 			else if(casename=="case4"){
@@ -149,13 +172,19 @@
 				document.getElementById("btnCase5").className="";
 				document.getElementById("btnCase6").className="";
 				document.getElementById("btnCase7").className="";
+				document.getElementById("btnCase8").className="";
 				document.getElementById("imgCase7").style.display="none";
 				document.getElementById("lblDisplayResults").innerText="";
 				document.getElementById("btnresult").style.display="inline";
 				document.getElementById("lblDisplayResults").style.display="inline";
 				document.getElementById("lblQuestion").innerText="Pour cette séquence Spin Echo Rapide pondérée T2, nous obtenons une image de mauvaise qualité: présence d'un bluring trop important. Comment optimiser les réglages afin de réduire cet effet flou sans modifier la pondération ni la couverture anatomique (perte de rapport signal sur bruit tolérée jusqu'à 20%)?";
 				document.getElementById("popup").className="popcase4";
-				document.getElementById("popupContent").innerHTML="En diminuant le paramètre TF/ETL, vous pouvez réduire l'artéfact de blurring.\n Attention : vous devrez peut-être ajuster d'autres paramètres pour garantir une bonne optimisation.";
+				var popupContent = document.getElementById("popupContent");
+				if (popupContent) {
+					popupContent.innerHTML =`En diminuant le paramètre TF/ETL, vous pouvez réduire l'artéfact de blurring. <br> Attention : vous devrez peut-être ajuster d'autres paramètres pour garantir une bonne optimisation.`
+				}
+				document.getElementById("axlImageDiv").style.display = "none";
+                document.getElementById("tabcrane").style.display = "block";
 				Calculation();DsiplaySpinEcho();cname="case4";
 			}
 			else if(casename=="case5"){
@@ -182,13 +211,20 @@
 				document.getElementById("btnCase5").className="current";
 				document.getElementById("btnCase6").className="";
 				document.getElementById("btnCase7").className="";
+				document.getElementById("btnCase8").className="";
 				document.getElementById("imgCase7").style.display="none";
 				document.getElementById("lblDisplayResults").innerText="";
 				document.getElementById("btnresult").style.display="inline";
 				document.getElementById("lblDisplayResults").style.display="inline";
 				document.getElementById("lblQuestion").innerText="Pour cette séquence Spin Echo Rapide pondérée T1, je souhaite réaliser 24 coupes. Comment optimiser les paramètres pour obtenir ces 24 coupes sans modifier la zone de couverture ni la résolution spatiale et également sans que le temps d'acquisition ne soit supérieur à 1 minute et 10 secondes (perte de SNR tolérée à 30%)?";
 				document.getElementById("popup").className="popcase5";
-				document.getElementById("popupContent").innerHTML="En diminuant le paramètre TF/ETL, vous pouvez augmenter le temps <br>" + " d'acquisition. En augmentant la bande passante du récepteur, le RSB sera réduit.\n Attention: vous devrez peut-être ajuster d'autres paramètres pour garantir une bonne optimisation.";
+				document.getElementById("popup").className="popcase4";
+				var popupContent = document.getElementById("popupContent");
+				if (popupContent) {
+					popupContent.innerHTML =`En diminuant le paramètre TF/ETL, vous pouvez augmenter le temps <br>" + " d'acquisition. En augmentant la bande passante du récepteur, le RSB sera réduit.<br> Attention: vous devrez peut-être ajuster d'autres paramètres pour garantir une bonne optimisation.`
+				}
+				document.getElementById("axlImageDiv").style.display = "none";
+                document.getElementById("tabcrane").style.display = "block";
 				CheckRadio();DsiplaySpinEcho();cname="case5";
 			}
 			else if(casename=="case6"){
@@ -215,13 +251,19 @@
 				document.getElementById("btnCase5").className="";
 				document.getElementById("btnCase6").className="current";
 				document.getElementById("btnCase7").className="";
+				document.getElementById("btnCase8").className="";
 				document.getElementById("imgCase7").style.display="none";
 				document.getElementById("lblDisplayResults").innerText="";
 				document.getElementById("btnresult").style.display="inline";
 				document.getElementById("lblDisplayResults").style.display="inline";
 				document.getElementById("lblQuestion").innerHTML ="Nous avons la chance d'utiliser une nouvelle antenne tête. Le gain de rapport signal sur bruit est colossal. Je souhaite en profiter pour améliorer la résolution spatiale, en utilisant une taille de pixel inférieur à 0.5mm<sup style=font-size:11px>2</sup>, sans changer la couverture anatomique ni augmenter le temps d'acquisition. Il faut alors optimiser les paramètres.";
 				document.getElementById("popup").className="popcase6";
-				document.getElementById("popupContent").innerHTML="En diminuant le paramètre TF/ETL, vous pouvez réduire l'effet de blurring.\n En diminuant le NEX, vous pouvez réduire le temps d'acquisition.\n En augmentant la taille de la matrice, vous pouvez améliorer la résolution de l'image.\n En augmentant la bande passante du récepteur, le SNR sera réduit.";
+				var popupContent = document.getElementById("popupContent");
+				if (popupContent) {
+					popupContent.innerHTML =`En diminuant le paramètre TF/ETL, vous pouvez réduire l'effet de blurring. <br> En diminuant le NEX, vous pouvez réduire le temps d'acquisition.<br> En augmentant la taille de la matrice, vous pouvez améliorer la résolution de l'image.<br> En augmentant la bande passante du récepteur, le SNR sera réduit.`
+				}
+				document.getElementById("axlImageDiv").style.display = "none";
+                document.getElementById("tabcrane").style.display = "block";
 				CheckRadio();DsiplaySpinEcho();cname="case6";
 			}
 			else if(casename=="case7"){
@@ -248,6 +290,7 @@
 				document.getElementById("btnCase5").className="";
 				document.getElementById("btnCase6").className="";
 				document.getElementById("btnCase7").className="current";
+				document.getElementById("btnCase8").className="";
 				document.getElementById("imgCase7").style.display="inline";
 				document.getElementById("lblDisplayResults").innerText="";
 				document.getElementById("btnresult").style.display="none";
@@ -255,8 +298,47 @@
 				document.getElementById("lblQuestion").innerText="Les paramètres sont libres et vous permettent de faire des simulations.";
 				CheckRadio();DsiplaySpinEcho();cname="case7";
 			}
+			else if(casename=="case8"){
+			TRref=250;NEXref=2;bdwref=30;fovref=24;
+			TEref=90;phaseref=320;freqref=320;epaisseurref=4;
+			document.getElementById("nbrTR").value=250;
+			document.getElementById("nbrTE").value=11;
+			document.getElementById("nbrETL").value=13;
+			document.getElementById("nbrNEX").value=2;
+			document.getElementById("nbrFOV").value=24;
+			document.getElementById("nbrFreq").value=384;
+			document.getElementById("nbrPhase").value=320;
+			document.getElementById("nbrSthks").value=3;
+			document.getElementById("nbrSintr").value=0.4;
+			document.getElementById("nbrNofSlc").value=1;
+			// document.getElementById("nbrletBdw").value=15;
+			document.getElementById("nbrVarBdw").value=15;
+			document.getElementById("nbrTotalBdw").value=30;
+			document.getElementById("nbrBdwppxl").value=93.8;
+			document.getElementById("nbrNofPixel").value=2.2;
+			document.getElementById("btnCase1").className="";
+			document.getElementById("btnCase2").className="";
+			document.getElementById("btnCase3").className="";
+			document.getElementById("btnCase4").className="";
+			document.getElementById("btnCase5").className="";
+			document.getElementById("btnCase6").className="";
+			document.getElementById("btnCase7").className="";
+			document.getElementById("btnCase8").className="current";
+			document.getElementById("imgCase7").style.display="none";
+			document.getElementById("lblDisplayResults").innerText="";			
+			document.getElementById("btnresult").style.display="inline";
+			document.getElementById("lblDisplayResults").style.display="inline";
+			document.getElementById("lblQuestion").innerText="Pour cette séquence Spin Echo Rapide, vous avez besoin de 20 coupes seulement, la machine en autorise 24. Comment optimiser les réglages afin de profiter de la marge de manoeuvre pour gagner du temps sans changer la pondération, la couverture anatomique ni la résolution spatiale?";
+			document.getElementById("popup").className="popcase8";
+			var popupContent = document.getElementById("popupContent");
+			if (popupContent) {
+			 popupContent.innerHTML =`Le paramètre TF/ETL est le nombre d'échos recueillis dans le même cycle de répétition (  temps TR). Il s'agit d'une mesure d'accélération du temps d’acquisition, par exemple, pour un facteur turbo 3, le temps d’acquisition est divisé par 3 par rapport à une séquence SE avec des paramètres comparables.<br> Ainsi, en augmentant votre facteur TF/ETL, vous pouvez réduire le temps d'acquisition.<br> Attention : vous devrez peut-être ajuster d'autres paramètres pour garantir une bonne optimisation.`
+			}
+			document.getElementById("axlImageDiv").style.display = "block";
+            document.getElementById("tabcrane").style.display = "none";
+			DsiplaySpinEcho();cname="case8";
+		}
 			return casename;
-
 		}
 		
 		function CheckRadio(){
@@ -501,6 +583,13 @@
 
     // console.log("RSB Reset completed.");
 }
+function ResetLights(){
+	const resetBtn = document.getElementById("btnReset");
+    resetBtn.classList.remove("show");
+    resetBtn.classList.add("hide");
+	console.log("Keep lights and calculation");
+}
+
 function ResetLightsAndButtonOnly() {
     // Reset lights
     const glow = document.getElementById("glowLight");
@@ -624,7 +713,21 @@ function ResetLightsAndButtonOnly() {
 					// document.getElementById("lblDisplayResults").innerText="Mauvaise Optimisation";
 					showLight("red");
 				}
-			}				
+			}
+			else if(cname=="case8"){
+			if((ETL==14 && TR>=3700 && TR<=4000 &&  TE>=85 && TE<=95 && nbcoupes>19 && freq==320&& phase==320&& epaisseur==4&& gap==0.4 && coupes==20 && fov==24 ) || (ETL==15 && TR>=3801 && TR<=4000 && TE>=96 && TE<=106 && nbcoupes>19 && freq==320&& phase==320&& epaisseur==4&& gap==0.4 && coupes==20 && fov==24)){
+				res=1;
+				showLight("green");
+			}	
+			else if(((TR>=4000 &&  echoeff>=bas && echoeff<=haut && echoeff!=bon)||(TR<4000 && TR>3500 && echoeff==bon)) && freq==320&& phase==320&& epaisseur==4&& gap==0.4&& coupes==20&& fov==32&& TEm<13&& NEX==2&& tps<197){
+				res=2;
+				showLight("yellow");
+				}	
+			else if(res==0){
+				showLight("red");
+			}
+		}
+		console.log("Testing");
 		}
 
 		function DisplayValues(casename){
@@ -840,84 +943,93 @@ function ResetLightsAndButtonOnly() {
 		}	
 
 
-		function changeCases() {
-		const selectedCase = document.getElementById("casesDrp").value;
-		const btnResult = document.getElementById("btnresult");
+	// 	function changeCases() {
+	// 	const selectedCase = document.getElementById("casesDrp").value;
+	// 	const btnResult = document.getElementById("btnresult");
 
-		if (selectedCase === "case1") {
-			document.getElementById("sagImage").src = "data:image/svg+xml;charset=UTF-8," +
-				encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="350" height="430">' +
-				'<rect width="100%" height="100%" fill="black"/>' +
-				'<text x="50%" y="50%" font-size="30" fill="white" text-anchor="middle" dominant-baseline="middle">Sagittal</text>' +
-				'</svg>');
+	// 	if (selectedCase === "case1") {
+	// 		document.getElementById("sagImage").src = "images/sagittal.png";
+	// 		document.getElementById("corImage").src = "images/coronal.png";
 
-			document.getElementById("corImage").src = "data:image/svg+xml;charset=UTF-8," +
-				encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="350" height="430">' +
-				'<rect width="100%" height="100%" fill="black"/>' +
-				'<text x="50%" y="50%" font-size="30" fill="white" text-anchor="middle" dominant-baseline="middle">Coronal</text>' +
-				'</svg>');
-
-				document.getElementById("case-question").innerHTML= "";
-				document.getElementById("case-question").innerHTML= "Augmenter le TR par pas de 50 et observer les changements sur l’image , le signal sur bruit (S/B), le temps d’acquisition et le nombre de coupes autorisé par TR"
+	// 			document.getElementById("case-question").innerHTML= "";
+	// 			document.getElementById("case-question").innerHTML= "Augmenter le TR par pas de 50 et observer les changements sur l’image , le signal sur bruit (S/B), le temps d’acquisition et le nombre de coupes autorisé par TR"
 
 
-			TRref=4000;NEXref=2;bdwref=30;fovref=24;
-			TEref=90;phaseref=320;freqref=320;epaisseurref=4;
-			document.getElementById("nbrTI").value = 0;
-			document.getElementById("nbrTR").value = 250;
-			document.getElementById("nbrETL").value = 2;
-			document.getElementById("nbrTE").value = 11;
-			document.getElementById("nbrNEX").value = 1;
-			document.getElementById("nbrConcat").value = 1;
-			document.getElementById("nbrBdwppxl").value = 111;
-			document.getElementById("nbrSthks").value = 4;
-			document.getElementById("nbrSintr").value = 0.4;
-			document.getElementById("nbrNofSlc").value = 1;
-			document.getElementById("nbrSurech").value = 100;
-			document.getElementById("nbrFOV").value = 24;
-			document.getElementById("nbrFovPhase").value = 100;
-			document.getElementById("nbrFreq").value = 320;
-			document.getElementById("nbrPhase").value = 320;
+	// 		TRref=4000;NEXref=2;bdwref=30;fovref=24;
+	// 		TEref=90;phaseref=320;freqref=320;epaisseurref=4;
+	// 		document.getElementById("nbrTI").value = 0;
+	// 		document.getElementById("nbrTR").value = 250;
+	// 		document.getElementById("nbrETL").value = 2;
+	// 		document.getElementById("nbrTE").value = 11;
+	// 		document.getElementById("nbrNEX").value = 1;
+	// 		document.getElementById("nbrConcat").value = 1;
+	// 		document.getElementById("nbrBdwppxl").value = 111;
+	// 		document.getElementById("nbrSthks").value = 4;
+	// 		document.getElementById("nbrSintr").value = 0.4;
+	// 		document.getElementById("nbrNofSlc").value = 1;
+	// 		document.getElementById("nbrSurech").value = 100;
+	// 		document.getElementById("nbrFOV").value = 24;
+	// 		document.getElementById("nbrFovPhase").value = 100;
+	// 		document.getElementById("nbrFreq").value = 320;
+	// 		document.getElementById("nbrPhase").value = 320;
 
-			btnResult.disabled = true;
-			btnResult.style.opacity = "0.9";
-			btnResult.style.cursor = "not-allowed"; 
+	// 		btnResult.disabled = true;
+	// 		btnResult.style.opacity = "0.9";
+	// 		btnResult.style.cursor = "not-allowed"; 
 
-		} else if (selectedCase === "case2") {
-			document.getElementById("case-question").innerHTML= "";
-				document.getElementById("case-question").innerHTML= "Question Cas 2"
-		}
-	}
+	// 	} else if (selectedCase === "case2") {
+	// 		document.getElementById("case-question").innerHTML= "";
+	// 			document.getElementById("case-question").innerHTML= "Question Cas 2"
+	// 	}
+	// }
 
 	function displayImage(value) {
 		const rangeStart = Math.floor(value / 100) * 100;
 		const image = imageListCase1.find(img => img === rangeStart);
 
 		if (image) {
-			 document.getElementById("axlImage").src = `images/ax-t1/${image}.jpeg`;
+			 document.getElementById("axlImage").src = `images/ax-t1-new/${image}.jpeg`;
 		} else {
 			console.log("No image available for this range.");
 		}
 	}
 
-		function subTR(){
-			var max=20000,min=250;
-			var x=document.getElementById("nbrTR").value;
-			if(x>max){document.getElementById("nbrTR").value=max;}
-			else if(x<min){document.getElementById("nbrTR").value=min;}
-			var newx=(+x + -1);
-			if(newx<=max && newx>=min){document.getElementById("nbrTR").value=newx;}
-			Calculation();
-		}
-		function addTR(){
-			var max=20000,min=250;
-			var x=document.getElementById("nbrTR").value;
-			if(x>max){document.getElementById("nbrTR").value=max;}
-			else if(x<min){document.getElementById("nbrTR").value=min;}
-			var newx=(1 + +x);
-			if(newx<=max && newx>=min){document.getElementById("nbrTR").value=newx;}
-			Calculation();
-		}
+	    function subTR() {
+	          const max = 20000, min = 250;
+	          const nbrTRInput = document.getElementById("nbrTR");
+	          let x = parseInt(nbrTRInput.value) || min;
+	          let newx = x;
+
+	          if (cname === "case8") {
+		          newx = x - 10;
+	          } else {
+		          newx = x - 1;
+	          }
+
+	          if (newx < min) newx = min;
+	          nbrTRInput.value = newx;
+
+	          Calculation();
+	          displayImage(newx);
+        }
+		function addTR() {
+	          const max = 20000, min = 250;
+	          const nbrTRInput = document.getElementById("nbrTR");
+	          let x = parseInt(nbrTRInput.value) || min;
+	          let newx = x;
+
+	          if (cname === "case8") {
+		          newx = x + 20;
+	          } else {
+		      newx = x + 1;
+	          }
+
+	          if (newx > max) newx = max;
+	          nbrTRInput.value = newx;
+
+	          Calculation();
+	          displayImage(newx);
+        }
 		function subTE(){
 			var max=20000,min=5;
 			var x=document.getElementById("nbrTE").value;
@@ -1199,8 +1311,8 @@ function ResetLightsAndButtonOnly() {
 			var xNofPixel=document.getElementById("nbrNofPixel").value;
 			if(xNofPixel==""||xNofPixel<=1){document.getElementById("nbrNofPixel").value=1;CheckRadio();}
 			else if(xNofPixel>=5){document.getElementById("nbrNofPixel").value=5;CheckRadio();}
-			else{document.getElementById("nbrNofPixel").value=xNofPixel;CheckRadio();}		 
-			}	
+			else{document.getElementById("nbrNofPixel").value=xNofPixel;CheckRadio();}
+			}
 		}
 		function isNumber(evt) {
 			evt=(evt)?evt:window.event;
@@ -1218,16 +1330,19 @@ function ResetLightsAndButtonOnly() {
 			document.getElementById("popup").style.display="none";
 			document.getElementById("btnClosetip").style.display="none";
 		}
-		document.addEventListener('mouseup', function(e) {
-		var overlay = document.getElementById('overlay');
-		var closepopup = document.getElementById('popup');
-		var btclosetip = document.getElementById('btnClosetip');
-		if (!closepopup.contains(e.target)) {
-			closepopup.style.display = 'none';
-			btclosetip.style.display = 'none';
-			overlay.style.display = 'none';
-		}
-		});
+		document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('mouseup', function(e) {
+        var overlay = document.getElementById('overlay');
+        var closepopup = document.getElementById('popup');
+        var btclosetip = document.getElementById('btnClosetip');
+
+        if (closepopup && !closepopup.contains(e.target)) {
+          if (closepopup) closepopup.style.display = 'none';
+          if (btclosetip) btclosetip.style.display = 'none';
+          if (overlay) overlay.style.display = 'none';
+        }
+      });
+    });
 		function preload(){
 			var images = new Array();
 			function preload() {
@@ -1343,7 +1458,7 @@ function ResetLightsAndButtonOnly() {
 
 		const labelMappings = {
 			Siemens: {
-				lbTR: "TR",
+				lbTR: "TR ms",
 				lbTSE: "TSE /EG",
 				lbTF: "FT",
 				lbTI: "TI",
@@ -1351,8 +1466,8 @@ function ResetLightsAndButtonOnly() {
 				lbNEX: "moyenne",
 				lbConcat: "Concat",
 				lblBdwppxl: "Bandwidth Hz / pixel",
-				lblSthks: "Epaisseur de coupe",
-				lblFacDist: "Facteur distance",
+				lblSthks: "Epaisseur de coupe (mm)",
+				lblFacDist: "Espace inter-coupe",
 				lblNofSlc: "Nombre de coupes",
 				lblDirPhase: "Dir encodage de phase",
 				lblSurech: "Suréchantillonnage %",
@@ -1365,7 +1480,7 @@ function ResetLightsAndButtonOnly() {
 				AccLabel: "GRAPPA"
 			},
 			GE: {
-				lbTR: "TR",
+				lbTR: "TR ms",
 				lbTSE: "FSE /EG",
 				lbTF: "ETL",
 				lbTI: "TI",
@@ -1373,8 +1488,8 @@ function ResetLightsAndButtonOnly() {
 				lbNEX: "NEX",
 				lbConcat: "Concat",
 				lblBdwppxl: "BDW Total en KHz",
-				lblSthks: "Epaisseur de coupe",
-				lblFacDist: "Facteur distance",
+				lblSthks: "Epaisseur de coupe (mm)",
+				lblFacDist: "Espace inter-coupe",
 				lblNofSlc: "Nombre de coupes",
 				lblDirPhase: "Dir encodage de phase",
 				lblSurech: "Suréchantillonnage %",
@@ -1387,7 +1502,7 @@ function ResetLightsAndButtonOnly() {
 				AccLabel: "ARC",
 			},
 			Philips: {
-				lbTR: "TR",
+				lbTR: "TR ms",
 				lbTSE: "TSE /EG",
 				lbTF: "FT",
 				lbTI: "TI",
@@ -1395,8 +1510,8 @@ function ResetLightsAndButtonOnly() {
 				lbNEX: "NSA",
 				lbConcat: "Concat",
 				lblBdwppxl: "Nombre pixels de déplacement chimique",
-				lblSthks: "Epaisseur de coupe",
-				lblFacDist: "Facteur distance",
+				lblSthks: "Epaisseur de coupe (mm)",
+				lblFacDist: "Espace inter-coupe",
 				lblNofSlc: "Nombre de coupes",
 				lblDirPhase: "Dir encodage de phase",
 				lblSurech: "Suréchantillonnage %",
@@ -1409,7 +1524,7 @@ function ResetLightsAndButtonOnly() {
 				AccLabel: "Sense"
 			},
 			Canon: {
-				lbTR: "TR",
+				lbTR: "TR ms",
 				lbTSE: "TSE /EG",
 				lbTF: "ETL",
 				lbTI: "TI",
@@ -1417,8 +1532,8 @@ function ResetLightsAndButtonOnly() {
 				lbNEX: "NAQ",
 				lbConcat: "Concat",
 				lblBdwppxl: "Bandwidth Hz / pixel",
-				lblSthks: "Epaisseur de coupe",
-				lblFacDist: "Facteur distance",
+				lblSthks: "Epaisseur de coupe (mm)",
+				lblFacDist: "Espace inter-coupe",
 				lblNofSlc: "Nombre de coupes",
 				lblDirPhase: "Dir encodage de phase",
 				lblSurech: "Suréchantillonnage %",
@@ -1439,11 +1554,8 @@ function ResetLightsAndButtonOnly() {
 				labelElement.textContent = text;
 			}
 		}
-
-
 	}
-
-
+	
 	function showLight(color) {
     const glow = document.getElementById("glowLight");
     glow.style.opacity = "1";
@@ -1523,6 +1635,7 @@ function ResetLightsAndButtonOnly() {
 				   <option id="btnCase4" value="case4" onclick="CheckCases(this.value);Calculation();DisplayValues(this.value);" class="" style="-moz-user-select: none;user-select:none;width:105px">Cas N&deg; 4</option>
 				   <option id="btnCase5" value="case5" onclick="CheckCases(this.value);Calculation();DisplayValues(this.value);" class="" style="-moz-user-select: none;user-select:none;width:105px">Cas N&deg; 5</option>
 				   <option id="btnCase6" value="case6" onclick="CheckCases(this.value);Calculation();DisplayValues(this.value);" class="" style="-moz-user-select: none;user-select:none;width:105px">Cas N&deg; 6</option>
+				   <option id="btnCase8" value="case8" onclick="CheckCases(this.value);Calculation();DisplayValues(this.value);" class="" style="-moz-user-select: none;user-select:none;width:105px">Cas N&deg; 7</option>
 				   <option id="btnCase7" value="case7" onclick="CheckCases(this.value);Calculation();DisplayValues(this.value);" class="" style="-moz-user-select: none;user-select:none;width:198px">Paramétrages libres</option>
 				</select>
 			 </div>
@@ -1533,14 +1646,12 @@ function ResetLightsAndButtonOnly() {
 		  <div class="hint-icon">
 			<img src="hint.png" alt="" id="btnTip" onclick="showTip();">
 		  </div>
-		  <div id="overlay" style="display: none;">
-		  <div id="popup">
-			<div id="popupContent">
-				<!-- Message will go here, from js code will be generated -->
-			  </div>
-				<button id="btnClosetip" class="btn-close" onclick="closeTip()" style="display: none;">X</button>
-		</div>
-	</div>
+			<div id="overlay" style="display:none;">
+		     <div id="popup">
+			   <div id="popupContent"></div>
+				   <button id="btnClosetip" class="btn-close" onclick="closeTip()" style="display: none;">X</button>
+		     </div>
+	        </div>
 		  <div class="mp-items-measure">
 			 <!-- <label>Machine</label> -->
 			 <div class="mp-input-button mp-input-button-select mp-custom-select">
@@ -1556,13 +1667,15 @@ function ResetLightsAndButtonOnly() {
 	   <div id="top-container" class="top-container">
 		  <div class="mp-One-container-flex">
 			 <div class="mp-image-container">
-				<img id="sagImage" src="images/ax-t1/200.jpeg" alt="p1">
+				<img id="sagImage" src="images/sagittal.png" alt="p1">
 			 </div>
 			 <div class="mp-image-container">
-				<img id="corImage" src="images/ax-t1/200.jpeg" alt="p2">
+				<img id="corImage" src="images/coronal.png" alt="p2">
 			 </div>
 			 <div class="mp-image-container" id="custom-highlight" >
-				<!-- <img id="axlImage" src="images/ax-t1/200.jpeg" alt="p3"> -->
+				<div id="axlImageDiv" style="display: none;">
+					<img id="axlImage" src="images/ax-t1-new/200.jpeg" alt="p3">
+				</div>
 				 <div id="tabcrane">
 					<!-- <img id="picBackgrd" src="bck.png"> -->
 					<div class="svg-container">
@@ -1778,38 +1891,44 @@ function ResetLightsAndButtonOnly() {
 			
 				<div class="btn-flex">
 					<button id="btnresult" class="Btn-validate" onclick="ResultFeedback()">Valider</button>
-					<button id="btnReset" class="hide Btn-validate" onclick="ResetRSB()">Réinitialiser</button>
+					<button id="btnReset" class="hide Btn-validate" onclick="ResetLights()">Réinitialiser</button>
 				</div>
 			</div>
-			 
+			 <!-- Icon for refreshing -->
+			 <div class="refresh-icon">
+				<!-- <img src="refresh.png" alt="refresh" id="btnRefresh" onclick="Refresh()"> -->
+				 <button id="btnRefresh" class="Btn-validate" onclick="ResetRSB()">
+					 <i class="fa-solid fa-rotate-right"></i>
+				 </button>
+			 </div>
 		  </div>
 		  <!-- Second Row five containers includes icon boxes component abd inout fields  START-->
 		  <div class="mp-second-container-flex">
 			 <div class="mp-icon-input-box">
 				<div class="mp-icon-box">
 				   <img src="Timer-icon.png" alt="Timer-icon">
-				   <p>Temps d'acquisition</p>
+				   <p>Temps d'acquisition :</p>
 				</div>
 				<span><label id="lblDisplayAcqTime"></label></span>
 			 </div>
 			 <div class="mp-icon-input-box">
 				<div class="mp-icon-box">
 				   <img src="Accelaration-icon.png" alt="Accelaration-icon">
-				   <p>Facteur d’accélération</p>
+				   <p>Facteur d’accélération :</p>
 				</div>
-				<span><label>0</label></span>
+				<span><label>Neant</label></span>
 			 </div>
 			 <div class="mp-icon-input-box">
 				<div class="mp-icon-box">
 				   <img src="Volume-icon.png" alt="volume-icon">
-				   <p>Volume de voxel</p>
+				   <p>Volume de voxel :</p>
 				</div>
 				<span><label id="lblDisplayVoxelSize"></label><sup>3</sup></span>
 			 </div>
 			 <div class="mp-icon-input-box">
 				<div class="mp-icon-box">
 				   <img src="Wifi-icon.png" alt="wifi-icon">
-				   <p>S/B rel %.</p>
+				   <p>S/B rel :</p>
 				</div>
 				<span><label id="lblDisplaySNR"></label></span>
 			 </div>
@@ -1832,7 +1951,7 @@ function ResetLightsAndButtonOnly() {
 				   <div class="mp-items-measure">
 					  <label id="lblFovLect"> FoV Lecture (mm)</label>
 					  <div class="mp-input-button">
-						 <input type="number" id='nbrFOV' value="24" onkeydown="search(event)"  onkeypress="return isNumber(event)"/>
+						 <input type="number" id='nbrFOV' value="24" onkeydown="search(event)" onkeypress="return isNumber(event)" onchange="search({ keyCode: 13 })"/>
 						 <div class="mp-buttons">
 							<button onclick="addFov()"><i class="fa-solid fa-angle-up"></i></button>
 							<button onclick="subFov()"><i class="fa-solid fa-angle-down"></i></button>
@@ -1875,9 +1994,9 @@ function ResetLightsAndButtonOnly() {
 			 <div class="mp-box-container">
 				<div class="mp-column-con">
 				   <div class="mp-items-measure">
-					  <label id="lbTR">TR</label>
+					  <label id="lbTR">TR ms</label>
 					  <div class="mp-input-button">
-						 <input type="number" id="nbrTR" value="3000" onkeydown="search(event)"  onkeypress="return isNumber(event)"/>
+						 <input type="number" id="nbrTR" value="3000" onkeydown="search(event)"  onkeypress="return isNumber(event)" />
 						 <div class="mp-buttons">
 							<button onclick="addTR()"><i class="fa-solid fa-angle-up"></i></button>
 							<button onclick="subTR()"><i class="fa-solid fa-angle-down"></i></button>
@@ -1916,7 +2035,7 @@ function ResetLightsAndButtonOnly() {
 				<div class="mp-items-measure">
 					<label id="lbTF">ETL</label>
 					<div class="mp-input-button">
-						<input type="number" id="nbrETL" value="13" />
+						<input type="number" id="nbrETL" value="13" onkeydown="search(event)"  onkeypress="return isNumber(event)" onchange="search({ keyCode: 13 })"/>
 						<div class="mp-buttons">
 							<button onclick="addETL()"><i class="fa-solid fa-angle-up"></i></button>
 							<button onclick="subETL()"><i class="fa-solid fa-angle-down"></i></button>
@@ -1941,7 +2060,7 @@ function ResetLightsAndButtonOnly() {
 					  
 					  <label id="lbTE">TE</label>
 					  <div class="mp-input-button">
-						 <input type="number" id='nbrTE' value="90" onkeydown="search(event)"  onkeypress="return isNumber(event)"/>
+						 <input type="number" id='nbrTE' value="90" onkeydown="search(event)"  onkeypress="return isNumber(event)" onchange="search({ keyCode: 13 })"/>
 						 <div class="mp-buttons">
 							<button onclick="addTE()"><i class="fa-solid fa-angle-up"></i></button>
 							<button onclick="subTE()"><i class="fa-solid fa-angle-down"></i></button>
@@ -1952,7 +2071,7 @@ function ResetLightsAndButtonOnly() {
 					  
 					  <label id="lbNEX">NEX</label>
 					  <div class="mp-input-button">
-						 <input type="number" id='nbrNEX' value="2"  onkeydown="search(event)"  onkeypress="return isNumber(event)"/>
+						 <input type="number" id='nbrNEX' value="2"  onkeydown="search(event)" onkeypress="return isNumber(event)" onchange="search({ keyCode: 13 })"/>
 						 <div class="mp-buttons">
 							<button onclick='addNEX()'><i class="fa-solid fa-angle-up"></i></button>
 							<button onclick='subNEX()'><i class="fa-solid fa-angle-down"></i></button>
@@ -1988,7 +2107,7 @@ function ResetLightsAndButtonOnly() {
 				<div class="mp-column-con">
 				   <div class="mp-items-measure">
 					  
-					  <label id="lblSthks">Epaisseur de coupe</label>
+					  <label id="lblSthks">Epaisseur de coupe (mm)</label>
 					  <div class="mp-input-button">
 						 <input type="number" id='nbrSthks' value="4" onkeydown="search(event)"  onkeypress="return isNumber(event)"/>
 						 <div class="mp-buttons">
@@ -1999,7 +2118,7 @@ function ResetLightsAndButtonOnly() {
 				   </div>
 				   <div class="mp-items-measure">
 					  
-					  <label id="lblFacDist">Facteur distance</label>
+					  <label id="lblFacDist">Espace inter-coupe</label>
 					  <div class="mp-input-button">
 						 <input id="nbrSintr" type="number"/>
 						 <div class="mp-buttons">
@@ -2029,16 +2148,17 @@ function ResetLightsAndButtonOnly() {
 					  <label id="lblDirPhase">Dir encodage de phase</label>
 					  <div class="mp-input-button mp-input-button-select mp-custom-select" style="cursor: no-drop; background-color: #3b416318;">
 						 <select id="" style="pointer-events: none; background-color: #3b41632d;">
-							<option value="dg" selected>D/G</option>
-							<option value="ap" >A/P</option>
-							<option value="si" >S/I</option>
+							<option value="dg" selected>Neuro R>L</option>
+							<option value="dg">D/G</option>
+							<option value="ap">A/P</option>
+							<option value="si">S/I</option>
 						 </select>
 					  </div>
 				   </div>
 				   <div class="mp-items-measure">
 					  <label id="lblSurech">Suréchantillonnage %</label>
 					  <div class="mp-input-button" style="cursor: no-drop; background-color: #3b41632d;">
-						 <input id="nbrSurech" type="number" style="pointer-events: none; background-color: #3b416300;"/>
+						 <input value="100" id="nbrSurech" type="number" style="pointer-events: none; background-color: #3b416300;"/>
 						 <div class="mp-buttons" style="pointer-events: none;">
 							<button><i class="fa-solid fa-angle-up"></i></button>
 							<button><i class="fa-solid fa-angle-down"></i></button>
@@ -2101,7 +2221,8 @@ function ResetLightsAndButtonOnly() {
 					  <label id="lblSat" style="width: 40px !important;">SAT</label>
 					  <div class="mp-input-button mp-input-button-select mp-custom-select" style="cursor: no-drop; background-color: #3b416318;">
 						 <select style="pointer-events: none; background-color: #3b41632d;">
-							<option value="fat" selected>FAT-Sat</option>
+							<option value="N/A" selected>N/A</option>
+							<option value="fat" >FAT-Sat</option>
 							<option value="spair" >pré-Sat</option>
 							<option value="exct" >SPAIR</option>
 						 </select>
@@ -2111,8 +2232,8 @@ function ResetLightsAndButtonOnly() {
 					  <label id="lblPat" style="width: 40px !important;">Acc</label>
 					  <div class="mp-input-button mp-input-button-select mp-custom-select" style="cursor: no-drop; background-color: #3b416318;">
 						 <select style="pointer-events: none; background-color: #3b41632d;">
-							<option id="AccLabel" value="grappa" selected>ARC</option>
-							<option value="N/A" >N/A</option>
+							 <option value="N/A" selected>N/A</option>
+							<option id="AccLabel" value="grappa">ARC</option>
 						 </select>
 					  </div>
 				   </div>
@@ -2135,8 +2256,8 @@ function ResetLightsAndButtonOnly() {
 					</div>
 				
 					<div class="row">
-						<div class="cell left"><b>TE eff réel:</b> <span id="lblDisplayTEeff">11.01</span></div>
-						<div class="cell right"><b>TE Max idéal:</b> <span id="lblDisplayTEmideal">11.01</span></div>
+						<div class="cell left"><b>TE eff :</b> <span id="lblDisplayTEeff">11.01</span></div>
+						<div style="display: none;" class="cell right"><b>TE Max idéal:</b> <span id="lblDisplayTEmideal">11.01</span></div>
 					</div>
 				</div>
 				
@@ -2466,7 +2587,7 @@ function ResetLightsAndButtonOnly() {
 						</tr>
 						<tr><td style="text-align:center"><label id="" >Graisse</label></td><td></td><td style="text-align:center"><label  id="">SB</label></td></tr>
 					</table>
-					<table id="tabcrane" style="-moz-user-select: none;user-select:none;">
+					<!-- <table id="tabcrane" style="-moz-user-select: none;user-select:none;">
 						<tr>
 							<td>
 								<img id="picBackgrd" src="bck.png">
@@ -2665,7 +2786,7 @@ function ResetLightsAndButtonOnly() {
 								</div>
 							</td>
 						</tr>
-					</table>
+					</table> -->
 					<table id="tabPicDiv" style="-moz-user-select: none;user-select:none;">
 						<tr>
 							<td><img id="picTE" src="13.png"/></td>
