@@ -51,7 +51,7 @@
 				// so it re render without giving a style error.
 				var popupContent = document.getElementById("popupContent");
 				if (popupContent) {
-					popupContent.innerHTML =`Le paramètre TF/ETL est le nombre d'échos recueillis dans le même cycle de répétition (  temps TR). Il s'agit d'une mesure d'accélération du temps d’acquisition, par exemple, pour un facteur turbo 3, le temps d’acquisition est divisé par 3 par rapport à une séquence SE avec des paramètres comparables.<br> Ainsi, en augmentant votre facteur TF/ETL, vous pouvez réduire le temps d'acquisition.<br> Attention : vous devrez peut-être ajuster d'autres paramètres pour garantir une bonne optimisation.`
+					popupContent.innerHTML =`Le paramètre TF/ETL est le nombre d'échos recueillis dans le même cycle de répétition (temps TR). Il s'agit d'une mesure d'accélération du temps d’acquisition, par exemple, pour un facteur turbo 3, le temps d’acquisition est divisé par 3 par rapport à une séquence SE avec des paramètres comparables.<br> Ainsi, en augmentant votre facteur TF/ETL, vous pouvez réduire le temps d'acquisition.<br> Attention : vous devrez peut-être ajuster d'autres paramètres pour garantir une bonne optimisation.`
 				}
 				document.getElementById("axlImageDiv").style.display = "none";
                 document.getElementById("tabcrane").style.display = "block";
@@ -367,7 +367,31 @@
 			}
 			Calculation();
 		}
-		function Calculation(){
+		
+		// adding a variable to set the freq change that os related for the nbrcoupes to be null, without a value and use it in the calulations to be unable to change when the freq is increased or decreased.
+		let prevFreq = null;
+
+		function Calculation() {
+          if (selectedManufacturer === "GE") {
+			// bdw = parseFloat(document.getElementById("bdwGE").value);
+            checkname = "BDW";
+            calculateGE();
+          } else if (selectedManufacturer === "Siemens") {
+			// pBDW = parseFloat(document.getElementById("bdwSiemens").value);
+			checkname = "pBDW";
+            calculateSiemens();
+          } else if (selectedManufacturer === "Philips") {
+			// NBDW = parseFloat(document.getElementById("bdwPhilips").value);
+			checkname = "nBDW";
+            calculatePhilips();
+          } else if (selectedManufacturer === "Canon") {
+			// NBDW = parseFloat(document.getElementById("bdwPhilips").value);
+			checkname = "nBDW";
+            calculateCanon();
+          }
+        }
+		
+		function calculateGE() {
 			//get values 
 			TR= document.getElementById("nbrTR").value;
 			TE= document.getElementById("nbrTE").value;
@@ -383,10 +407,8 @@
 			bdw= document.getElementById("nbrTotalBdw").value;
 			pBDW= document.getElementById("nbrBdwppxl").value;
 			NBDW= document.getElementById("nbrNofPixel").value;
-
-			if (selectedManufacturer === "GE"){
-//Calculate BDWs
-if(checkname=="varBDW"){
+           //Calculate BDWs
+           if(checkname=="varBDW"){
 				bdw=vBDW*2;
 				pBDW=Math.round((bdw*1000/freq)*10)/10;
 				NBDW=Math.round((208/pBDW)*10)/10;
@@ -438,7 +460,10 @@ if(checkname=="varBDW"){
 			dFov=fov*10;
 			TEm=(2+Math.round((freq/bdw)*100)/100).toFixed(2);
 			TEM=(TEm*ETL).toFixed(2);
-			nbcoupes=Math.floor(TR/TEM);
+			if (freq == prevFreq) {
+            nbcoupes = Math.floor(TR / TEM); // allow update only if freq hasn't changed
+            }
+            prevFreq = freq;
 			tac=Math.round((phase*(TR/1000)/ETL)*NEX);
 			acq=Math.ceil(coupes/nbcoupes);
 			voxel=Math.round((fov*10/phase)*(fov*10/freq)*epaisseur*10)/10;
@@ -449,6 +474,11 @@ if(checkname=="varBDW"){
 			//if Echo>train->take the last echo of the train
 			else if(echoeff>=ETL){echoeff=ETL;}
 			TEeffreel=echoeff*TEm;
+			const TEmax = TEm * ETL;
+            if (parseFloat(TE) > TEmax) {
+                TE = TEmax.toFixed(2);
+                document.getElementById("nbrTE").value = TE;
+            }
 			Temideal=((echoeff*TEm*2)-TEm);
 			//calculate values of snrref
 			var voxelref = Math.round((fovref*10/phaseref)*(fovref*10/freqref)*epaisseurref*10)/10;
@@ -524,433 +554,539 @@ if(checkname=="varBDW"){
 				document.getElementById("bf1").setAttribute("stdDeviation", newDeviation);
 			}
 			ChangeColors();DisplayValues();ChangeBlurring();ChangeFov();ChangeFrePixels();
-			}
-			else if(selectedManufacturer === "Siemens"){
-               //Calculate BDWs
-               if(checkname=="varBDW"){
-				bdw=vBDW*2;
-				pBDW=Math.round((bdw*1000/freq)*10)/10;
-				NBDW=Math.round((208/pBDW)*10)/10;
-				document.getElementById("nbrVarBdw").disabled=false;
-				document.getElementById("nbrTotalBdw").disabled=true;
-				document.getElementById("nbrBdwppxl").disabled=false;
-				document.getElementById("nbrNofPixel").disabled=true;
-			}
-			else if(checkname=="BDW"){
-				vBDW=bdw/2;
-				pBDW=Math.round((bdw*1000/freq)*10)/10;
-				NBDW=Math.round((208/pBDW)*10)/10;
-				document.getElementById("nbrVarBdw").disabled=true;
-				document.getElementById("nbrTotalBdw").disabled=false;
-				document.getElementById("nbrBdwppxl").disabled=false;
-				document.getElementById("nbrNofPixel").disabled=true;
-			}
-			else if(checkname=="pBDW"){
-				bdw=Math.round(((pBDW*freq)/1000)*10)/10;
-				vBDW=bdw/2;
-				NBDW=Math.round((208/pBDW)*10)/10; //alert("NBDW"+NBDW);
-				document.getElementById("nbrVarBdw").disabled=true;
-				document.getElementById("nbrTotalBdw").disabled=true;
-				document.getElementById("nbrBdwppxl").disabled=false;
-				document.getElementById("nbrNofPixel").disabled=true;
-			}
-			else if(checkname=="nBDW"){
-				bdw=Math.round(((pBDW*freq)/1000)*10)/10;
-				vBDW= bdw/2;
-				pBDW=(208/NBDW).toFixed(1);
-				document.getElementById("nbrVarBdw").disabled=true;
-				document.getElementById("nbrTotalBdw").disabled=true;
-				document.getElementById("nbrBdwppxl").disabled=false;
-				document.getElementById("nbrNofPixel").disabled=false;
-			}
-			if(vBDW<=3){vBDW=3;}
-			else if(vBDW>=60){vBDW=60;}
-			else{vBDW=vBDW;}
-			if(bdw<=6){bdw=6;}
-			else if(bdw>=120){bdw=120;}
-			else{bdw=bdw;}
-			if(pBDW<=1){pBDW=1;}
-			else if(pBDW>=1000){pBDW=1000;}
-			else{pBDW=pBDW;}
-			if(NBDW<=1){NBDW=1;}
-			else if(NBDW>=5){NBDW=5;}
-			else{NBDW=NBDW;}
-			//calculate parameter
-			dFov=fov*10;
-			TEm=(2+Math.round((freq/bdw)*100)/100).toFixed(2);
-			TEM=(TEm*ETL).toFixed(2);
-			nbcoupes=Math.floor(TR/TEM);
-			tac=Math.round((phase*(TR/1000)/ETL)*NEX);
-			acq=Math.ceil(coupes/nbcoupes);
-			voxel=Math.round((fov*10/phase)*(fov*10/freq)*epaisseur*10)/10;
-			natomicvolume=Math.round(((coupes*epaisseur)+((coupes-1)*gap))*fov*fov/10);	
-			tps=tac*acq;
-			echoeff=Math.round(TE/TEm);
-			if(echoeff==0){echoeff=1;}
-			//if Echo>train->take the last echo of the train
-			else if(echoeff>=ETL){echoeff=ETL;}
-			TEeffreel=echoeff*TEm;
-			Temideal=((echoeff*TEm*2)-TEm);
-			//calculate values of snrref
-			var voxelref = Math.round((fovref*10/phaseref)*(fovref*10/freqref)*epaisseurref*10)/10;
-			var TEmref= (2+Math.round((freqref/bdwref)*100)/100).toFixed(2);
-			var echoeffref= Math.round(TEref/TEmref);
-			var TEeffreelref= echoeffref*TEmref;
-			//calculate SNR
-			snrref= rho*(1-Math.exp(-TRref/T1))*Math.exp(-TEeffreelref/T2)*Math.sqrt(NEXref)*voxelref*(1/Math.sqrt(bdwref));
-			snrreel= rho*(1-Math.exp(-TR/T1))*Math.exp(-TEeffreel/T2)*Math.sqrt(NEX)*voxel*(1/Math.sqrt(bdw));
-			snr=Math.round((snrreel/snrref)*100)+"%";
-			if(btnRestclicked=="true"){
-				TRref=TR;NEXref=NEX;bdwref=bdw;fovref=fov;
-				TEref=TE;phaseref=phase;freqref=freq;epaisseurref=epaisseur;
-				snrref=snrreel;
-				snr=Math.round((snrreel/snrref)*100)+"%";
-				//snr=parseFloat(Math.round((snrreel/snrref)*100).toFixed(2))+"%";
-				btnRestclicked="false";
-			}
-			else{btnRestclicked="false";}
-			//move RedDiv
-			echoeffred= Math.round(TEeffreel*(374)/TEM);
-			var echos=Math.round(TEm*374/TEM);
-			newechoeffred=Math.round(+echoeffred + +echos);
-			currentposition=Math.round(+newechoeffred + -echos);
-			document.getElementById("divred").style.left=(currentposition)+"px";
-			//pictures Contrast||invert
-			snrsg=rhosg*(1-Math.exp(-TR/T1sg))*Math.exp(-TEeffreel/T2sg)*Math.sqrt(NEX)*voxel*(1/Math.sqrt(bdw));
-			snrsb=rhosb*(1-Math.exp(-TR/T1sb))*Math.exp(-TEeffreel/T2sb)*Math.sqrt(NEX)*voxel*(1/Math.sqrt(bdw));
-			snreau=rhoeau*(1-Math.exp(-TR/T1eau))*Math.exp(-TEeffreel/T2eau)*Math.sqrt(NEX)*voxel*(1/Math.sqrt(bdw));
-			snrfat=rhofat*(1-Math.exp(-TR/T1fat))*Math.exp(-TEeffreel/T2fat)*Math.sqrt(NEX)*voxel*(1/Math.sqrt(bdw));
-			if(snrsg>snrsb && snrsg>snreau && snrsg>snrfat){snrsup = snrsg;}
-			else if(snrsb>snrsg && snrsb>snreau && snrsb>snrfat){snrsup = snrsb;}
-			else if(snreau>snrsb && snreau>snrsg && snreau>snrfat){snrsup = snreau;}
-			else if(snrfat>snrsb && snrfat>snreau && snrfat>snrsg){snrsup = snrfat;}
-			if(snrsg<snrsb && snrsg<snreau && snrsg<snrfat){snrinf = snrsg;}
-			else if(snrsb<snrsg && snrsb<snreau && snrsb<snrfat){snrinf = snrsb;}
-			else if(snreau<snrsb && snreau<snrsg && snreau<snrfat){snrinf = snreau;}
-			else if(snrfat<snrsb && snrfat<snreau && snrfat<snrsg){snrinf = snrfat;}
-			srnampl=snrsup-snrinf;
-			//calculate colors value
-			clefsgnormal=(((snrsg - snrinf)/srnampl)+0.05).toFixed(2);
-			clefsbnormal=(((snrsb - snrinf)/srnampl)+0.05).toFixed(2);
-			clefeaunormal=(((snreau - snrinf)/srnampl)+0.05).toFixed(2);
-			cleffatnormal=(((snrfat - snrinf)/srnampl)+0.05).toFixed(2);
-			res=0;
-			bas=((+ETL+1)/2)-1.5;
-			haut=((+ETL+1)/2)+1.5;
-			bon=(+ETL+1)/2;	
-			//Calculate Blur
-			function ChangeBlurring(){
-				bblur=((TEM/2)-TEeffreel).toFixed(0);
-				for(i=10;i<500;i+=5){
-					if(bblur<=10){
-						newDeviationEtl=0;
-					}
-					else if(bblur>i && bblur<(+i+ +5)){
-						var step= i/5;
-						var accStep= +step + -2;
-						newDeviationEtl = (accStep*0.25).toFixed(2);
-					}
-				}
-				for(i=4.1;i<20.1;i+=0.1){
-					if(epaisseur<=4){
-						newDeviationSt=0;
-					}
-					else if(epaisseur>=i && epaisseur<(+i+ +0.2)){
-						var step= i/0.2;
-						var accStep= +step + -14;
-						newDeviationSt =(accStep*0.04).toFixed(2);
-					}
-				}
-				newDeviation= (+newDeviationSt+ +newDeviationEtl).toFixed(2);
-				document.getElementById("bf1").setAttribute("stdDeviation", newDeviation);
-			}
-			ChangeColors();DisplayValues();ChangeBlurring();ChangeFov();ChangeFrePixels();
-			}
-			else if(selectedManufacturer === "Philips"){
-				//Calculate BDWs
-			if(checkname=="varBDW"){
-				bdw=vBDW*2;
-				pBDW=Math.round((bdw*1000/freq)*10)/10;
-				NBDW=Math.round((208/pBDW)*10)/10;
-				document.getElementById("nbrVarBdw").disabled=false;
-				document.getElementById("nbrTotalBdw").disabled=true;
-				document.getElementById("nbrBdwppxl").disabled=false;
-				document.getElementById("nbrNofPixel").disabled=true;
-			}
-			else if(checkname=="BDW"){
-				vBDW=bdw/2;
-				pBDW=Math.round((bdw*1000/freq)*10)/10;
-				NBDW=Math.round((208/pBDW)*10)/10;
-				document.getElementById("nbrVarBdw").disabled=true;
-				document.getElementById("nbrTotalBdw").disabled=false;
-				document.getElementById("nbrBdwppxl").disabled=false;
-				document.getElementById("nbrNofPixel").disabled=true;
-			}
-			else if(checkname=="pBDW"){
-				bdw=Math.round(((pBDW*freq)/1000)*10)/10;
-				vBDW=bdw/2;
-				NBDW=Math.round((208/pBDW)*10)/10; //alert("NBDW"+NBDW);
-				document.getElementById("nbrVarBdw").disabled=true;
-				document.getElementById("nbrTotalBdw").disabled=true;
-				document.getElementById("nbrBdwppxl").disabled=false;
-				document.getElementById("nbrNofPixel").disabled=true;
-			}
-			else if(checkname=="nBDW"){
-				bdw=Math.round(((pBDW*freq)/1000)*10)/10;
-				vBDW= bdw/2;
-				pBDW=(208/NBDW).toFixed(1);
-				document.getElementById("nbrVarBdw").disabled=true;
-				document.getElementById("nbrTotalBdw").disabled=true;
-				document.getElementById("nbrBdwppxl").disabled=false;
-				document.getElementById("nbrNofPixel").disabled=false;
-			}
-			if(vBDW<=3){vBDW=3;}
-			else if(vBDW>=60){vBDW=60;}
-			else{vBDW=vBDW;}
-			if(bdw<=6){bdw=6;}
-			else if(bdw>=120){bdw=120;}
-			else{bdw=bdw;}
-			if(pBDW<=1){pBDW=1;}
-			else if(pBDW>=1000){pBDW=1000;}
-			else{pBDW=pBDW;}
-			if(NBDW<=1){NBDW=1;}
-			else if(NBDW>=5){NBDW=5;}
-			else{NBDW=NBDW;}
-			//calculate parameter
-			dFov=fov*10;
-			TEm=(2+Math.round((freq/bdw)*100)/100).toFixed(2);
-			TEM=(TEm*ETL).toFixed(2);
-			nbcoupes=Math.floor(TR/TEM);
-			tac=Math.round((phase*(TR/1000)/ETL)*NEX);
-			acq=Math.ceil(coupes/nbcoupes);
-			voxel=Math.round((fov*10/phase)*(fov*10/freq)*epaisseur*10)/10;
-			natomicvolume=Math.round(((coupes*epaisseur)+((coupes-1)*gap))*fov*fov/10);	
-			tps=tac*acq;
-			echoeff=Math.round(TE/TEm);
-			if(echoeff==0){echoeff=1;}
-			//if Echo>train->take the last echo of the train
-			else if(echoeff>=ETL){echoeff=ETL;}
-			TEeffreel=echoeff*TEm;
-			Temideal=((echoeff*TEm*2)-TEm);
-			//calculate values of snrref
-			var voxelref = Math.round((fovref*10/phaseref)*(fovref*10/freqref)*epaisseurref*10)/10;
-			var TEmref= (2+Math.round((freqref/bdwref)*100)/100).toFixed(2);
-			var echoeffref= Math.round(TEref/TEmref);
-			var TEeffreelref= echoeffref*TEmref;
-			//calculate SNR
-			snrref= rho*(1-Math.exp(-TRref/T1))*Math.exp(-TEeffreelref/T2)*Math.sqrt(NEXref)*voxelref*(1/Math.sqrt(bdwref));
-			snrreel= rho*(1-Math.exp(-TR/T1))*Math.exp(-TEeffreel/T2)*Math.sqrt(NEX)*voxel*(1/Math.sqrt(bdw));
-			snr=Math.round((snrreel/snrref)*100)+"%";
-			if(btnRestclicked=="true"){
-				TRref=TR;NEXref=NEX;bdwref=bdw;fovref=fov;
-				TEref=TE;phaseref=phase;freqref=freq;epaisseurref=epaisseur;
-				snrref=snrreel;
-				snr=Math.round((snrreel/snrref)*100)+"%";
-				//snr=parseFloat(Math.round((snrreel/snrref)*100).toFixed(2))+"%";
-				btnRestclicked="false";
-			}
-			else{btnRestclicked="false";}
-			//move RedDiv
-			echoeffred= Math.round(TEeffreel*(374)/TEM);
-			var echos=Math.round(TEm*374/TEM);
-			newechoeffred=Math.round(+echoeffred + +echos);
-			currentposition=Math.round(+newechoeffred + -echos);
-			document.getElementById("divred").style.left=(currentposition)+"px";
-			//pictures Contrast||invert
-			snrsg=rhosg*(1-Math.exp(-TR/T1sg))*Math.exp(-TEeffreel/T2sg)*Math.sqrt(NEX)*voxel*(1/Math.sqrt(bdw));
-			snrsb=rhosb*(1-Math.exp(-TR/T1sb))*Math.exp(-TEeffreel/T2sb)*Math.sqrt(NEX)*voxel*(1/Math.sqrt(bdw));
-			snreau=rhoeau*(1-Math.exp(-TR/T1eau))*Math.exp(-TEeffreel/T2eau)*Math.sqrt(NEX)*voxel*(1/Math.sqrt(bdw));
-			snrfat=rhofat*(1-Math.exp(-TR/T1fat))*Math.exp(-TEeffreel/T2fat)*Math.sqrt(NEX)*voxel*(1/Math.sqrt(bdw));
-			if(snrsg>snrsb && snrsg>snreau && snrsg>snrfat){snrsup = snrsg;}
-			else if(snrsb>snrsg && snrsb>snreau && snrsb>snrfat){snrsup = snrsb;}
-			else if(snreau>snrsb && snreau>snrsg && snreau>snrfat){snrsup = snreau;}
-			else if(snrfat>snrsb && snrfat>snreau && snrfat>snrsg){snrsup = snrfat;}
-			if(snrsg<snrsb && snrsg<snreau && snrsg<snrfat){snrinf = snrsg;}
-			else if(snrsb<snrsg && snrsb<snreau && snrsb<snrfat){snrinf = snrsb;}
-			else if(snreau<snrsb && snreau<snrsg && snreau<snrfat){snrinf = snreau;}
-			else if(snrfat<snrsb && snrfat<snreau && snrfat<snrsg){snrinf = snrfat;}
-			srnampl=snrsup-snrinf;
-			//calculate colors value
-			clefsgnormal=(((snrsg - snrinf)/srnampl)+0.05).toFixed(2);
-			clefsbnormal=(((snrsb - snrinf)/srnampl)+0.05).toFixed(2);
-			clefeaunormal=(((snreau - snrinf)/srnampl)+0.05).toFixed(2);
-			cleffatnormal=(((snrfat - snrinf)/srnampl)+0.05).toFixed(2);
-			res=0;
-			bas=((+ETL+1)/2)-1.5;
-			haut=((+ETL+1)/2)+1.5;
-			bon=(+ETL+1)/2;	
-			//Calculate Blur
-			function ChangeBlurring(){
-				bblur=((TEM/2)-TEeffreel).toFixed(0);
-				for(i=10;i<500;i+=5){
-					if(bblur<=10){
-						newDeviationEtl=0;
-					}
-					else if(bblur>i && bblur<(+i+ +5)){
-						var step= i/5;
-						var accStep= +step + -2;
-						newDeviationEtl = (accStep*0.25).toFixed(2);
-					}
-				}
-				for(i=4.1;i<20.1;i+=0.1){
-					if(epaisseur<=4){
-						newDeviationSt=0;
-					}
-					else if(epaisseur>=i && epaisseur<(+i+ +0.2)){
-						var step= i/0.2;
-						var accStep= +step + -14;
-						newDeviationSt =(accStep*0.04).toFixed(2);
-					}
-				}
-				newDeviation= (+newDeviationSt+ +newDeviationEtl).toFixed(2);
-				document.getElementById("bf1").setAttribute("stdDeviation", newDeviation);
-			}
-			ChangeColors();DisplayValues();ChangeBlurring();ChangeFov();ChangeFrePixels();
-			}
-			else if(selectedManufacturer === "Canon"){
-				//Calculate BDWs
-			if(checkname=="varBDW"){
-				bdw=vBDW*2;
-				pBDW=Math.round((bdw*1000/freq)*10)/10;
-				NBDW=Math.round((208/pBDW)*10)/10;
-				document.getElementById("nbrVarBdw").disabled=false;
-				document.getElementById("nbrTotalBdw").disabled=true;
-				document.getElementById("nbrBdwppxl").disabled=false;
-				document.getElementById("nbrNofPixel").disabled=true;
-			}
-			else if(checkname=="BDW"){
-				vBDW=bdw/2;
-				pBDW=Math.round((bdw*1000/freq)*10)/10;
-				NBDW=Math.round((208/pBDW)*10)/10;
-				document.getElementById("nbrVarBdw").disabled=true;
-				document.getElementById("nbrTotalBdw").disabled=false;
-				document.getElementById("nbrBdwppxl").disabled=false;
-				document.getElementById("nbrNofPixel").disabled=true;
-			}
-			else if(checkname=="pBDW"){
-				bdw=Math.round(((pBDW*freq)/1000)*10)/10;
-				vBDW=bdw/2;
-				NBDW=Math.round((208/pBDW)*10)/10; //alert("NBDW"+NBDW);
-				document.getElementById("nbrVarBdw").disabled=true;
-				document.getElementById("nbrTotalBdw").disabled=true;
-				document.getElementById("nbrBdwppxl").disabled=false;
-				document.getElementById("nbrNofPixel").disabled=true;
-			}
-			else if(checkname=="nBDW"){
-				bdw=Math.round(((pBDW*freq)/1000)*10)/10;
-				vBDW= bdw/2;
-				pBDW=(208/NBDW).toFixed(1);
-				document.getElementById("nbrVarBdw").disabled=true;
-				document.getElementById("nbrTotalBdw").disabled=true;
-				document.getElementById("nbrBdwppxl").disabled=false;
-				document.getElementById("nbrNofPixel").disabled=false;
-			}
-			if(vBDW<=3){vBDW=3;}
-			else if(vBDW>=60){vBDW=60;}
-			else{vBDW=vBDW;}
-			if(bdw<=6){bdw=6;}
-			else if(bdw>=120){bdw=120;}
-			else{bdw=bdw;}
-			if(pBDW<=1){pBDW=1;}
-			else if(pBDW>=1000){pBDW=1000;}
-			else{pBDW=pBDW;}
-			if(NBDW<=1){NBDW=1;}
-			else if(NBDW>=5){NBDW=5;}
-			else{NBDW=NBDW;}
-			//calculate parameter
-			dFov=fov*10;
-			TEm=(2+Math.round((freq/bdw)*100)/100).toFixed(2);
-			TEM=(TEm*ETL).toFixed(2);
-			nbcoupes=Math.floor(TR/TEM);
-			tac=Math.round((phase*(TR/1000)/ETL)*NEX);
-			acq=Math.ceil(coupes/nbcoupes);
-			voxel=Math.round((fov*10/phase)*(fov*10/freq)*epaisseur*10)/10;
-			natomicvolume=Math.round(((coupes*epaisseur)+((coupes-1)*gap))*fov*fov/10);	
-			tps=tac*acq;
-			echoeff=Math.round(TE/TEm);
-			if(echoeff==0){echoeff=1;}
-			//if Echo>train->take the last echo of the train
-			else if(echoeff>=ETL){echoeff=ETL;}
-			TEeffreel=echoeff*TEm;
-			Temideal=((echoeff*TEm*2)-TEm);
-			//calculate values of snrref
-			var voxelref = Math.round((fovref*10/phaseref)*(fovref*10/freqref)*epaisseurref*10)/10;
-			var TEmref= (2+Math.round((freqref/bdwref)*100)/100).toFixed(2);
-			var echoeffref= Math.round(TEref/TEmref);
-			var TEeffreelref= echoeffref*TEmref;
-			//calculate SNR
-			snrref= rho*(1-Math.exp(-TRref/T1))*Math.exp(-TEeffreelref/T2)*Math.sqrt(NEXref)*voxelref*(1/Math.sqrt(bdwref));
-			snrreel= rho*(1-Math.exp(-TR/T1))*Math.exp(-TEeffreel/T2)*Math.sqrt(NEX)*voxel*(1/Math.sqrt(bdw));
-			snr=Math.round((snrreel/snrref)*100)+"%";
-			if(btnRestclicked=="true"){
-				TRref=TR;NEXref=NEX;bdwref=bdw;fovref=fov;
-				TEref=TE;phaseref=phase;freqref=freq;epaisseurref=epaisseur;
-				snrref=snrreel;
-				snr=Math.round((snrreel/snrref)*100)+"%";
-				//snr=parseFloat(Math.round((snrreel/snrref)*100).toFixed(2))+"%";
-				btnRestclicked="false";
-			}
-			else{btnRestclicked="false";}
-			//move RedDiv
-			echoeffred= Math.round(TEeffreel*(374)/TEM);
-			var echos=Math.round(TEm*374/TEM);
-			newechoeffred=Math.round(+echoeffred + +echos);
-			currentposition=Math.round(+newechoeffred + -echos);
-			document.getElementById("divred").style.left=(currentposition)+"px";
-			//pictures Contrast||invert
-			snrsg=rhosg*(1-Math.exp(-TR/T1sg))*Math.exp(-TEeffreel/T2sg)*Math.sqrt(NEX)*voxel*(1/Math.sqrt(bdw));
-			snrsb=rhosb*(1-Math.exp(-TR/T1sb))*Math.exp(-TEeffreel/T2sb)*Math.sqrt(NEX)*voxel*(1/Math.sqrt(bdw));
-			snreau=rhoeau*(1-Math.exp(-TR/T1eau))*Math.exp(-TEeffreel/T2eau)*Math.sqrt(NEX)*voxel*(1/Math.sqrt(bdw));
-			snrfat=rhofat*(1-Math.exp(-TR/T1fat))*Math.exp(-TEeffreel/T2fat)*Math.sqrt(NEX)*voxel*(1/Math.sqrt(bdw));
-			if(snrsg>snrsb && snrsg>snreau && snrsg>snrfat){snrsup = snrsg;}
-			else if(snrsb>snrsg && snrsb>snreau && snrsb>snrfat){snrsup = snrsb;}
-			else if(snreau>snrsb && snreau>snrsg && snreau>snrfat){snrsup = snreau;}
-			else if(snrfat>snrsb && snrfat>snreau && snrfat>snrsg){snrsup = snrfat;}
-			if(snrsg<snrsb && snrsg<snreau && snrsg<snrfat){snrinf = snrsg;}
-			else if(snrsb<snrsg && snrsb<snreau && snrsb<snrfat){snrinf = snrsb;}
-			else if(snreau<snrsb && snreau<snrsg && snreau<snrfat){snrinf = snreau;}
-			else if(snrfat<snrsb && snrfat<snreau && snrfat<snrsg){snrinf = snrfat;}
-			srnampl=snrsup-snrinf;
-			//calculate colors value
-			clefsgnormal=(((snrsg - snrinf)/srnampl)+0.05).toFixed(2);
-			clefsbnormal=(((snrsb - snrinf)/srnampl)+0.05).toFixed(2);
-			clefeaunormal=(((snreau - snrinf)/srnampl)+0.05).toFixed(2);
-			cleffatnormal=(((snrfat - snrinf)/srnampl)+0.05).toFixed(2);
-			res=0;
-			bas=((+ETL+1)/2)-1.5;
-			haut=((+ETL+1)/2)+1.5;
-			bon=(+ETL+1)/2;	
-			//Calculate Blur
-			function ChangeBlurring(){
-				bblur=((TEM/2)-TEeffreel).toFixed(0);
-				for(i=10;i<500;i+=5){
-					if(bblur<=10){
-						newDeviationEtl=0;
-					}
-					else if(bblur>i && bblur<(+i+ +5)){
-						var step= i/5;
-						var accStep= +step + -2;
-						newDeviationEtl = (accStep*0.25).toFixed(2);
-					}
-				}
-				for(i=4.1;i<20.1;i+=0.1){
-					if(epaisseur<=4){
-						newDeviationSt=0;
-					}
-					else if(epaisseur>=i && epaisseur<(+i+ +0.2)){
-						var step= i/0.2;
-						var accStep= +step + -14;
-						newDeviationSt =(accStep*0.04).toFixed(2);
-					}
-				}
-				newDeviation= (+newDeviationSt+ +newDeviationEtl).toFixed(2);
-				document.getElementById("bf1").setAttribute("stdDeviation", newDeviation);
-			}
-			ChangeColors();DisplayValues();ChangeBlurring();ChangeFov();ChangeFrePixels();
-			}
+		
 		}
 
-		function ChangeColors(){
+		function calculateSiemens() {
+		//get values 
+		TR= document.getElementById("nbrTR").value;
+			TE= document.getElementById("nbrTE").value;
+			ETL= document.getElementById("nbrETL").value;
+			NEX= document.getElementById("nbrNEX").value;
+			// fov= document.getElementById("nbrFOV").value;
+			freq= document.getElementById("nbrFreq").value;
+			phase= document.getElementById("nbrPhase").value;
+			epaisseur= document.getElementById("nbrSthks").value;
+			gap= document.getElementById("nbrSintr").value;
+			coupes= document.getElementById("nbrNofSlc").value;
+			vBDW= document.getElementById("nbrVarBdw").value;
+			bdw= document.getElementById("nbrTotalBdw").value;
+			pBDW= document.getElementById("nbrBdwppxl").value;
+			NBDW= document.getElementById("nbrNofPixel").value;
+
+			let fovInput = document.getElementById("nbrFOV").value.trim();
+            let parsedFov = parseFloat(fovInput);
+
+            if (isNaN(parsedFov)) return; 
+
+            if (selectedManufacturer !== "GE") {
+              fov = Math.min(Math.max(parsedFov, 60), 500) / 10; 
+            } else {
+              fov = Math.min(Math.max(parsedFov, 10), 50);
+            }
+           //Calculate BDWs
+           if(checkname=="varBDW"){
+				bdw=vBDW*2;
+				pBDW=Math.round((bdw*1000/freq)*10)/10;
+				NBDW=Math.round((208/pBDW)*10)/10;
+				document.getElementById("nbrVarBdw").disabled=false;
+				document.getElementById("nbrTotalBdw").disabled=true;
+				document.getElementById("nbrBdwppxl").disabled=false;
+				document.getElementById("nbrNofPixel").disabled=true;
+			}
+			else if(checkname=="BDW"){
+				vBDW=bdw/2;
+				pBDW=Math.round((bdw*1000/freq)*10)/10;
+				NBDW=Math.round((208/pBDW)*10)/10;
+				document.getElementById("nbrVarBdw").disabled=true;
+				document.getElementById("nbrTotalBdw").disabled=false;
+				document.getElementById("nbrBdwppxl").disabled=false;
+				document.getElementById("nbrNofPixel").disabled=true;
+			}
+			else if(checkname=="pBDW"){
+				bdw=Math.round(((pBDW*freq)/1000)*10)/10;
+				vBDW=bdw/2;
+				NBDW=Math.round((208/pBDW)*10)/10; //alert("NBDW"+NBDW);
+				document.getElementById("nbrVarBdw").disabled=true;
+				document.getElementById("nbrTotalBdw").disabled=true;
+				document.getElementById("nbrBdwppxl").disabled=false;
+				document.getElementById("nbrNofPixel").disabled=true;
+			}
+			else if(checkname=="nBDW"){
+				bdw=Math.round(((pBDW*freq)/1000)*10)/10;
+				vBDW= bdw/2;
+				pBDW=(208/NBDW).toFixed(1);
+				document.getElementById("nbrVarBdw").disabled=true;
+				document.getElementById("nbrTotalBdw").disabled=true;
+				document.getElementById("nbrBdwppxl").disabled=false;
+				document.getElementById("nbrNofPixel").disabled=false;
+			}
+			if(vBDW<=3){vBDW=3;}
+			else if(vBDW>=60){vBDW=60;}
+			else{vBDW=vBDW;}
+			if(bdw<=6){bdw=6;}
+			else if(bdw>=120){bdw=120;}
+			else{bdw=bdw;}
+			if(pBDW<=1){pBDW=1;}
+			else if(pBDW>=1000){pBDW=1000;}
+			else{pBDW=pBDW;}
+			if(NBDW<=1){NBDW=1;}
+			else if(NBDW>=5){NBDW=5;}
+			else{NBDW=NBDW;}
+			//calculate parameter
+			dFov=fov*10;
+			TEm=(2+Math.round((freq/bdw)*100)/100).toFixed(2);
+			TEM=(TEm*ETL).toFixed(2);
+			if (freq == prevFreq) {
+            nbcoupes = Math.floor(TR / TEM); // allow update only if freq hasn't changed
+            }
+			tac=Math.round((phase*(TR/1000)/ETL)*NEX);
+			acq=Math.ceil(coupes/nbcoupes);
+			voxel=Math.round((fov*10/phase)*(fov*10/freq)*epaisseur*10)/10;
+			natomicvolume=Math.round(((coupes*epaisseur)+((coupes-1)*gap))*fov*fov/10);	
+			tps=tac*acq;
+			echoeff=Math.round(TE/TEm);
+			if(echoeff==0){echoeff=1;}
+			//if Echo>train->take the last echo of the train
+			else if(echoeff>=ETL){echoeff=ETL;}
+			TEeffreel=echoeff*TEm;
+			const TEmax = TEm * ETL;
+            if (parseFloat(TE) > TEmax) {
+                TE = TEmax.toFixed(2);
+                document.getElementById("nbrTE").value = TE;
+            }
+			Temideal=((echoeff*TEm*2)-TEm);
+			//calculate values of snrref
+			var voxelref = Math.round((fovref*10/phaseref)*(fovref*10/freqref)*epaisseurref*10)/10;
+			var TEmref= (2+Math.round((freqref/bdwref)*100)/100).toFixed(2);
+			var echoeffref= Math.round(TEref/TEmref);
+			var TEeffreelref= echoeffref*TEmref;
+			//calculate SNR
+			snrref= rho*(1-Math.exp(-TRref/T1))*Math.exp(-TEeffreelref/T2)*Math.sqrt(NEXref)*voxelref*(1/Math.sqrt(bdwref));
+			snrreel= rho*(1-Math.exp(-TR/T1))*Math.exp(-TEeffreel/T2)*Math.sqrt(NEX)*voxel*(1/Math.sqrt(bdw));
+			snr=Math.round((snrreel/snrref)*100)+"%";
+			if(btnRestclicked=="true"){
+				TRref=TR;NEXref=NEX;bdwref=bdw;fovref=fov;
+				TEref=TE;phaseref=phase;freqref=freq;epaisseurref=epaisseur;
+				snrref=snrreel;
+				snr=Math.round((snrreel/snrref)*100)+"%";
+				//snr=parseFloat(Math.round((snrreel/snrref)*100).toFixed(2))+"%";
+				btnRestclicked="false";
+			}
+			else{btnRestclicked="false";}
+			//move RedDiv
+			echoeffred= Math.round(TEeffreel*(374)/TEM);
+			var echos=Math.round(TEm*374/TEM);
+			newechoeffred=Math.round(+echoeffred + +echos);
+			currentposition=Math.round(+newechoeffred + -echos);
+			document.getElementById("divred").style.left=(currentposition)+"px";
+			//pictures Contrast||invert
+			snrsg=rhosg*(1-Math.exp(-TR/T1sg))*Math.exp(-TEeffreel/T2sg)*Math.sqrt(NEX)*voxel*(1/Math.sqrt(bdw));
+			snrsb=rhosb*(1-Math.exp(-TR/T1sb))*Math.exp(-TEeffreel/T2sb)*Math.sqrt(NEX)*voxel*(1/Math.sqrt(bdw));
+			snreau=rhoeau*(1-Math.exp(-TR/T1eau))*Math.exp(-TEeffreel/T2eau)*Math.sqrt(NEX)*voxel*(1/Math.sqrt(bdw));
+			snrfat=rhofat*(1-Math.exp(-TR/T1fat))*Math.exp(-TEeffreel/T2fat)*Math.sqrt(NEX)*voxel*(1/Math.sqrt(bdw));
+			if(snrsg>snrsb && snrsg>snreau && snrsg>snrfat){snrsup = snrsg;}
+			else if(snrsb>snrsg && snrsb>snreau && snrsb>snrfat){snrsup = snrsb;}
+			else if(snreau>snrsb && snreau>snrsg && snreau>snrfat){snrsup = snreau;}
+			else if(snrfat>snrsb && snrfat>snreau && snrfat>snrsg){snrsup = snrfat;}
+			if(snrsg<snrsb && snrsg<snreau && snrsg<snrfat){snrinf = snrsg;}
+			else if(snrsb<snrsg && snrsb<snreau && snrsb<snrfat){snrinf = snrsb;}
+			else if(snreau<snrsb && snreau<snrsg && snreau<snrfat){snrinf = snreau;}
+			else if(snrfat<snrsb && snrfat<snreau && snrfat<snrsg){snrinf = snrfat;}
+			srnampl=snrsup-snrinf;
+			//calculate colors value
+			clefsgnormal=(((snrsg - snrinf)/srnampl)+0.05).toFixed(2);
+			clefsbnormal=(((snrsb - snrinf)/srnampl)+0.05).toFixed(2);
+			clefeaunormal=(((snreau - snrinf)/srnampl)+0.05).toFixed(2);
+			cleffatnormal=(((snrfat - snrinf)/srnampl)+0.05).toFixed(2);
+			res=0;
+			bas=((+ETL+1)/2)-1.5;
+			haut=((+ETL+1)/2)+1.5;
+			bon=(+ETL+1)/2;	
+			//Calculate Blur
+			function ChangeBlurring(){
+				bblur=((TEM/2)-TEeffreel).toFixed(0);
+				for(i=10;i<500;i+=5){
+					if(bblur<=10){
+						newDeviationEtl=0;
+					}
+					else if(bblur>i && bblur<(+i+ +5)){
+						var step= i/5;
+						var accStep= +step + -2;
+						newDeviationEtl = (accStep*0.25).toFixed(2);
+					}
+				}
+				for(i=4.1;i<20.1;i+=0.1){
+					if(epaisseur<=4){
+						newDeviationSt=0;
+					}
+					else if(epaisseur>=i && epaisseur<(+i+ +0.2)){
+						var step= i/0.2;
+						var accStep= +step + -14;
+						newDeviationSt =(accStep*0.04).toFixed(2);
+					}
+				}
+				newDeviation= (+newDeviationSt+ +newDeviationEtl).toFixed(2);
+				document.getElementById("bf1").setAttribute("stdDeviation", newDeviation);
+			}
+			ChangeColors();DisplayValues();ChangeBlurring();ChangeFov();ChangeFrePixels();
+			// Implement Siemens calculation logic here
+		}
+
+		function calculatePhilips() {
+		//get values 
+		TR= document.getElementById("nbrTR").value;
+			TE= document.getElementById("nbrTE").value;
+			ETL= document.getElementById("nbrETL").value;
+			NEX= document.getElementById("nbrNEX").value;
+			// fov= document.getElementById("nbrFOV").value;
+			freq= document.getElementById("nbrFreq").value;
+			phase= document.getElementById("nbrPhase").value;
+			epaisseur= document.getElementById("nbrSthks").value;
+			gap= document.getElementById("nbrSintr").value;
+			coupes= document.getElementById("nbrNofSlc").value;
+			vBDW= document.getElementById("nbrVarBdw").value;
+			bdw= document.getElementById("nbrTotalBdw").value;
+			pBDW= document.getElementById("nbrBdwppxl").value;
+			NBDW= document.getElementById("nbrNofPixel").value;
+
+			let fovInput = document.getElementById("nbrFOV").value.trim();
+            let parsedFov = parseFloat(fovInput);
+
+            if (isNaN(parsedFov)) return; 
+
+            if (selectedManufacturer !== "GE") {
+              fov = Math.min(Math.max(parsedFov, 60), 500) / 10; 
+            } else {
+              fov = Math.min(Math.max(parsedFov, 10), 50);
+            }
+           //Calculate BDWs
+           if(checkname=="varBDW"){
+				bdw=vBDW*2;
+				pBDW=Math.round((bdw*1000/freq)*10)/10;
+				NBDW=Math.round((208/pBDW)*10)/10;
+				document.getElementById("nbrVarBdw").disabled=false;
+				document.getElementById("nbrTotalBdw").disabled=true;
+				document.getElementById("nbrBdwppxl").disabled=false;
+				document.getElementById("nbrNofPixel").disabled=true;
+			}
+			else if(checkname=="BDW"){
+				vBDW=bdw/2;
+				pBDW=Math.round((bdw*1000/freq)*10)/10;
+				NBDW=Math.round((208/pBDW)*10)/10;
+				document.getElementById("nbrVarBdw").disabled=true;
+				document.getElementById("nbrTotalBdw").disabled=false;
+				document.getElementById("nbrBdwppxl").disabled=false;
+				document.getElementById("nbrNofPixel").disabled=true;
+			}
+			else if(checkname=="pBDW"){
+				bdw=Math.round(((pBDW*freq)/1000)*10)/10;
+				vBDW=bdw/2;
+				NBDW=Math.round((208/pBDW)*10)/10; //alert("NBDW"+NBDW);
+				document.getElementById("nbrVarBdw").disabled=true;
+				document.getElementById("nbrTotalBdw").disabled=true;
+				document.getElementById("nbrBdwppxl").disabled=false;
+				document.getElementById("nbrNofPixel").disabled=true;
+			}
+			else if(checkname=="nBDW"){
+				bdw=Math.round(((pBDW*freq)/1000)*10)/10;
+				vBDW= bdw/2;
+				pBDW=(208/NBDW).toFixed(1);
+				document.getElementById("nbrVarBdw").disabled=true;
+				document.getElementById("nbrTotalBdw").disabled=true;
+				document.getElementById("nbrBdwppxl").disabled=false;
+				document.getElementById("nbrNofPixel").disabled=false;
+			}
+			if(vBDW<=3){vBDW=3;}
+			else if(vBDW>=60){vBDW=60;}
+			else{vBDW=vBDW;}
+			if(bdw<=6){bdw=6;}
+			else if(bdw>=120){bdw=120;}
+			else{bdw=bdw;}
+			if(pBDW<=1){pBDW=1;}
+			else if(pBDW>=1000){pBDW=1000;}
+			else{pBDW=pBDW;}
+			if(NBDW<=1){NBDW=1;}
+			else if(NBDW>=5){NBDW=5;}
+			else{NBDW=NBDW;}
+			//calculate parameter
+			dFov=fov*10;
+			TEm=(2+Math.round((freq/bdw)*100)/100).toFixed(2);
+			TEM=(TEm*ETL).toFixed(2);
+			if (freq == prevFreq) {
+            nbcoupes = Math.floor(TR / TEM); // allow update only if freq hasn't changed
+            }
+			tac=Math.round((phase*(TR/1000)/ETL)*NEX);
+			acq=Math.ceil(coupes/nbcoupes);
+			voxel=Math.round((fov*10/phase)*(fov*10/freq)*epaisseur*10)/10;
+			natomicvolume=Math.round(((coupes*epaisseur)+((coupes-1)*gap))*fov*fov/10);	
+			tps=tac*acq;
+			echoeff=Math.round(TE/TEm);
+			if(echoeff==0){echoeff=1;}
+			//if Echo>train->take the last echo of the train
+			else if(echoeff>=ETL){echoeff=ETL;}
+			TEeffreel=echoeff*TEm;
+			const TEmax = TEm * ETL;
+            if (parseFloat(TE) > TEmax) {
+                TE = TEmax.toFixed(2);
+                document.getElementById("nbrTE").value = TE;
+            }
+			Temideal=((echoeff*TEm*2)-TEm);
+			//calculate values of snrref
+			var voxelref = Math.round((fovref*10/phaseref)*(fovref*10/freqref)*epaisseurref*10)/10;
+			var TEmref= (2+Math.round((freqref/bdwref)*100)/100).toFixed(2);
+			var echoeffref= Math.round(TEref/TEmref);
+			var TEeffreelref= echoeffref*TEmref;
+			//calculate SNR
+			snrref= rho*(1-Math.exp(-TRref/T1))*Math.exp(-TEeffreelref/T2)*Math.sqrt(NEXref)*voxelref*(1/Math.sqrt(bdwref));
+			snrreel= rho*(1-Math.exp(-TR/T1))*Math.exp(-TEeffreel/T2)*Math.sqrt(NEX)*voxel*(1/Math.sqrt(bdw));
+			snr=Math.round((snrreel/snrref)*100)+"%";
+			if(btnRestclicked=="true"){
+				TRref=TR;NEXref=NEX;bdwref=bdw;fovref=fov;
+				TEref=TE;phaseref=phase;freqref=freq;epaisseurref=epaisseur;
+				snrref=snrreel;
+				snr=Math.round((snrreel/snrref)*100)+"%";
+				//snr=parseFloat(Math.round((snrreel/snrref)*100).toFixed(2))+"%";
+				btnRestclicked="false";
+			}
+			else{btnRestclicked="false";}
+			//move RedDiv
+			echoeffred= Math.round(TEeffreel*(374)/TEM);
+			var echos=Math.round(TEm*374/TEM);
+			newechoeffred=Math.round(+echoeffred + +echos);
+			currentposition=Math.round(+newechoeffred + -echos);
+			document.getElementById("divred").style.left=(currentposition)+"px";
+			//pictures Contrast||invert
+			snrsg=rhosg*(1-Math.exp(-TR/T1sg))*Math.exp(-TEeffreel/T2sg)*Math.sqrt(NEX)*voxel*(1/Math.sqrt(bdw));
+			snrsb=rhosb*(1-Math.exp(-TR/T1sb))*Math.exp(-TEeffreel/T2sb)*Math.sqrt(NEX)*voxel*(1/Math.sqrt(bdw));
+			snreau=rhoeau*(1-Math.exp(-TR/T1eau))*Math.exp(-TEeffreel/T2eau)*Math.sqrt(NEX)*voxel*(1/Math.sqrt(bdw));
+			snrfat=rhofat*(1-Math.exp(-TR/T1fat))*Math.exp(-TEeffreel/T2fat)*Math.sqrt(NEX)*voxel*(1/Math.sqrt(bdw));
+			if(snrsg>snrsb && snrsg>snreau && snrsg>snrfat){snrsup = snrsg;}
+			else if(snrsb>snrsg && snrsb>snreau && snrsb>snrfat){snrsup = snrsb;}
+			else if(snreau>snrsb && snreau>snrsg && snreau>snrfat){snrsup = snreau;}
+			else if(snrfat>snrsb && snrfat>snreau && snrfat>snrsg){snrsup = snrfat;}
+			if(snrsg<snrsb && snrsg<snreau && snrsg<snrfat){snrinf = snrsg;}
+			else if(snrsb<snrsg && snrsb<snreau && snrsb<snrfat){snrinf = snrsb;}
+			else if(snreau<snrsb && snreau<snrsg && snreau<snrfat){snrinf = snreau;}
+			else if(snrfat<snrsb && snrfat<snreau && snrfat<snrsg){snrinf = snrfat;}
+			srnampl=snrsup-snrinf;
+			//calculate colors value
+			clefsgnormal=(((snrsg - snrinf)/srnampl)+0.05).toFixed(2);
+			clefsbnormal=(((snrsb - snrinf)/srnampl)+0.05).toFixed(2);
+			clefeaunormal=(((snreau - snrinf)/srnampl)+0.05).toFixed(2);
+			cleffatnormal=(((snrfat - snrinf)/srnampl)+0.05).toFixed(2);
+			res=0;
+			bas=((+ETL+1)/2)-1.5;
+			haut=((+ETL+1)/2)+1.5;
+			bon=(+ETL+1)/2;	
+			//Calculate Blur
+			function ChangeBlurring(){
+				bblur=((TEM/2)-TEeffreel).toFixed(0);
+				for(i=10;i<500;i+=5){
+					if(bblur<=10){
+						newDeviationEtl=0;
+					}
+					else if(bblur>i && bblur<(+i+ +5)){
+						var step= i/5;
+						var accStep= +step + -2;
+						newDeviationEtl = (accStep*0.25).toFixed(2);
+					}
+				}
+				for(i=4.1;i<20.1;i+=0.1){
+					if(epaisseur<=4){
+						newDeviationSt=0;
+					}
+					else if(epaisseur>=i && epaisseur<(+i+ +0.2)){
+						var step= i/0.2;
+						var accStep= +step + -14;
+						newDeviationSt =(accStep*0.04).toFixed(2);
+					}
+				}
+				newDeviation= (+newDeviationSt+ +newDeviationEtl).toFixed(2);
+				document.getElementById("bf1").setAttribute("stdDeviation", newDeviation);
+			}
+			ChangeColors();DisplayValues();ChangeBlurring();ChangeFov();ChangeFrePixels();
+			// Implement Philips calculation logic here
+		}
+
+		function calculateCanon() {
+			//get values 
+			TR= document.getElementById("nbrTR").value;
+			TE= document.getElementById("nbrTE").value;
+			ETL= document.getElementById("nbrETL").value;
+			NEX= document.getElementById("nbrNEX").value;
+			// fov= document.getElementById("nbrFOV").value;
+			freq= document.getElementById("nbrFreq").value;
+			phase= document.getElementById("nbrPhase").value;
+			epaisseur= document.getElementById("nbrSthks").value;
+			gap= document.getElementById("nbrSintr").value;
+			coupes= document.getElementById("nbrNofSlc").value;
+			vBDW= document.getElementById("nbrVarBdw").value;
+			bdw= document.getElementById("nbrTotalBdw").value;
+			pBDW= document.getElementById("nbrBdwppxl").value;
+			NBDW= document.getElementById("nbrNofPixel").value;
+
+			let fovInput = document.getElementById("nbrFOV").value.trim();
+            let parsedFov = parseFloat(fovInput);
+
+            if (isNaN(parsedFov)) return; 
+
+            if (selectedManufacturer !== "GE") {
+              fov = Math.min(Math.max(parsedFov, 60), 500) / 10; 
+            } else {
+              fov = Math.min(Math.max(parsedFov, 10), 50);
+            }
+           //Calculate BDWs
+           if(checkname=="varBDW"){
+				bdw=vBDW*2;
+				pBDW=Math.round((bdw*1000/freq)*10)/10;
+				NBDW=Math.round((208/pBDW)*10)/10;
+				document.getElementById("nbrVarBdw").disabled=false;
+				document.getElementById("nbrTotalBdw").disabled=true;
+				document.getElementById("nbrBdwppxl").disabled=false;
+				document.getElementById("nbrNofPixel").disabled=true;
+			}
+			else if(checkname=="BDW"){
+				vBDW=bdw/2;
+				pBDW=Math.round((bdw*1000/freq)*10)/10;
+				NBDW=Math.round((208/pBDW)*10)/10;
+				document.getElementById("nbrVarBdw").disabled=true;
+				document.getElementById("nbrTotalBdw").disabled=false;
+				document.getElementById("nbrBdwppxl").disabled=false;
+				document.getElementById("nbrNofPixel").disabled=true;
+			}
+			else if(checkname=="pBDW"){
+				bdw=Math.round(((pBDW*freq)/1000)*10)/10;
+				vBDW=bdw/2;
+				NBDW=Math.round((208/pBDW)*10)/10; //alert("NBDW"+NBDW);
+				document.getElementById("nbrVarBdw").disabled=true;
+				document.getElementById("nbrTotalBdw").disabled=true;
+				document.getElementById("nbrBdwppxl").disabled=false;
+				document.getElementById("nbrNofPixel").disabled=true;
+			}
+			else if(checkname=="nBDW"){
+				bdw=Math.round(((pBDW*freq)/1000)*10)/10;
+				vBDW= bdw/2;
+				pBDW=(208/NBDW).toFixed(1);
+				document.getElementById("nbrVarBdw").disabled=true;
+				document.getElementById("nbrTotalBdw").disabled=true;
+				document.getElementById("nbrBdwppxl").disabled=false;
+				document.getElementById("nbrNofPixel").disabled=false;
+			}
+			if(vBDW<=3){vBDW=3;}
+			else if(vBDW>=60){vBDW=60;}
+			else{vBDW=vBDW;}
+			if(bdw<=6){bdw=6;}
+			else if(bdw>=120){bdw=120;}
+			else{bdw=bdw;}
+			if(pBDW<=1){pBDW=1;}
+			else if(pBDW>=1000){pBDW=1000;}
+			else{pBDW=pBDW;}
+			if(NBDW<=1){NBDW=1;}
+			else if(NBDW>=5){NBDW=5;}
+			else{NBDW=NBDW;}
+			//calculate parameter
+			dFov=fov*10;
+			TEm=(2+Math.round((freq/bdw)*100)/100).toFixed(2);
+			TEM=(TEm*ETL).toFixed(2);
+			if (freq == prevFreq) {
+            nbcoupes = Math.floor(TR / TEM); // allow update only if freq hasn't changed
+            }
+			tac=Math.round((phase*(TR/1000)/ETL)*NEX);
+			acq=Math.ceil(coupes/nbcoupes);
+			voxel=Math.round((fov*10/phase)*(fov*10/freq)*epaisseur*10)/10;
+			natomicvolume=Math.round(((coupes*epaisseur)+((coupes-1)*gap))*fov*fov/10);	
+			tps=tac*acq;
+			echoeff=Math.round(TE/TEm);
+			if(echoeff==0){echoeff=1;}
+			//if Echo>train->take the last echo of the train
+			else if(echoeff>=ETL){echoeff=ETL;}
+			TEeffreel=echoeff*TEm;
+			const TEmax = TEm * ETL;
+            if (parseFloat(TE) > TEmax) {
+                TE = TEmax.toFixed(2);
+                document.getElementById("nbrTE").value = TE;
+            }
+			Temideal=((echoeff*TEm*2)-TEm);
+			//calculate values of snrref
+			var voxelref = Math.round((fovref*10/phaseref)*(fovref*10/freqref)*epaisseurref*10)/10;
+			var TEmref= (2+Math.round((freqref/bdwref)*100)/100).toFixed(2);
+			var echoeffref= Math.round(TEref/TEmref);
+			var TEeffreelref= echoeffref*TEmref;
+			//calculate SNR
+			snrref= rho*(1-Math.exp(-TRref/T1))*Math.exp(-TEeffreelref/T2)*Math.sqrt(NEXref)*voxelref*(1/Math.sqrt(bdwref));
+			snrreel= rho*(1-Math.exp(-TR/T1))*Math.exp(-TEeffreel/T2)*Math.sqrt(NEX)*voxel*(1/Math.sqrt(bdw));
+			snr=Math.round((snrreel/snrref)*100)+"%";
+			if(btnRestclicked=="true"){
+				TRref=TR;NEXref=NEX;bdwref=bdw;fovref=fov;
+				TEref=TE;phaseref=phase;freqref=freq;epaisseurref=epaisseur;
+				snrref=snrreel;
+				snr=Math.round((snrreel/snrref)*100)+"%";
+				//snr=parseFloat(Math.round((snrreel/snrref)*100).toFixed(2))+"%";
+				btnRestclicked="false";
+			}
+			else{btnRestclicked="false";}
+			//move RedDiv
+			echoeffred= Math.round(TEeffreel*(374)/TEM);
+			var echos=Math.round(TEm*374/TEM);
+			newechoeffred=Math.round(+echoeffred + +echos);
+			currentposition=Math.round(+newechoeffred + -echos);
+			document.getElementById("divred").style.left=(currentposition)+"px";
+			//pictures Contrast||invert
+			snrsg=rhosg*(1-Math.exp(-TR/T1sg))*Math.exp(-TEeffreel/T2sg)*Math.sqrt(NEX)*voxel*(1/Math.sqrt(bdw));
+			snrsb=rhosb*(1-Math.exp(-TR/T1sb))*Math.exp(-TEeffreel/T2sb)*Math.sqrt(NEX)*voxel*(1/Math.sqrt(bdw));
+			snreau=rhoeau*(1-Math.exp(-TR/T1eau))*Math.exp(-TEeffreel/T2eau)*Math.sqrt(NEX)*voxel*(1/Math.sqrt(bdw));
+			snrfat=rhofat*(1-Math.exp(-TR/T1fat))*Math.exp(-TEeffreel/T2fat)*Math.sqrt(NEX)*voxel*(1/Math.sqrt(bdw));
+			if(snrsg>snrsb && snrsg>snreau && snrsg>snrfat){snrsup = snrsg;}
+			else if(snrsb>snrsg && snrsb>snreau && snrsb>snrfat){snrsup = snrsb;}
+			else if(snreau>snrsb && snreau>snrsg && snreau>snrfat){snrsup = snreau;}
+			else if(snrfat>snrsb && snrfat>snreau && snrfat>snrsg){snrsup = snrfat;}
+			if(snrsg<snrsb && snrsg<snreau && snrsg<snrfat){snrinf = snrsg;}
+			else if(snrsb<snrsg && snrsb<snreau && snrsb<snrfat){snrinf = snrsb;}
+			else if(snreau<snrsb && snreau<snrsg && snreau<snrfat){snrinf = snreau;}
+			else if(snrfat<snrsb && snrfat<snreau && snrfat<snrsg){snrinf = snrfat;}
+			srnampl=snrsup-snrinf;
+			//calculate colors value
+			clefsgnormal=(((snrsg - snrinf)/srnampl)+0.05).toFixed(2);
+			clefsbnormal=(((snrsb - snrinf)/srnampl)+0.05).toFixed(2);
+			clefeaunormal=(((snreau - snrinf)/srnampl)+0.05).toFixed(2);
+			cleffatnormal=(((snrfat - snrinf)/srnampl)+0.05).toFixed(2);
+			res=0;
+			bas=((+ETL+1)/2)-1.5;
+			haut=((+ETL+1)/2)+1.5;
+			bon=(+ETL+1)/2;	
+			//Calculate Blur
+			function ChangeBlurring(){
+				bblur=((TEM/2)-TEeffreel).toFixed(0);
+				for(i=10;i<500;i+=5){
+					if(bblur<=10){
+						newDeviationEtl=0;
+					}
+					else if(bblur>i && bblur<(+i+ +5)){
+						var step= i/5;
+						var accStep= +step + -2;
+						newDeviationEtl = (accStep*0.25).toFixed(2);
+					}
+				}
+				for(i=4.1;i<20.1;i+=0.1){
+					if(epaisseur<=4){
+						newDeviationSt=0;
+					}
+					else if(epaisseur>=i && epaisseur<(+i+ +0.2)){
+						var step= i/0.2;
+						var accStep= +step + -14;
+						newDeviationSt =(accStep*0.04).toFixed(2);
+					}
+				}
+				newDeviation= (+newDeviationSt+ +newDeviationEtl).toFixed(2);
+				document.getElementById("bf1").setAttribute("stdDeviation", newDeviation);
+			}
+			ChangeColors();DisplayValues();ChangeBlurring();ChangeFov();ChangeFrePixels();
+		
+		}
+
+
+	function ChangeColors(){
 		document.getElementById("comp1").setAttribute("tableValues", +clefsgnormal+" "+clefsgnormal);
 		document.getElementById("comp2").setAttribute("tableValues", +clefsgnormal+" "+clefsgnormal);
 		document.getElementById("comp3").setAttribute("tableValues", +clefsgnormal+" "+clefsgnormal);
@@ -1010,14 +1146,15 @@ if(checkname=="varBDW"){
 
     // console.log("RSB Reset completed.");
 }
-function ResetLights(){
+
+    function ResetLights(){
 	const resetBtn = document.getElementById("btnReset");
     resetBtn.classList.remove("show");
     resetBtn.classList.add("hide");
 	console.log("Keep lights and calculation");
 }
 
-function ResetLightsAndButtonOnly() {
+    function ResetLightsAndButtonOnly() {
     // Reset lights
     const glow = document.getElementById("glowLight");
     if (glow) {
@@ -1043,7 +1180,7 @@ function ResetLightsAndButtonOnly() {
 }
 
 		
-		function ResultFeedback(){
+	function ResultFeedback(){
 			// document.getElementById("btnReset").style.display="inline";
 			const resetBtn = document.getElementById("btnReset");
             resetBtn.classList.remove("hide");
@@ -1157,7 +1294,7 @@ function ResetLightsAndButtonOnly() {
 		console.log("Testing");
 		}
 
-		function DisplayValues(casename){
+	function DisplayValues(casename){
 			//Change TE images
 			document.getElementById('picTE').src= ETL+ '.png';
 			//Display BDWs values
@@ -1189,7 +1326,8 @@ function ResetLightsAndButtonOnly() {
 			document.getElementById("lblDisplayTEeff").innerText=TEeffreel.toFixed(2);
 			document.getElementById("lblDisplayTEmideal").innerText=Temideal.toFixed(2);
 		}
-		function DsiplaySpinEcho(){
+		
+	function DsiplaySpinEcho(){
 			ETL=document.getElementById("nbrETL").value;
 			if(ETL==1){
 				document.getElementById("lblDisplayEcho").innerText= "SPIN ECHO";
@@ -1202,7 +1340,8 @@ function ResetLightsAndButtonOnly() {
 				document.getElementById("divTENnty").style.display="none";
 			}	
 		}
-		function ChangeFov(){
+
+	function ChangeFov(){
 			if(fov==49 && fov<=50){for(var i=0; i<7;i++){document.getElementById("g"+i).setAttribute("style", "transform: scale(0.5)");}}
 			else if(fov>=46 && fov<=48){for(var i=0; i<7;i++){document.getElementById("g"+i).setAttribute("style", "transform: scale(0.6)");}}
 			else if(fov>=43 && fov<=45){for(var i=0; i<7;i++){document.getElementById("g"+i).setAttribute("style", "transform: scale(0.65)");}}
@@ -1219,7 +1358,8 @@ function ResetLightsAndButtonOnly() {
 			else if(fov>=10 && fov<=12){for(var i=0; i<7;i++){document.getElementById("g"+i).setAttribute("style", "transform: scale(1.4)");}}
 			else if(fov>=6 && fov<=9){for(var i=0; i<7;i++){document.getElementById("g"+i).setAttribute("style", "transform: scale(1.5)");}}
 		}	
-		function ChangeFrePixels(){
+
+	function ChangeFrePixels(){
 			if(freq>=320){
 				document.getElementById("svgr0").setAttribute("radius", "0");
 				document.getElementById("svgr1").setAttribute("radius", "0");
@@ -1421,7 +1561,7 @@ function ResetLightsAndButtonOnly() {
 		}
 	}
 
-	    function subTR() {
+	function subTR() {
 	          const max = 20000, min = 250;
 	          const nbrTRInput = document.getElementById("nbrTR");
 	          let x = parseInt(nbrTRInput.value) || min;
@@ -1439,7 +1579,7 @@ function ResetLightsAndButtonOnly() {
 	          Calculation();
 	          displayImage(newx);
         }
-		function addTR() {
+	function addTR() {
 	          const max = 20000, min = 250;
 	          const nbrTRInput = document.getElementById("nbrTR");
 	          let x = parseInt(nbrTRInput.value) || min;
@@ -1457,7 +1597,7 @@ function ResetLightsAndButtonOnly() {
 	          Calculation();
 	          displayImage(newx);
         }
-		function subTE(){
+	function subTE(){
 			var max=20000,min=5;
 			var x=document.getElementById("nbrTE").value;
 			if(x>max){document.getElementById("nbrTE").value=max;}
@@ -1466,7 +1606,7 @@ function ResetLightsAndButtonOnly() {
 			if(newx<=max && newx>=min){document.getElementById("nbrTE").value=newx;}
 			Calculation();
 		}
-		function addTE(){
+	function addTE(){
 			var max=20000,min=5;
 			var x=document.getElementById("nbrTE").value;
 			if(x>max){document.getElementById("nbrTE").value=max;}
@@ -1475,7 +1615,7 @@ function ResetLightsAndButtonOnly() {
 			if(newx<=max && newx>=min){document.getElementById("nbrTE").value=newx;}
 			Calculation();
 		}
-		function subETL(){
+	function subETL(){
 			var max=40,min=1;
 			var x=document.getElementById("nbrETL").value;
 			if(x>max){document.getElementById("nbrETL").value=max;}
@@ -1484,7 +1624,7 @@ function ResetLightsAndButtonOnly() {
 			if(newx<=max && newx>=min){document.getElementById("nbrETL").value=newx;}
 			Calculation();DsiplaySpinEcho();
 		}
-		function addETL(){
+	function addETL(){
 			var max=40,min=1;
 			var x=document.getElementById("nbrETL").value;
 			if(x>max){document.getElementById("nbrETL").value=max;}
@@ -1493,7 +1633,7 @@ function ResetLightsAndButtonOnly() {
 			if(newx<=max && newx>=min){document.getElementById("nbrETL").value=newx;}
 			Calculation();DsiplaySpinEcho();
 		}
-		function subNEX(){
+	function subNEX(){
 			var max=10,min=1;
 			var x=document.getElementById("nbrNEX").value;
 			if(x>max){document.getElementById("nbrNEX").value=max;}
@@ -1502,7 +1642,7 @@ function ResetLightsAndButtonOnly() {
 			if(newx<=max && newx>=min){document.getElementById("nbrNEX").value=newx;}
 			Calculation();
 		}
-		function addNEX(){
+	function addNEX(){
 			var max=10,min=1;
 			var x=document.getElementById("nbrNEX").value;
 			if(x>max){document.getElementById("nbrNEX").value=max;}
@@ -1511,25 +1651,53 @@ function ResetLightsAndButtonOnly() {
 			if(newx<=max && newx>=min){document.getElementById("nbrNEX").value=newx;}
 			Calculation();
 		}
-		function subFov(){
-			var max=50,min=6;
-			var x=document.getElementById("nbrFOV").value;
-			if(x>max){document.getElementById("nbrFOV").value=max;}
-			else if(x<min){document.getElementById("nbrFOV").value=min;}
-			var newx=(+x + -1);
-			if(newx<=max && newx>=min){document.getElementById("nbrFOV").value=newx;}
-			Calculation();
-		}
-		function addFov(){
-			var max=50,min=6;
-			var x=document.getElementById("nbrFOV").value;
-			if(x>max){document.getElementById("nbrFOV").value=max;}
-			else if(x<min){document.getElementById("nbrFOV").value=min;}
-			var newx=(1 + +x);
-			if(newx<=max && newx>=min){document.getElementById("nbrFOV").value=newx;}
-			Calculation();
-		}
-		function subFreq(){
+	// function subFov(){
+	// 		var max=50,min=6;
+	// 		var x=document.getElementById("nbrFOV").value;
+	// 		if(x>max){document.getElementById("nbrFOV").value=max;}
+	// 		else if(x<min){document.getElementById("nbrFOV").value=min;}
+	// 		var newx=(+x + -1);
+	// 		if(newx<=max && newx>=min){document.getElementById("nbrFOV").value=newx;}
+	// 		Calculation();
+	// 	}
+	// function addFov(){
+	// 		var max=50,min=6;
+	// 		var x=document.getElementById("nbrFOV").value;
+	// 		if(x>max){document.getElementById("nbrFOV").value=max;}
+	// 		else if(x<min){document.getElementById("nbrFOV").value=min;}
+	// 		var newx=(1 + +x);
+	// 		if(newx<=max && newx>=min){document.getElementById("nbrFOV").value=newx;}
+	// 		Calculation();
+	// 	}
+
+	function addFov() {
+	const input = document.getElementById("nbrFOV");
+	let current = parseFloat(input.value);
+
+	if (selectedManufacturer === "GE") {
+		if (current < 50) input.value = current + 1;
+	} else {
+		if (current < 500) input.value = current + 10;
+	}
+
+	Calculation(); // Recalculate after FOV change
+}
+
+function subFov() {
+	const input = document.getElementById("nbrFOV");
+	let current = parseFloat(input.value);
+
+	if (selectedManufacturer === "GE") {
+		if (current > 10) input.value = current - 1;
+	} else {
+		if (current > 60) input.value = current - 10;
+	}
+
+	Calculation(); // Recalculate after FOV change
+}
+
+
+	function subFreq(){
 			var max=512,min=96;
 			var x=document.getElementById("nbrFreq").value;
 			if(x>max){document.getElementById("nbrFreq").value=max;}
@@ -1538,7 +1706,7 @@ function ResetLightsAndButtonOnly() {
 			if(newx<=max && newx>=min){document.getElementById("nbrFreq").value=newx;}
 			Chngmax();
 		}
-		function addFreq(){
+	function addFreq(){
 			var max=512,min=96;
 			var x=document.getElementById("nbrFreq").value;
 			if(x>max){document.getElementById("nbrFreq").value=max;}
@@ -1549,14 +1717,14 @@ function ResetLightsAndButtonOnly() {
 			//addPhase();
 			//Chngmax();
 		}
-		function subPhase(){
+	function subPhase(){
 			var x=document.getElementById("nbrPhase").value;
 			var newx=(+x + -16);
 			if(newx<=96){document.getElementById("nbrPhase").value=96;}
 			else {document.getElementById("nbrPhase").value=newx;}
 			Calculation();
 		}
-		function addPhase(){
+	function addPhase(){
 			var max=512,min=96;
 			var x=document.getElementById("nbrPhase").value;
 			if(x>max){document.getElementById("nbrPhase").value=max;}
@@ -1565,7 +1733,7 @@ function ResetLightsAndButtonOnly() {
 			if(newx<=max && newx>=min){document.getElementById("nbrPhase").value=newx;}
 			Chngmax();
 		}
-		function subSthks(){
+	function subSthks(){
 			var max=20,min=1.5;
 			var x=document.getElementById("nbrSthks").value;
 			if(x>max){document.getElementById("nbrSthks").value=max;}
@@ -1574,7 +1742,7 @@ function ResetLightsAndButtonOnly() {
 			if(newx<=max && newx>=min){document.getElementById("nbrSthks").value=newx;}
 			Calculation();
 		}
-		function addSthks(){
+	function addSthks(){
 			var max=20,min=1.5;
 			var x=document.getElementById("nbrSthks").value;
 			if(x>max){document.getElementById("nbrSthks").value=max;}
@@ -1583,7 +1751,7 @@ function ResetLightsAndButtonOnly() {
 			if(newx<=max && newx>=min){document.getElementById("nbrSthks").value=newx;}
 			Calculation();
 		}
-		function subSintr(){
+	function subSintr(){
 			var max=5,min=0;
 			var x=document.getElementById("nbrSintr").value;
 			if(x>max){document.getElementById("nbrSintr").value=max;}
@@ -1592,7 +1760,7 @@ function ResetLightsAndButtonOnly() {
 			if(newx<=max && newx>=min){document.getElementById("nbrSintr").value=newx;}
 			Calculation();
 		}
-		function addSintr(){
+	function addSintr(){
 			var max=5,min=0;
 			var x=document.getElementById("nbrSintr").value;
 			if(x>max){document.getElementById("nbrSintr").value=max;}
@@ -1601,7 +1769,7 @@ function ResetLightsAndButtonOnly() {
 			if(newx<=max && newx>=min){document.getElementById("nbrSintr").value=newx;}
 			Calculation();
 		}
-		function subNofSlc(){
+	function subNofSlc(){
 			var max=40,min=1;
 			var x=document.getElementById("nbrNofSlc").value;
 			if(x>max){document.getElementById("nbrNofSlc").value=max;}
@@ -1610,7 +1778,7 @@ function ResetLightsAndButtonOnly() {
 			if(newx<=max && newx>=min){document.getElementById("nbrNofSlc").value=newx;}
 			Calculation();
 		}
-		function addNofSlc(){
+	function addNofSlc(){
 			var max=40,min=1;
 			var x=document.getElementById("nbrNofSlc").value;
 			if(x>max){document.getElementById("nbrNofSlc").value=max;}
@@ -1619,7 +1787,7 @@ function ResetLightsAndButtonOnly() {
 			if(newx<=max && newx>=min){document.getElementById("nbrNofSlc").value=newx;}
 			Calculation();
 		}
-		function subVarBdw(){
+	function subVarBdw(){
 			var max=60,min=3;
 			var x=document.getElementById("nbrVarBdw").value;
 			if(x>max){document.getElementById("nbrVarBdw").value=max;}
@@ -1628,7 +1796,7 @@ function ResetLightsAndButtonOnly() {
 			if(newx<=max && newx>=min){document.getElementById("nbrVarBdw").value=newx;}
 			CheckRadio(),Calculation();
 		}
-		function addVarBdw(){
+	function addVarBdw(){
 			var max=60,min=3;
 			var x=document.getElementById("nbrVarBdw").value;
 			if(x>max){document.getElementById("nbrVarBdw").value=max;}
@@ -1637,7 +1805,7 @@ function ResetLightsAndButtonOnly() {
 			if(newx<=max && newx>=min){document.getElementById("nbrVarBdw").value=newx;}
 			CheckRadio();
 		}
-		function subTotalBdw(){
+	function subTotalBdw(){
 			var max=120,min=6;
 			var x=document.getElementById("nbrTotalBdw").value;
 			if(x>max){document.getElementById("nbrTotalBdw").value=max;}
@@ -1646,7 +1814,7 @@ function ResetLightsAndButtonOnly() {
 			if(newx<=max && newx>=min){document.getElementById("nbrTotalBdw").value=newx;}
 			CheckRadio();
 		}
-		function addTotalBdw(){
+	function addTotalBdw(){
 			var max=120,min=6;
 			var x=document.getElementById("nbrTotalBdw").value;
 			if(x>max){document.getElementById("nbrTotalBdw").value=max;}
@@ -1655,7 +1823,7 @@ function ResetLightsAndButtonOnly() {
 			if(newx<=max && newx>=min){document.getElementById("nbrTotalBdw").value=newx;}
 			CheckRadio();
 		}
-		function subBdwppxl(){
+	function subBdwppxl(){
 			var max=1000,min=1;
 			var x=document.getElementById("nbrBdwppxl").value;
 			if(x>max){document.getElementById("nbrBdwppxl").value=max;}
@@ -1663,7 +1831,7 @@ function ResetLightsAndButtonOnly() {
 			var newx=(+x + -0.1).toFixed(1);;
 			if(newx<=max && newx>=min){document.getElementById("nbrBdwppxl").value=newx;};
 		}
-		function addBdwppxl(){
+	function addBdwppxl(){
 			var max=1000,min=1;
 			var x=document.getElementById("nbrBdwppxl").value;
 			if(x>max){document.getElementById("nbrBdwppxl").value=max;}
@@ -1671,7 +1839,7 @@ function ResetLightsAndButtonOnly() {
 			var newx=(0.1 + +x).toFixed(1);
 			if(newx<=max && newx>=min){document.getElementById("nbrBdwppxl").value=newx;};
 		}
-		function subNofPixel(){
+	function subNofPixel(){
 			var max=5,min=1;
 			var x=document.getElementById("nbrNofPixel").value;
 			if(x>max){document.getElementById("nbrNofPixel").value=max;}
@@ -1680,7 +1848,7 @@ function ResetLightsAndButtonOnly() {
 			if(newx<=max && newx>=min){document.getElementById("nbrNofPixel").value=newx;}
 			CheckRadio();
 		}
-		function addNofPixel(){
+	function addNofPixel(){
 			var max=5,min=1;
 			var x=document.getElementById("nbrNofPixel").value;
 			if(x>max){document.getElementById("nbrNofPixel").value=max;}
@@ -1689,7 +1857,7 @@ function ResetLightsAndButtonOnly() {
 			if(newx<=max && newx>=min){document.getElementById("nbrNofPixel").value=newx;}
 			CheckRadio();
 		}
-		function search(event){
+	function search(event){
 			if(event.keyCode == 13){
 			var xTR=document.getElementById("nbrTR").value;
 			if(xTR==""||xTR<=250){document.getElementById("nbrTR").value=250;Calculation();}
@@ -1707,10 +1875,33 @@ function ResetLightsAndButtonOnly() {
 			if(xNEX==""||xNEX<=1){document.getElementById("nbrNEX").value=1;Calculation();}
 			else if(xNEX>=10){document.getElementById("nbrNEX").value=10;Calculation();}
 			else{document.getElementById("nbrNEX").value=xNEX;Calculation();}
-			var xFOV=document.getElementById("nbrFOV").value;
-			if(xFOV==""||xFOV<=6){document.getElementById("nbrFOV").value=6;Calculation();}
-			else if(xFOV>=50){document.getElementById("nbrFOV").value=50;Calculation();}
-			else{document.getElementById("nbrFOV").value=xFOV;Calculation();}
+			// var xFOV=document.getElementById("nbrFOV").value;
+			// if(xFOV==""||xFOV<=6){document.getElementById("nbrFOV").value=6;Calculation();}
+			// else if(xFOV>=50){document.getElementById("nbrFOV").value=50;Calculation();}
+			// else{document.getElementById("nbrFOV").value=xFOV;Calculation();}
+			var xFOV = parseFloat(document.getElementById("nbrFOV").value);
+
+if (selectedManufacturer === "GE") {
+  // GE uses cm, enforce range 6–50
+  if (isNaN(xFOV) || xFOV < 6) {
+    xFOV = 6;
+  } else if (xFOV > 50) {
+    xFOV = 50;
+  }
+  document.getElementById("nbrFOV").value = xFOV;
+} else {
+  // Siemens / Canon / Philips use mm, enforce range 60–500
+  if (isNaN(xFOV) || xFOV < 60) {
+    xFOV = 60;
+  } else if (xFOV > 500) {
+    xFOV = 500;
+  }
+  document.getElementById("nbrFOV").value = xFOV;
+}
+
+Calculation();
+
+
 			var xSthks=document.getElementById("nbrSthks").value;
 			if(xSthks==""||xSthks<=1.5){document.getElementById("nbrSthks").value=1.5;Calculation();}
 			else if(xSthks>=20){document.getElementById("nbrSthks").value=20;Calculation();}
@@ -1741,36 +1932,41 @@ function ResetLightsAndButtonOnly() {
 			else{document.getElementById("nbrNofPixel").value=xNofPixel;CheckRadio();}
 			}
 		}
-		function isNumber(evt) {
+
+	function isNumber(evt) {
 			evt=(evt)?evt:window.event;
 			var charCode=(evt.which)?evt.which:evt.keyCode;
 			if (charCode>31 && (charCode<48 || charCode>57)){return false;}
 			return true;
 		}
-		function showTip(){
+
+	function showTip(){
 			document.getElementById("overlay").style.display = "inline";
 			document.getElementById("popup").style.display="inline";
 			document.getElementById("btnClosetip").style.display="inline";
 		}
-		function closeTip(){
+
+	function closeTip(){
 			document.getElementById("overlay").style.display = "none";
 			document.getElementById("popup").style.display="none";
 			document.getElementById("btnClosetip").style.display="none";
 		}
-		document.addEventListener('DOMContentLoaded', function() {
-        document.addEventListener('mouseup', function(e) {
-        var overlay = document.getElementById('overlay');
-        var closepopup = document.getElementById('popup');
-        var btclosetip = document.getElementById('btnClosetip');
 
-        if (closepopup && !closepopup.contains(e.target)) {
-          if (closepopup) closepopup.style.display = 'none';
-          if (btclosetip) btclosetip.style.display = 'none';
-          if (overlay) overlay.style.display = 'none';
-        }
-      });
+	document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('mouseup', function(e) {
+    var overlay = document.getElementById('overlay');
+    var closepopup = document.getElementById('popup');
+    var btclosetip = document.getElementById('btnClosetip');
+
+    if (closepopup && !closepopup.contains(e.target)) {
+        if (closepopup) closepopup.style.display = 'none';
+        if (btclosetip) btclosetip.style.display = 'none';
+        if (overlay) overlay.style.display = 'none';
+    }
     });
-		function preload(){
+    });
+
+	function preload(){
 			var images = new Array();
 			function preload() {
 				for (i=0;i<preload.arguments.length;i++) {
@@ -1781,7 +1977,7 @@ function ResetLightsAndButtonOnly() {
 			preload("backgrd.png","backgrdCase7.png","1.png","2.png","3.png","4.png","5.png","6.png","7.png","8.png","9.png","10.png","11.png","12.png","13.png","14.png","15.png","16.png","17.png","18.png","19.png","20.png","21.png","22.png","23.png","24.png","25.png","26.png","27.png","28.png","29.png","30.png","31.png","32.png","33.png","34.png","35.png","36.png","37.png","38.png","39.png","40.png");	
 		}
 
-		function changeAppearance() {
+	function changeAppearance() {
 		const dropdown = document.getElementById("manufactorDrp");
 		const selectedValue = dropdown.value;
 		// Update the global variable to put it equal the selected value
@@ -2047,6 +2243,43 @@ function ResetLightsAndButtonOnly() {
 // document.getElementById("selectFSEEG")?.addEventListener("change", updateETLLabel);
 // document.getElementById("nbrETL")?.addEventListener("input", calculateValue);
 
+function changeManufacturer(newManufacturer) {
+  selectedManufacturer = newManufacturer.trim();
+
+  // Hide all
+  document.getElementById("bdwContainerGE").style.display = "none";
+  document.getElementById("bdwContainerSiemens").style.display = "none";
+  document.getElementById("bdwContainerPhilips").style.display = "none";
+
+  const fovInput = document.getElementById("nbrFOV");
+
+  if (newManufacturer === "GE") {
+    document.getElementById("bdwContainerGE").style.display = "flex";
+    checkname = "BDW";
+    fovInput.value = 24;
+    fovInput.min = 10;
+    fovInput.max = 50;
+
+  } else if (newManufacturer === "Siemens") {
+    document.getElementById("bdwContainerSiemens").style.display = "flex";
+    checkname = "pBDW";
+    fovInput.value = 240;
+    fovInput.min = 60;
+    fovInput.max = 500;
+
+  } else if (newManufacturer === "Philips" || newManufacturer === "Canon") {
+    document.getElementById("bdwContainerPhilips").style.display = "flex";
+    checkname = "nBDW";
+    fovInput.value = 240;
+    fovInput.min = 60;
+    fovInput.max = 500;
+  }
+
+  Calculation();
+}
+
+
+
 
 	</script>
 </head>
@@ -2084,7 +2317,7 @@ function ResetLightsAndButtonOnly() {
 		  <div class="mp-items-measure">
 			 <!-- <label>Machine</label> -->
 			 <div class="mp-input-button mp-input-button-select mp-custom-select">
-				<select id="manufactorDrp" onchange="changeAppearance()">
+				<select id="manufactorDrp" onchange="changeAppearance(); changeManufacturer(this.value)">
 					<option value="GE" selected>GE</option>
 				   <option value="Siemens">Siemens</option>
 				   <option value="Philips">Philips</option>
@@ -2518,16 +2751,41 @@ function ResetLightsAndButtonOnly() {
 						 </div>
 					  </div>
 				   </div>
-				   <div class="mp-items-measure" id="bdwPerPixelContainer">
-					   <label id="lblBdwppxl">BDW par pixel</label>
-					<div class="mp-input-button">
-					   <input type="number" id='nbrBdwppxl' value="93.8" onkeydown="search(event)"  onkeypress="return isNumber(event)"/>
-					   <div class="mp-buttons">
-						  <button onclick="addBdwppxl()"><i class="fa-solid fa-angle-up"></i></button>
-						  <button onclick="subBdwppxl()"><i class="fa-solid fa-angle-down"></i></button>
-					   </div>
-					</div>
-				 </div>
+				   <!-- GE: BDW total en KHz -->
+                  <div class="mp-items-measure" id="bdwContainerGE" >
+	                  <label id="lblBdwGE">BDW Total en KHz</label>
+	                  <div class="mp-input-button">
+	                    <input type="number" id='nbrTotalBdw' value="30" onkeydown="search(event)" onkeypress="return isNumber(event)" onchange="search({ keyCode: 13 })" />
+	                    <div class="mp-buttons">
+		                  <button onclick="addTotalBdw()"><i class="fa-solid fa-angle-up"></i></button>
+		                  <button onclick="subTotalBdw()"><i class="fa-solid fa-angle-down"></i></button>
+	                    </div>
+	                  </div>
+                    </div>
+  
+                    <!-- Siemens: BDW per pixel -->
+                    <div class="mp-items-measure" id="bdwContainerSiemens" style="display:none;">
+	                  <label id="lblBdwSiemens">BDW par pixel</label>
+	                  <div class="mp-input-button">
+	                    <input type="number" id="nbrBdwppxl" value="93.8" onkeydown="search(event)" onkeypress="return isNumber(event)" onchange="search({ keyCode: 13 })" />
+	                    <div class="mp-buttons">
+		                  <button onclick="addBdwppxl()"><i class="fa-solid fa-angle-up"></i></button>
+		                  <button onclick="subBdwppxl()"><i class="fa-solid fa-angle-down"></i></button>
+	                    </div>
+	                  </div>
+                    </div>
+  
+                    <!-- Philips/Canon: Nbr pixels de déplacement chimique -->
+                    <div class="mp-items-measure" id="bdwContainerPhilips" style="display:none;">
+	                  <label id="lblBdwPhilips">Nbr pixels de déplacement chimique</label>
+	                  <div class="mp-input-button">
+	                    <input type="number" id="nbrNofPixel" value="2.2" onkeydown="search(event)" onkeypress="return isNumber(event)" onchange="search({ keyCode: 13 })"/>
+	                    <div class="mp-buttons">
+		                  <button onclick="addNofPixel()"><i class="fa-solid fa-angle-up"></i></button>
+		                  <button onclick="subNofPixel()"><i class="fa-solid fa-angle-down"></i></button>
+	                    </div>
+	                  </div>
+                    </div>
 				</div>
 				<!-- END Second column-->
 			 </div>
