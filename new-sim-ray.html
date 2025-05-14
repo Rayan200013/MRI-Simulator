@@ -18,20 +18,23 @@
 			if(casename=="case1"){
 				TRref=4000;NEXref=2;bdwref=30;fovref=24;
 				TEref=90;phaseref=320;freqref=320;epaisseurref=4;
-				document.getElementById("nbrTR").value=4000;
+				document.getElementById("nbrTR").value=3200;
 				document.getElementById("nbrTE").value=90;
 				document.getElementById("nbrETL").value=13;
 				document.getElementById("nbrNEX").value=2;
-				document.getElementById("nbrFOV").value=24;
 				document.getElementById("nbrFreq").value=320;
 				document.getElementById("nbrPhase").value=320;
 				document.getElementById("nbrSthks").value=4;
 				document.getElementById("nbrSintr").value=0.4;
 				document.getElementById("nbrNofSlc").value=20;
-				document.getElementById("nbrVarBdw").value=15;
-				document.getElementById("nbrTotalBdw").value=30;
-				document.getElementById("nbrBdwppxl").value=93.8;
+				document.getElementById("nbrVarBdw").value=20;
+				document.getElementById("nbrTotalBdw").value=40;
+				document.getElementById("nbrBdwppxl").value=125;
 				document.getElementById("nbrNofPixel").value=2.2;
+				if (selectedManufacturer === "GE") {
+                    document.getElementById("nbrFOV").value = 24;}
+				else {
+                    document.getElementById("nbrFOV").value = 240;}
 				document.getElementById("btnCase1").className="current";
 				document.getElementById("btnCase2").className="";
 				document.getElementById("btnCase3").className="";
@@ -73,20 +76,24 @@
 			}
 			else if(casename=="case2"){
 				TRref=4000;NEXref=2;bdwref=30;fovref=24;
-				TEref=90;phaseref=288;freqref=288;epaisseurref=4;
-				document.getElementById("nbrTR").value=4000;
+				TEref=90;phaseref=224;freqref=320;epaisseurref=4;
+				document.getElementById("nbrTR").value=3400;
 				document.getElementById("nbrTE").value=90;
-				document.getElementById("nbrETL").value=14;
+				document.getElementById("nbrETL").value=13;
 				document.getElementById("nbrNEX").value=2;
-				document.getElementById("nbrFOV").value=24;
+				if (selectedManufacturer === "GE") {
+                    document.getElementById("nbrFOV").value = 24;
+                } else {
+                    document.getElementById("nbrFOV").value = 240;
+                }
 				document.getElementById("nbrFreq").value=288;
 				document.getElementById("nbrPhase").value=288;
 				document.getElementById("nbrSthks").value=4;
 				document.getElementById("nbrSintr").value=0.4;
 				document.getElementById("nbrNofSlc").value=20;
-				document.getElementById("nbrVarBdw").value=15;
-				document.getElementById("nbrTotalBdw").value=30;
-				document.getElementById("nbrBdwppxl").value=104.2;
+				document.getElementById("nbrVarBdw").value=20;
+				document.getElementById("nbrTotalBdw").value=40;
+				document.getElementById("nbrBdwppxl").value=125;
 				document.getElementById("nbrNofPixel").value=2;
 				document.getElementById("btnCase1").className="";
 				document.getElementById("btnCase2").className="current";
@@ -111,21 +118,25 @@
 				CheckRadio();DsiplaySpinEcho();cname="case2";
 			}
 			else if(casename=="case3"){
-				TRref=540;NEXref=2;bdwref=36;fovref=24;
-				TEref=10;phaseref=320;freqref=320;epaisseurref=4;
-				document.getElementById("nbrTR").value=540;
+				TRref=480;NEXref=2;bdwref=36;fovref=24;
+				TEref=10;phaseref=224;freqref=320;epaisseurref=4;
+				document.getElementById("nbrTR").value=480;
 				document.getElementById("nbrTE").value=10;
 				document.getElementById("nbrETL").value=2;
 				document.getElementById("nbrNEX").value=2;
-				document.getElementById("nbrFOV").value=24;
+				if (selectedManufacturer === "GE") {
+                    document.getElementById("nbrFOV").value = 24;
+                } else {
+                    document.getElementById("nbrFOV").value = 240;
+                }
 				document.getElementById("nbrFreq").value=320;
 				document.getElementById("nbrPhase").value=320;
 				document.getElementById("nbrSthks").value=4;
 				document.getElementById("nbrSintr").value=0.4;
 				document.getElementById("nbrNofSlc").value=20;
-				document.getElementById("nbrVarBdw").value=18;
-				document.getElementById("nbrTotalBdw").value=36;
-				document.getElementById("nbrBdwppxl").value=112.5;
+				document.getElementById("nbrVarBdw").value=20;
+				document.getElementById("nbrTotalBdw").value=40;
+				document.getElementById("nbrBdwppxl").value=125;
 				document.getElementById("nbrNofPixel").value=1.8;
 				document.getElementById("btnCase1").className="";
 				document.getElementById("btnCase2").className="";
@@ -151,21 +162,25 @@
 			}
 			else if(casename=="case4"){
 				TRref=10000;NEXref=1;bdwref=36;fovref=24;
-				TEref=88;phaseref=256;freqref=384;epaisseurref=5;
+				TEref=68;phaseref=256;freqref=384;epaisseurref=5;
 				document.getElementById("nbrTR").value=10000;
-				document.getElementById("nbrTE").value=88;
+				document.getElementById("nbrTE").value=68;
 				document.getElementById("nbrETL").value=31;
 				document.getElementById("nbrNEX").value=1;
-				document.getElementById("nbrFOV").value=24;
+				if (selectedManufacturer === "GE") {
+                    document.getElementById("nbrFOV").value = 24;
+                } else {
+                    document.getElementById("nbrFOV").value = 240;
+                }
 				document.getElementById("nbrFreq").value=384;
 				document.getElementById("nbrPhase").value=256;
 				document.getElementById("nbrSthks").value=5;
 				document.getElementById("nbrSintr").value=1.5;
 				document.getElementById("nbrNofSlc").value=24;
-				document.getElementById("nbrVarBdw").value=18;
-				document.getElementById("nbrTotalBdw").value=36;
-				document.getElementById("nbrBdwppxl").value=93.8;
-				document.getElementById("nbrNofPixel").value=2.2;
+				document.getElementById("nbrVarBdw").value=24;
+				document.getElementById("nbrTotalBdw").value=48;
+				document.getElementById("nbrBdwppxl").value=125;
+				document.getElementById("nbrNofPixel").value=1.7;
 				document.getElementById("btnCase1").className="";
 				document.getElementById("btnCase2").className="";
 				document.getElementById("btnCase3").className="";
@@ -195,7 +210,11 @@
 				document.getElementById("nbrTE").value=20;
 				document.getElementById("nbrETL").value=3;
 				document.getElementById("nbrNEX").value=1;
-				document.getElementById("nbrFOV").value=24;
+				if (selectedManufacturer === "GE") {
+                    document.getElementById("nbrFOV").value = 24;
+                } else {
+                    document.getElementById("nbrFOV").value = 240;
+                }
 				document.getElementById("nbrFreq").value=320;
 				document.getElementById("nbrPhase").value=256;
 				document.getElementById("nbrSthks").value=5;
@@ -235,7 +254,11 @@
 				document.getElementById("nbrTE").value=90;
 				document.getElementById("nbrETL").value=25;
 				document.getElementById("nbrNEX").value=2;
-				document.getElementById("nbrFOV").value=24;
+				if (selectedManufacturer === "GE") {
+                    document.getElementById("nbrFOV").value = 24;
+                } else {
+                    document.getElementById("nbrFOV").value = 240;
+                }
 				document.getElementById("nbrFreq").value=304;
 				document.getElementById("nbrPhase").value=288;
 				document.getElementById("nbrSthks").value=5;
@@ -274,7 +297,11 @@
 				document.getElementById("nbrTE").value=90;
 				document.getElementById("nbrETL").value=13;
 				document.getElementById("nbrNEX").value=2;
-				document.getElementById("nbrFOV").value=24;
+				if (selectedManufacturer === "GE") {
+                    document.getElementById("nbrFOV").value = 24;
+                } else {
+                    document.getElementById("nbrFOV").value = 240;
+                }
 				document.getElementById("nbrFreq").value=320;
 				document.getElementById("nbrPhase").value=320;
 				document.getElementById("nbrSthks").value=4;
@@ -306,7 +333,11 @@
 			document.getElementById("nbrTE").value=11;
 			document.getElementById("nbrETL").value=13;
 			document.getElementById("nbrNEX").value=2;
-			document.getElementById("nbrFOV").value=24;
+			if (selectedManufacturer === "GE") {
+                    document.getElementById("nbrFOV").value = 24;
+                } else {
+                    document.getElementById("nbrFOV").value = 240;
+                }
 			document.getElementById("nbrFreq").value=384;
 			document.getElementById("nbrPhase").value=320;
 			document.getElementById("nbrSthks").value=3;
@@ -444,6 +475,10 @@
 				document.getElementById("nbrBdwppxl").disabled=false;
 				document.getElementById("nbrNofPixel").disabled=false;
 			}
+			// ETL Value = 1 MINIMUMMM Start 
+			ETL = parseInt(document.getElementById("nbrETL").value);
+            if (isNaN(ETL) || ETL < 1) { ETL = 1; document.getElementById("nbrETL").value = ETL;}
+			// ETL Value = 1 MINIMUMMM END
 			if(vBDW<=3){vBDW=3;}
 			else if(vBDW>=60){vBDW=60;}
 			else{vBDW=vBDW;}
@@ -498,12 +533,17 @@
 				btnRestclicked="false";
 			}
 			else{btnRestclicked="false";}
-			//move RedDiv
-			echoeffred= Math.round(TEeffreel*(374)/TEM);
-			var echos=Math.round(TEm*374/TEM);
-			newechoeffred=Math.round(+echoeffred + +echos);
-			currentposition=Math.round(+newechoeffred + -echos);
-			document.getElementById("divred").style.left=(currentposition)+"px";
+			// Move the red div
+			echoeff = Math.round(TE / TEm);
+			if (echoeff < 1) echoeff = 1;
+			if (echoeff > ETL) echoeff = ETL;
+			let percent = 0;
+			if (ETL > 1) {percent = (echoeff - 1) / (ETL - 1)}
+		    else {percent = 1;}
+            const grphWidth = 373; // Width of the graph
+            const redDiv = Math.round(grphWidth * percent);
+            document.getElementById("divred").style.left = redDiv + "px";
+
 			//pictures Contrast||invert
 			snrsg=rhosg*(1-Math.exp(-TR/T1sg))*Math.exp(-TEeffreel/T2sg)*Math.sqrt(NEX)*voxel*(1/Math.sqrt(bdw));
 			snrsb=rhosb*(1-Math.exp(-TR/T1sb))*Math.exp(-TEeffreel/T2sb)*Math.sqrt(NEX)*voxel*(1/Math.sqrt(bdw));
@@ -633,6 +673,10 @@
 			if(NBDW<=1){NBDW=1;}
 			else if(NBDW>=5){NBDW=5;}
 			else{NBDW=NBDW;}
+			// ETL Value = 1 MINIMUMMM Start 
+			ETL = parseInt(document.getElementById("nbrETL").value);
+            if (isNaN(ETL) || ETL < 1) { ETL = 1; document.getElementById("nbrETL").value = ETL;}
+			// ETL Value = 1 MINIMUMMM END
 			//calculate parameter
 			dFov=fov*10;
 			TEm=(2+Math.round((freq/bdw)*100)/100).toFixed(2);
@@ -675,11 +719,22 @@
 			}
 			else{btnRestclicked="false";}
 			//move RedDiv
-			echoeffred= Math.round(TEeffreel*(374)/TEM);
-			var echos=Math.round(TEm*374/TEM);
-			newechoeffred=Math.round(+echoeffred + +echos);
-			currentposition=Math.round(+newechoeffred + -echos);
-			document.getElementById("divred").style.left=(currentposition)+"px";
+			// echoeffred= Math.round(TEeffreel*(374)/TEM);
+			// var echos=Math.round(TEm*374/TEM);
+			// newechoeffred=Math.round(+echoeffred + +echos);
+			// currentposition=Math.round(+newechoeffred + -echos);
+			// document.getElementById("divred").style.left=(currentposition)+"px";
+
+			// Move the red div
+			echoeff = Math.round(TE / TEm);
+			if (echoeff < 1) echoeff = 1;
+			if (echoeff > ETL) echoeff = ETL;
+			let percent = 0;
+			if (ETL > 1) {percent = (echoeff - 1) / (ETL - 1)} 
+			else {percent = 1; }
+            const grphWidth = 373;
+            const redDiv = Math.round(grphWidth * percent);
+            document.getElementById("divred").style.left = redDiv + "px";
 			//pictures Contrast||invert
 			snrsg=rhosg*(1-Math.exp(-TR/T1sg))*Math.exp(-TEeffreel/T2sg)*Math.sqrt(NEX)*voxel*(1/Math.sqrt(bdw));
 			snrsb=rhosb*(1-Math.exp(-TR/T1sb))*Math.exp(-TEeffreel/T2sb)*Math.sqrt(NEX)*voxel*(1/Math.sqrt(bdw));
@@ -809,6 +864,10 @@
 			if(NBDW<=1){NBDW=1;}
 			else if(NBDW>=5){NBDW=5;}
 			else{NBDW=NBDW;}
+			// ETL Value = 1 MINIMUMMM Start 
+			ETL = parseInt(document.getElementById("nbrETL").value);
+            if (isNaN(ETL) || ETL < 1) { ETL = 1; document.getElementById("nbrETL").value = ETL;}
+			// ETL Value = 1 MINIMUMMM END
 			//calculate parameter
 			dFov=fov*10;
 			TEm=(2+Math.round((freq/bdw)*100)/100).toFixed(2);
@@ -850,12 +909,16 @@
 				btnRestclicked="false";
 			}
 			else{btnRestclicked="false";}
-			//move RedDiv
-			echoeffred= Math.round(TEeffreel*(374)/TEM);
-			var echos=Math.round(TEm*374/TEM);
-			newechoeffred=Math.round(+echoeffred + +echos);
-			currentposition=Math.round(+newechoeffred + -echos);
-			document.getElementById("divred").style.left=(currentposition)+"px";
+			// Move the red div
+			echoeff = Math.round(TE / TEm);
+			if (echoeff < 1) echoeff = 1;
+			if (echoeff > ETL) echoeff = ETL;
+			let percent = 0;
+			if (ETL > 1) {percent = (echoeff - 1) / (ETL - 1)} 
+			else {percent = 1; }
+            const grphWidth = 373;
+            const redDiv = Math.round(grphWidth * percent);
+            document.getElementById("divred").style.left = redDiv + "px";
 			//pictures Contrast||invert
 			snrsg=rhosg*(1-Math.exp(-TR/T1sg))*Math.exp(-TEeffreel/T2sg)*Math.sqrt(NEX)*voxel*(1/Math.sqrt(bdw));
 			snrsb=rhosb*(1-Math.exp(-TR/T1sb))*Math.exp(-TEeffreel/T2sb)*Math.sqrt(NEX)*voxel*(1/Math.sqrt(bdw));
@@ -985,6 +1048,10 @@
 			if(NBDW<=1){NBDW=1;}
 			else if(NBDW>=5){NBDW=5;}
 			else{NBDW=NBDW;}
+			// ETL Value = 1 MINIMUMMM Start 
+			ETL = parseInt(document.getElementById("nbrETL").value);
+            if (isNaN(ETL) || ETL < 1) { ETL = 1; document.getElementById("nbrETL").value = ETL;}
+			// ETL Value = 1 MINIMUMMM END
 			//calculate parameter
 			dFov=fov*10;
 			TEm=(2+Math.round((freq/bdw)*100)/100).toFixed(2);
@@ -1026,12 +1093,16 @@
 				btnRestclicked="false";
 			}
 			else{btnRestclicked="false";}
-			//move RedDiv
-			echoeffred= Math.round(TEeffreel*(374)/TEM);
-			var echos=Math.round(TEm*374/TEM);
-			newechoeffred=Math.round(+echoeffred + +echos);
-			currentposition=Math.round(+newechoeffred + -echos);
-			document.getElementById("divred").style.left=(currentposition)+"px";
+			// Move the red div
+			echoeff = Math.round(TE / TEm);
+			if (echoeff < 1) echoeff = 1;
+			if (echoeff > ETL) echoeff = ETL;
+			let percent = 0;
+			if (ETL > 1) {percent = (echoeff - 1) / (ETL - 1)} 
+			else {percent = 1; }
+            const grphWidth = 373;
+            const redDiv = Math.round(grphWidth * percent);
+            document.getElementById("divred").style.left = redDiv + "px";
 			//pictures Contrast||invert
 			snrsg=rhosg*(1-Math.exp(-TR/T1sg))*Math.exp(-TEeffreel/T2sg)*Math.sqrt(NEX)*voxel*(1/Math.sqrt(bdw));
 			snrsb=rhosb*(1-Math.exp(-TR/T1sb))*Math.exp(-TEeffreel/T2sb)*Math.sqrt(NEX)*voxel*(1/Math.sqrt(bdw));
@@ -2297,8 +2368,8 @@ function changeManufacturer(newManufacturer) {
 				   <option id="btnCase4" value="case4" onclick="CheckCases(this.value);Calculation();DisplayValues(this.value);" class="" style="-moz-user-select: none;user-select:none;width:105px">Cas N&deg; 4</option>
 				   <option id="btnCase5" value="case5" onclick="CheckCases(this.value);Calculation();DisplayValues(this.value);" class="" style="-moz-user-select: none;user-select:none;width:105px">Cas N&deg; 5</option>
 				   <option id="btnCase6" value="case6" onclick="CheckCases(this.value);Calculation();DisplayValues(this.value);" class="" style="-moz-user-select: none;user-select:none;width:105px">Cas N&deg; 6</option>
-				   <option id="btnCase8" value="case8" onclick="CheckCases(this.value);Calculation();DisplayValues(this.value);" class="" style="-moz-user-select: none;user-select:none;width:105px">Cas N&deg; 7</option>
-				   <option id="btnCase7" value="case7" onclick="CheckCases(this.value);Calculation();DisplayValues(this.value);" class="" style="-moz-user-select: none;user-select:none;width:198px">Paramétrages libres</option>
+				   <option id="btnCase8" value="case8" onclick="CheckCases(this.value);Calculation();DisplayValues(this.value);" class="" style="-moz-user-select: none;user-select:none;width:105px; display: none;">Cas N&deg; 7</option>
+				   <option id="btnCase7" value="case7" onclick="CheckCases(this.value);Calculation();DisplayValues(this.value);" class="" style="-moz-user-select: none;user-select:none;width:198px;">Paramétrages libres</option>
 				</select>
 			 </div>
 		  </div>
@@ -2835,7 +2906,7 @@ function changeManufacturer(newManufacturer) {
 					  <label id="lblDirPhase">Dir encodage de phase</label>
 					  <div class="mp-input-button mp-input-button-select mp-custom-select" style="cursor: no-drop; background-color: #3b416318;">
 						 <select id="" style="pointer-events: none; background-color: #3b41632d;">
-							<option value="dg" selected>Neuro R>L</option>
+							<option value="dg" selected>R>L</option>
 							<option value="dg">D/G</option>
 							<option value="ap">A/P</option>
 							<option value="si">S/I</option>
@@ -2931,6 +3002,7 @@ function changeManufacturer(newManufacturer) {
 		  <div class="mp-fourthlast-container">
 			 <div class="mp-image-letiation">
 				<div id="tabPicDiv" style="-moz-user-select: none;user-select:none;">
+					<!-- <div class="mp-graph-white-con"></div> -->
 				   <img id="picTE" src="13.png"/>
 				   <div id="divred"></div>
 				   <div id="divTENnty"><b>TE: 90</b></div>

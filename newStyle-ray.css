@@ -498,6 +498,15 @@ height: 68px;
 user-select:none;
 -moz-user-select: none;
 }
+.mp-graph-white-con{
+  width: 35px;
+  background-color: #161824;
+  z-index: 99999;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  height: 31px;
+}
 .tabs-menu {
 height:30px;
 float:left;
